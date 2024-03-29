@@ -1,12 +1,10 @@
 import User from '@/models/user';
 import { dbConnect } from '@/utils/mongodb';
-import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { NextApiRequest, NextApiResponse } from 'next';
-import HttpStatus from '@/constants/statusCodes';
 import { Config } from '@/config';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
+import { HttpStatusCode } from 'axios';
 
 const schema = z.object({
   username: z.string().min(3, { message: 'username must be at least 3 characters' }),
@@ -25,13 +23,13 @@ export async function POST(request: NextRequest) {
       if (await User.findOne({ username })) {
         return NextResponse.json(
           { message: 'username already exists' },
-          { status: HttpStatus.BAD_REQUEST }
+          { status: HttpStatusCode.BadRequest }
         );
       }
       if (await User.findOne({ email })) {
         return NextResponse.json(
           { message: 'email already exists' },
-          { status: HttpStatus.BAD_REQUEST }
+          { status: HttpStatusCode.BadRequest }
         );
       }
       const newUser = await User.create({
@@ -45,19 +43,19 @@ export async function POST(request: NextRequest) {
       });
       return NextResponse.json(
         { token, user: newUser, message: 'User created successfully' },
-        { status: HttpStatus.CREATED }
+        { status: HttpStatusCode.Created }
       );
     } else {
       return NextResponse.json(
         { errors: body.error.errors, message: 'Validation errors' },
-        { status: HttpStatus.BAD_REQUEST }
+        { status: HttpStatusCode.BadRequest }
       );
     }
   } catch (error) {
     console.log(error);
     return NextResponse.json(
       { message: 'Internal Server Error' },
-      { status: HttpStatus.INTERNAL_SERVER_ERROR }
+      { status: HttpStatusCode.InternalServerError }
     );
   }
 }

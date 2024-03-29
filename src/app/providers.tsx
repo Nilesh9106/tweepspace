@@ -1,12 +1,13 @@
-"use client";
-import { NextUIProvider } from "@nextui-org/react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+'use client';
+import { AuthProvider } from '@/hooks/useAuth';
+import { NextUIProvider } from '@nextui-org/react';
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <NextUIProvider>
       <NextThemesProvider attribute="class" defaultTheme="dark">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </NextThemesProvider>
     </NextUIProvider>
   );

@@ -2,10 +2,10 @@ import User from '@/models/user';
 import { dbConnect } from '@/utils/mongodb';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import HttpStatus from '@/constants/statusCodes';
 import { Config } from '@/config';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
+import { HttpStatusCode } from 'axios';
 
 const loginSchema = z.object({
   username: z.string({ required_error: 'Username is required' }),
@@ -25,29 +25,41 @@ export async function POST(request: NextRequest) {
           const token = jwt.sign(payload, Config.JWT_SECRET, {
             expiresIn: '30d'
           });
-          return NextResponse.json({ message: 'Login Success', token }, { status: HttpStatus.OK });
+          return NextResponse.json(
+            {
+              message: 'Login Success',
+              user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                accountType: user.accountType
+              },
+              token
+            },
+            { status: HttpStatusCode.Ok }
+          );
         } else {
           return NextResponse.json(
             { message: 'Invalid Credentials' },
-            { status: HttpStatus.UNAUTHORIZED }
+            { status: HttpStatusCode.Unauthorized }
           );
         }
       } else {
         return NextResponse.json(
           { message: 'Invalid Credentials' },
-          { status: HttpStatus.NOT_FOUND }
+          { status: HttpStatusCode.NotFound }
         );
       }
     } else {
       return NextResponse.json(
         { message: 'Validation errors', errors: body.error.errors },
-        { status: HttpStatus.BAD_REQUEST }
+        { status: HttpStatusCode.BadRequest }
       );
     }
   } catch (error) {
     return NextResponse.json(
       { message: 'Internal Server Error' },
-      { status: HttpStatus.INTERNAL_SERVER_ERROR }
+      { status: HttpStatusCode.InternalServerError }
     );
   }
 }

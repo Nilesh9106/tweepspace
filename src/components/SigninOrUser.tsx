@@ -1,4 +1,5 @@
 'use client';
+import useAuth from '@/hooks/useAuth';
 import {
   Dropdown,
   DropdownTrigger,
@@ -10,14 +11,15 @@ import {
 import React from 'react';
 
 export const SignInOrUser = () => {
-  return (
+  const { user } = useAuth();
+
+  return user ? (
     <Dropdown placement="bottom-end" className="p-0 py-1">
       <DropdownTrigger>
         <Button radius="full" isIconOnly>
           <Avatar
             className="transition-transform"
             isBordered
-            color="success"
             name="Jason Hughes"
             size="sm"
             src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
@@ -43,5 +45,7 @@ export const SignInOrUser = () => {
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
+  ) : (
+    <Button variant="faded"> Sign In</Button>
   );
 };
