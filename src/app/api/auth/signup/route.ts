@@ -5,6 +5,8 @@ import { Config } from '@/config';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 import { HttpStatusCode } from 'axios';
+import { cookies } from 'next/headers';
+import { createToken } from '@/utils/auth';
 
 const schema = z.object({
   username: z.string().min(3, { message: 'username must be at least 3 characters' }),
@@ -38,9 +40,8 @@ export async function POST(request: NextRequest) {
         password: password,
         account_type: accountType
       });
-      const token = jwt.sign({ id: newUser._id }, Config.JWT_SECRET, {
-        expiresIn: '30d'
-      });
+      const token = await createToken({ id: newUser._id });
+      cookies().set('token', token, { maxAge: 30 * 24 * 60 * 60 });
       return NextResponse.json(
         { token, user: newUser, message: 'User created successfully' },
         { status: HttpStatusCode.Created }

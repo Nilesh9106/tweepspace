@@ -6,15 +6,14 @@ import { verifyToken } from './auth';
 export const authenticate = (handler: (req: MyRequest) => Promise<any>) => {
   return async (req: MyRequest) => {
     try {
-      const authHeader = req.headers.get('Authorization');
-      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      const token = req.cookies.get('token')?.value;
+      if (!token) {
         return NextResponse.json(
           { message: 'Unauthorized' },
           { status: HttpStatusCode.Unauthorized }
         );
       }
 
-      const token = authHeader.split(' ')[1];
       const decodedToken = await verifyToken(token);
       if (!decodedToken) {
         return NextResponse.json(

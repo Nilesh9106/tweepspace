@@ -6,6 +6,8 @@ import { Config } from '@/config';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 import { HttpStatusCode } from 'axios';
+import { cookies } from 'next/headers';
+import { createToken } from '@/utils/auth';
 
 const loginSchema = z.object({
   username: z.string({ required_error: 'Username is required' }),
@@ -22,9 +24,8 @@ export async function POST(request: NextRequest) {
       if (user) {
         if (await bcrypt.compare(password, user.password)) {
           const payload = { userId: user._id };
-          const token = jwt.sign(payload, Config.JWT_SECRET, {
-            expiresIn: '30d'
-          });
+          const token = await createToken(payload);
+          cookies().set('token', token, { maxAge: 30 * 24 * 60 * 60 });
           return NextResponse.json(
             {
               message: 'Login Success',

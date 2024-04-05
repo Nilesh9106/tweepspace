@@ -1,28 +1,35 @@
 'use client';
-import { AuthUser } from '@/types/requestTypes';
+import { AuthUser, loginForm, signUpForm } from '@/types/auth';
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
+import { usePathname, useRouter } from 'next/navigation';
 import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<AuthUser | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+
   useEffect(() => {
     checkToken();
-  }, []);
+  }, [pathname]);
 
   const checkToken = async () => {
     try {
-      const { data } = await axios.get('/api/auth', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      if (user) {
+        return;
+      }
+      console.log('checking token...');
+      const { data } = await axios.get('/api/auth');
+      console.log('token checked');
       setUser(data.user);
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.status === HttpStatusCode.Unauthorized) {
           signOut();
+          router.push('/auth');
         }
         console.log(error.response?.data);
       } else {
@@ -31,27 +38,64 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const signIn = async (formData: { username: string; password: string }) => {
+  const signIn = async (formData: loginForm) => {
     try {
       const { data } = await axios.post('/api/auth/login', formData);
-      setUser({ ...data.user, token: data.token });
-      localStorage.setItem('token', data.token);
+      setUser({ ...data.user });
+      toast.success('Logged in successfully');
+      router.push('/');
     } catch (error) {
       if (isAxiosError(error)) {
         console.log(error.response?.data);
+        toast.error(
+          error.response?.data.message || error.response?.data.error || 'An error occurred'
+        );
       } else {
         console.log((error as Error).message);
       }
     }
   };
-  const signOut = () => {
-    localStorage.clear();
+  const signUp = async (formData: signUpForm) => {
+    try {
+      const { data } = await axios.post('/api/auth/signup', formData);
+      setUser({ ...data.user });
+      toast.success('Signed up successfully');
+      router.push('/');
+    } catch (error) {
+      if (isAxiosError(error)) {
+        console.log(error.response?.data);
+        toast.error(
+          error.response?.data.message || error.response?.data.error || 'An error occurred'
+        );
+      } else {
+        console.log((error as Error).message);
+      }
+    }
+  };
+  const signOut = async () => {
+    try {
+      const { data } = await axios.get('/api/auth/logout');
+      setUser(null);
+      toast.success('Logged out successfully');
+      router.push('/auth');
+      console.log(data);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        console.log(error.response?.data);
+        toast.error(
+          error.response?.data.message || error.response?.data.error || 'An error occurred'
+        );
+      } else {
+        console.log((error as Error).message);
+      }
+    }
   };
   const memoedValue = useMemo(
     () => ({
       user,
       signIn,
-      signOut
+      signOut,
+      signUp
     }),
     [user]
   );
@@ -61,7 +105,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 const useAuth = () => {
   return useContext(AuthContext) as {
     user: AuthUser | null;
-    signIn: () => Promise<void>;
+    signIn: (formData: loginForm) => Promise<void>;
+    signUp: (formData: signUpForm) => Promise<void>;
     signOut: () => Promise<void>;
   };
 };
