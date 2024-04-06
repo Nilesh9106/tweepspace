@@ -1,5 +1,4 @@
 'use client';
-import { TweepTypeWithObjects } from '@/types/model';
 import {
   Avatar,
   Button,
@@ -16,6 +15,7 @@ import { IoChatbubbleOutline, IoHeartOutline } from 'react-icons/io5';
 import { RxLoop } from 'react-icons/rx';
 import { FiSend } from 'react-icons/fi';
 import { UserPopover } from './UserPopover';
+import { TweepType } from '@/types/model';
 
 const OptionButton = () => {
   return (
@@ -38,7 +38,7 @@ const OptionButton = () => {
 };
 
 type TweepCardProps = {
-  tweep: TweepTypeWithObjects;
+  tweep: TweepType;
 };
 export const TweepCard = (props: TweepCardProps) => {
   return (

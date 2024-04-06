@@ -1,4 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import './user';
+import './attachment';
+import './hashtag';
 
 // Define interface for Tweep document
 interface TweepDoc extends Document {

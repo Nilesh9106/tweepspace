@@ -1,8 +1,6 @@
 import User from '@/models/user';
 import { dbConnect } from '@/utils/mongodb';
 import { z } from 'zod';
-import { Config } from '@/config';
-import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 import { HttpStatusCode } from 'axios';
 import { cookies } from 'next/headers';

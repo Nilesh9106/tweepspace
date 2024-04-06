@@ -1,23 +1,10 @@
-export type TweepTypeWithObjects = {
+export type TweepType = {
   _id: string;
   author: UserTypeWithIds;
   content: string;
   mentions?: UserTypeWithIds[];
   hashtags?: HashtagTypeWithIds[];
   attachments?: AttachmentType[];
-  parent_tweep?: TweepTypeWithIds;
-  created_at: Date;
-  likes?: string[];
-  retweeps?: string[];
-};
-
-export type TweepTypeWithIds = {
-  _id: string;
-  author: string;
-  content: string;
-  mentions?: string[];
-  hashtags?: string[];
-  attachments?: string[];
   parent_tweep?: string;
   created_at: Date;
   likes?: string[];
@@ -33,7 +20,7 @@ export type HashtagTypeWithIds = {
 export type HashtagTypeWithObjects = {
   _id: string;
   hashtag: string;
-  tweeps: TweepTypeWithObjects[];
+  tweeps: TweepType[];
 };
 
 export type AttachmentType = {
