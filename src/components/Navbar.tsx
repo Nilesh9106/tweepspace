@@ -13,7 +13,7 @@ const Navbar = () => {
   return (
     <>
       {path !== '/auth' ? (
-        <nav className="flex sm:justify-around justify-between max-sm:p-4 items-center bg-background sticky top-0">
+        <nav className="flex z-50 sm:justify-around justify-between max-sm:p-4 items-center bg-background sticky top-0">
           <div className="flex gap-2 items-center">
             <Image
               src={'/tweeps.png'}

@@ -65,7 +65,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className={`${poppins.className} `}>
+      <body className={`${poppins.className} max-sm:pb-20`}>
         <NextTopLoader color="#B032FF" />
         <Providers>
           <Navbar />

@@ -43,12 +43,12 @@ type TweepCardProps = {
 };
 export const TweepCard = (props: TweepCardProps) => {
   return (
-    <div className="flex  lg:w-[700px] md:w-[600px] sm:w-[500px] max-sm:w-[94%] gap-2">
+    <div className="flex  sm:gap-2">
       <div className="w-11 flex flex-col  items-center">
         <Avatar src={props.tweep.author.profile_picture} size="md" alt={props.tweep.author.name} />
       </div>
-      <div className="flex-1  px-3 pb-2">
-        <div className="flex justify-between text-[15px]">
+      <div className="flex-1  px-3 pb-2 sm:text-[15px] text-sm">
+        <div className="flex justify-between ">
           <div className="flex gap-2">
             <Tooltip
               closeDelay={100}
@@ -67,7 +67,7 @@ export const TweepCard = (props: TweepCardProps) => {
             <OptionButton />
           </div>
         </div>
-        <p className="text-[15px]">{props.tweep.content}</p>
+        <p>{props.tweep.content}</p>
         {props.tweep.attachments?.length ? (
           <div className="my-3">
             <Image radius="md" loading="lazy" src={props.tweep.attachments[0]} alt={'TweepSpace'} />

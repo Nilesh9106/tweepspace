@@ -34,7 +34,7 @@ const TweepList = ({ loading, tweeps }: TweepListProps) => {
       ) : (
         tweeps.map((tweep, index) => {
           return (
-            <div key={tweep._id}>
+            <div key={tweep._id} className="lg:w-[700px] md:w-[600px] sm:w-[500px] w-[94%] ">
               <TweepCard tweep={tweep} />
               <Divider />
             </div>
