@@ -1,6 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import './user';
-import './attachment';
 import './hashtag';
 
 // Define interface for Tweep document
@@ -9,7 +8,7 @@ interface TweepDoc extends Document {
   content: string;
   mentions?: mongoose.Types.ObjectId[];
   hashtags?: string[];
-  attachments?: mongoose.Types.ObjectId[];
+  attachments?: string[];
   created_at: Date;
   likes?: mongoose.Types.ObjectId[];
   retweeps?: mongoose.Types.ObjectId[];
@@ -22,7 +21,7 @@ const tweepSchema = new Schema<TweepDoc>({
   content: { type: String },
   mentions: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   hashtags: [{ type: String }],
-  attachments: [{ type: Schema.Types.ObjectId, ref: 'Attachment' }],
+  attachments: [{ type: String }],
   created_at: { type: Date, default: Date.now },
   likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   retweeps: [{ type: Schema.Types.ObjectId, ref: 'User' }],

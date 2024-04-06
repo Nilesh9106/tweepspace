@@ -2,8 +2,6 @@ import User from '@/models/user';
 import { dbConnect } from '@/utils/mongodb';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { Config } from '@/config';
-import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 import { HttpStatusCode } from 'axios';
 import { cookies } from 'next/headers';
@@ -33,7 +31,7 @@ export async function POST(request: NextRequest) {
                 id: user._id,
                 username: user.username,
                 email: user.email,
-                accountType: user.accountType
+                accountType: user.account_type
               },
               token
             },

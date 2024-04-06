@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import Tweep from './tweep';
+import './tweep';
 
 // Define interface for Hashtag document
 interface HashtagDoc extends Document {

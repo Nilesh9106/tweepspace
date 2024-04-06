@@ -1,5 +1,5 @@
 'use client';
-import { Button, Tooltip } from '@nextui-org/react';
+import { Button, Image, Tooltip } from '@nextui-org/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { PiHouse, PiHouseFill } from 'react-icons/pi';
 import { IoSearch } from 'react-icons/io5';
@@ -14,7 +14,14 @@ const Navbar = () => {
     <>
       {path !== '/auth' ? (
         <nav className="flex sm:justify-around justify-between max-sm:p-4 items-center bg-background sticky top-0">
-          <div className="text-4xl">Tweeps</div>
+          <div className="flex gap-2 items-center">
+            <Image
+              src={'/tweeps.png'}
+              alt="TweepsSpace"
+              className="w-10 h-10 pointer-events-none"
+            />
+            <div className="text-2xl">Tweeps</div>
+          </div>
           <div className="flex gap-2 max-sm:fixed max-sm:w-full max-sm:justify-around max-sm:bottom-0 max-sm:right-0 max-sm:left-0 p-1 bg-background">
             <Tooltip content="Home">
               <Button

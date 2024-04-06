@@ -4,7 +4,7 @@ export type TweepType = {
   content: string;
   mentions?: UserTypeWithIds[];
   hashtags?: HashtagTypeWithIds[];
-  attachments?: AttachmentType[];
+  attachments?: string[];
   parent_tweep?: string;
   created_at: Date;
   likes?: string[];
@@ -21,12 +21,6 @@ export type HashtagTypeWithObjects = {
   _id: string;
   hashtag: string;
   tweeps: TweepType[];
-};
-
-export type AttachmentType = {
-  _id: string;
-  type: 'image' | 'video';
-  url: string;
 };
 
 export type UserTypeWithIds = {

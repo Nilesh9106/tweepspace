@@ -1,9 +1,22 @@
-import { TweepCard } from '@/components/TweepCard';
+'use client';
+import TweepList from '@/components/TweepList';
+import { TweepHelper } from '@/helpers/tweeps';
+import { TweepType } from '@/types/model';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
-  return (
-    <div className="flex flex-col justify-center items-center w-full">
-      <TweepCard />
-    </div>
-  );
+  const [tweeps, setTweeps] = useState<TweepType[]>([]);
+  const [loading, setLoading] = useState(false);
+  const getTweeps = async () => {
+    setLoading(true);
+    const data = await TweepHelper.getAllTweeps();
+    if (data) {
+      setTweeps(data);
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    getTweeps();
+  }, []);
+  return <TweepList loading={loading} tweeps={tweeps} />;
 }

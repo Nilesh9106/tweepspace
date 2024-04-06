@@ -8,6 +8,6 @@ const configSchema = zod.object({
 
 export const Config = configSchema.parse({
   NODE_ENV: process.env.NODE_ENV,
-  MONGODB_URI: process.env.NEXT_PUBLIC_MONGODB_URI,
-  JWT_SECRET: process.env.NEXT_PUBLIC_JWT_SECRET
+  MONGODB_URI: process.env.MONGODB_URI,
+  JWT_SECRET: process.env.JWT_SECRET
 });
