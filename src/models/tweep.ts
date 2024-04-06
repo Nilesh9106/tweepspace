@@ -2,7 +2,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 // Define interface for Tweep document
 interface TweepDoc extends Document {
-  user_id: mongoose.Types.ObjectId;
+  author: mongoose.Types.ObjectId;
   content: string;
   mentions?: mongoose.Types.ObjectId[];
   hashtags?: string[];
@@ -15,10 +15,10 @@ interface TweepDoc extends Document {
 
 // Define schema for Tweeps collection
 const tweepSchema = new Schema<TweepDoc>({
-  user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  content: String,
+  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  content: { type: String },
   mentions: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  hashtags: [String],
+  hashtags: [{ type: String }],
   attachments: [{ type: Schema.Types.ObjectId, ref: 'Attachment' }],
   created_at: { type: Date, default: Date.now },
   likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
@@ -27,7 +27,7 @@ const tweepSchema = new Schema<TweepDoc>({
 });
 
 // Create model for Tweep schema
-const Tweep = mongoose.models.Tweep || mongoose.model<TweepDoc>('Tweep', tweepSchema);
-
+const Tweep: mongoose.Model<TweepDoc> =
+  mongoose.models.Tweep || mongoose.model<TweepDoc>('Tweep', tweepSchema);
 // Export Tweep model
 export default Tweep;

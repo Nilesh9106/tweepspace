@@ -13,7 +13,7 @@ const attachmentSchema = new Schema<AttachmentDoc>({
 });
 
 // Create model for Attachment schema
-const Attachment =
+const Attachment: mongoose.Model<AttachmentDoc> =
   mongoose.models.Attachment || mongoose.model<AttachmentDoc>('Attachment', attachmentSchema);
 
 // Export Attachment model

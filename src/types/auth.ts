@@ -15,4 +15,5 @@ export type AuthUser = {
   username: string;
   email: string;
   accountType: string;
+  profile_picture?: string;
 };

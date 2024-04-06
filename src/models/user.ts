@@ -21,9 +21,9 @@ const userSchema = new Schema<UserDoc>({
   username: { type: String, unique: true, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  name: String,
-  bio: String,
-  profile_picture: String,
+  name: { type: String, trim: true },
+  bio: { type: String, trim: true },
+  profile_picture: { type: String },
   created_at: { type: Date, default: Date.now },
   account_type: { type: String, enum: ['public', 'private'], default: 'public' },
   followers: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Single followers array
@@ -40,7 +40,8 @@ userSchema.pre('save', async function (next) {
 });
 
 // Create model for User schema
-const User = mongoose.models.User || mongoose.model<UserDoc>('User', userSchema);
+const User: mongoose.Model<UserDoc> =
+  mongoose.models.User || mongoose.model<UserDoc>('User', userSchema);
 
 // Export User model
 export default User;

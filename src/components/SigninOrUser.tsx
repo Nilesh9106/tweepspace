@@ -6,7 +6,8 @@ import {
   Avatar,
   DropdownMenu,
   DropdownItem,
-  Button
+  Button,
+  User
 } from '@nextui-org/react';
 import Link from 'next/link';
 import React from 'react';
@@ -23,14 +24,19 @@ export const SignInOrUser = () => {
             isBordered
             name={user.username}
             size="sm"
-            src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+            src={user.profile_picture}
           />
         </Button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" className="p-0" variant="light">
-        <DropdownItem showDivider key="profile" className="h-14 gap-2 px-3">
-          <p>Signed in as</p>
-          <p>{user.email}</p>
+        <DropdownItem showDivider key="profile" className="px-3">
+          <User
+            name={user.username}
+            description={user.email}
+            avatarProps={{
+              src: user.profile_picture
+            }}
+          />
         </DropdownItem>
         <DropdownItem showDivider key="settings" className="px-3">
           Settings

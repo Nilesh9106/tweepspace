@@ -13,7 +13,8 @@ const hashtagSchema = new Schema<HashtagDoc>({
 });
 
 // Create model for Hashtag schema
-const Hashtag = mongoose.models.Hashtag || mongoose.model<HashtagDoc>('Hashtag', hashtagSchema);
+const Hashtag: mongoose.Model<HashtagDoc> =
+  mongoose.models.Hashtag || mongoose.model<HashtagDoc>('Hashtag', hashtagSchema);
 
 // Export Hashtag model
 export default Hashtag;
