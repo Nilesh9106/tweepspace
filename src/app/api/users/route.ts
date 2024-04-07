@@ -15,9 +15,7 @@ export const GET = authenticate(async (req: MyRequest) => {
     );
   }
   await dbConnect();
-  const users = await User.find({ username: { $regex: query, $options: 'i' } }).select(
-    '-password -follow_requests'
-  );
+  const users = await User.find({ username: { $regex: query, $options: 'i' } }).select('-password');
   if (!users) {
     return NextResponse.json({ message: 'Users Not Found' }, { status: HttpStatusCode.NotFound });
   }

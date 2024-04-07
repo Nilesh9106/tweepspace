@@ -31,9 +31,7 @@ export type UserTypeWithIds = {
   bio?: string;
   profile_picture?: string;
   created_at: Date;
-  account_type: 'public' | 'private';
   followers?: string[];
-  follow_requests?: string[];
   following?: string[];
 };
 
@@ -45,8 +43,6 @@ export type UserTypeWithObjects = {
   bio?: string;
   profile_picture?: string;
   created_at: Date;
-  account_type: 'public' | 'private';
   followers?: UserTypeWithIds[];
   following?: UserTypeWithIds[];
-  follow_requests?: UserTypeWithIds[];
 };

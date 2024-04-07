@@ -71,8 +71,7 @@ const SignUp = () => {
   const [formData, setFormData] = useState<signUpForm>({
     username: '',
     email: '',
-    password: '',
-    accountType: 'public'
+    password: ''
   });
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
@@ -113,23 +112,6 @@ const SignUp = () => {
         placeholder="Enter your password"
         type="password"
       />
-      <Select
-        label="Account Type"
-        onChange={e =>
-          setFormData({ ...formData, accountType: e.target.value as 'public' | 'private' })
-        }
-        labelPlacement="outside"
-        placeholder="Select an account type"
-        variant="faded"
-        value={formData.accountType}
-      >
-        <SelectItem key={'public'} value={'public'}>
-          Public
-        </SelectItem>
-        <SelectItem key={'private'} value={'private'}>
-          Private
-        </SelectItem>
-      </Select>
       <div className="flex gap-2 justify-end">
         <Button
           isLoading={loading}
@@ -152,7 +134,7 @@ export default function Page() {
   return (
     <div className="flex flex-col w-full my-10">
       <Card className="max-w-full md:w-[50%] sm:w-[80%]  max-sm:mx-4 mx-auto">
-        <CardBody className=" h-[500px]">
+        <CardBody className="">
           <CardHeader title="Authentication">
             <div className="text-xl text-center mx-auto">Authentication</div>
           </CardHeader>

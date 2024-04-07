@@ -7,30 +7,35 @@ import React, { useEffect, useState } from 'react';
 
 type FollowButtonProps = {
   userToFollow: UserTypeWithIds;
+  isProfile?: boolean;
 };
 
 const FollowButton = (props: FollowButtonProps) => {
-  const { user } = useAuth();
-  const [status, setStatus] = useState(checkFollowStatusWithIds(user?.id!, props.userToFollow));
+  const { user, setUser } = useAuth();
+  const [status, setStatus] = useState(checkFollowStatusWithIds(user, props.userToFollow._id));
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(user);
-    setStatus(checkFollowStatusWithIds(user?.id!, props.userToFollow));
+    setStatus(checkFollowStatusWithIds(user, props.userToFollow._id));
   }, [user, props.userToFollow]);
 
   const handleFollow = async () => {
     setLoading(true);
     if (status === 'NotFollowed') {
-      await UsersHelper.followUser(props.userToFollow._id);
-      if (props.userToFollow.account_type === 'private') {
-        setStatus('Requested');
-      } else {
-        setStatus('Following');
-      }
+      await UsersHelper.followUser(props.userToFollow.username);
+      setStatus('Following');
+      const newUser = user;
+      newUser?.following.push(props.userToFollow._id);
+      setUser(newUser);
     } else if (status === 'Following') {
-      await UsersHelper.unfollowUser(props.userToFollow._id);
+      await UsersHelper.unfollowUser(props.userToFollow.username);
       setStatus('NotFollowed');
+      let newUser = user;
+      const index = newUser?.following.indexOf(props.userToFollow._id);
+      if (index !== -1 && index !== undefined) {
+        newUser?.following.splice(index, 1);
+      }
+      setUser(newUser);
     }
 
     setLoading(false);
@@ -52,19 +57,6 @@ const FollowButton = (props: FollowButtonProps) => {
           Unfollow
         </Button>
       );
-    case 'Requested':
-      return (
-        <Button
-          fullWidth
-          variant="bordered"
-          disableRipple
-          className="my-2"
-          color="default"
-          disabled={true}
-        >
-          Requested
-        </Button>
-      );
     case 'NotFollowed':
       return (
         <Button
@@ -80,7 +72,11 @@ const FollowButton = (props: FollowButtonProps) => {
         </Button>
       );
     default:
-      return null;
+      return props.isProfile ? (
+        <Button fullWidth variant="bordered" disableRipple className="my-2" color="default">
+          Edit Profile
+        </Button>
+      ) : null;
   }
 };
 

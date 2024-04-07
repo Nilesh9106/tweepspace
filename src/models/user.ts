@@ -10,9 +10,7 @@ interface UserDoc extends Document {
   bio?: string;
   profile_picture?: string;
   created_at: Date;
-  account_type: 'public' | 'private';
   followers?: string[]; // Followers array (includes both public and private followers)
-  follow_requests?: string[];
   following?: string[];
 }
 
@@ -25,9 +23,7 @@ const userSchema = new Schema<UserDoc>({
   bio: { type: String, trim: true },
   profile_picture: { type: String },
   created_at: { type: Date, default: Date.now },
-  account_type: { type: String, enum: ['public', 'private'], default: 'public' },
   followers: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Single followers array
-  follow_requests: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   following: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 

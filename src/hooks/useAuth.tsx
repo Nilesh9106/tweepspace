@@ -24,7 +24,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       console.log('checking token...');
       const { data } = await axios.get('/api/auth');
       console.log('token checked');
-      setUser(data.user);
+      setUser({
+        id: data.user._id,
+        email: data.user.email,
+        username: data.user.username,
+        profile_picture: data.user.profile_picture,
+        following: data.user.following,
+        followers: data.user.followers
+      });
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.status === HttpStatusCode.Unauthorized) {
@@ -43,10 +50,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       const { data } = await axios.post('/api/auth/login', formData);
       setUser({
         id: data.user._id,
-        accountType: data.user.account_type,
         email: data.user.email,
         username: data.user.username,
-        profile_picture: data.user.profile_picture
+        profile_picture: data.user.profile_picture,
+        following: data.user.following,
+        followers: data.user.followers
       });
       toast.success('Logged in successfully');
       router.push('/');
@@ -66,10 +74,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       const { data } = await axios.post('/api/auth/signup', formData);
       setUser({
         id: data.user._id,
-        accountType: data.user.account_type,
         email: data.user.email,
         username: data.user.username,
-        profile_picture: data.user.profile_picture
+        profile_picture: data.user.profile_picture,
+        following: data.user.following,
+        followers: data.user.followers
       });
       toast.success('Signed up successfully');
       router.push('/');
@@ -107,7 +116,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       user,
       signIn,
       signOut,
-      signUp
+      signUp,
+      setUser
     }),
     [user]
   );
@@ -120,6 +130,7 @@ const useAuth = () => {
     signIn: (formData: loginForm) => Promise<void>;
     signUp: (formData: signUpForm) => Promise<void>;
     signOut: () => Promise<void>;
+    setUser: React.Dispatch<React.SetStateAction<AuthUser | null>>;
   };
 };
 

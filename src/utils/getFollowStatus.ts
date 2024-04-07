@@ -1,22 +1,11 @@
-import { UserTypeWithIds, UserTypeWithObjects } from '@/types/model';
+import { AuthUser } from '@/types/auth';
 
-export const checkFollowStatusWithObjectList = (
-  currentUserId: string,
-  userToFollow: UserTypeWithObjects
-) => {
-  let status: 'NotFollowed' | 'Following' | 'Requested' | 'DoNotFollow' = 'NotFollowed';
-  return status;
-};
+export const checkFollowStatusWithIds = (currentUser: AuthUser | null, userToFollow: string) => {
+  let status: 'NotFollowed' | 'Following' | 'DoNotFollow' = 'NotFollowed';
 
-export const checkFollowStatusWithIds = (currentUserId: string, userToFollow: UserTypeWithIds) => {
-  let status: 'NotFollowed' | 'Following' | 'Requested' | 'DoNotFollow' = 'NotFollowed';
-  console.log(userToFollow.followers, currentUserId);
-
-  if (userToFollow.followers?.includes(currentUserId)) {
+  if (currentUser?.following?.includes(userToFollow)) {
     status = 'Following';
-  } else if (userToFollow.follow_requests?.includes(currentUserId)) {
-    status = 'Requested';
-  } else if (userToFollow._id === currentUserId) {
+  } else if (userToFollow === currentUser?.id) {
     status = 'DoNotFollow';
   }
   return status;

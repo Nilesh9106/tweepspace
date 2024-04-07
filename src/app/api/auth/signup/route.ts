@@ -9,15 +9,14 @@ import { createToken } from '@/utils/auth';
 const schema = z.object({
   username: z.string().min(3, { message: 'username must be at least 3 characters' }),
   email: z.string().email({ message: 'Invalid email' }),
-  password: z.string().min(8, { message: 'password must be at least 8 characters' }),
-  accountType: z.enum(['public', 'private']).default('public')
+  password: z.string().min(8, { message: 'password must be at least 8 characters' })
 });
 
 export async function POST(request: NextRequest) {
   try {
     const body = schema.safeParse(await request.json());
     if (body.success) {
-      const { email, username, password, accountType } = body.data;
+      const { email, username, password } = body.data;
       await dbConnect();
 
       if (await User.findOne({ username })) {
@@ -35,8 +34,7 @@ export async function POST(request: NextRequest) {
       const newUser = await User.create({
         username,
         email,
-        password: password,
-        account_type: accountType
+        password: password
       });
       const token = await createToken({ id: newUser._id });
       cookies().set('token', token, { maxAge: 30 * 24 * 60 * 60 });
