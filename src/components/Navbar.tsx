@@ -20,7 +20,9 @@ const Navbar = () => {
               alt="TweepsSpace"
               className="w-10 h-10 pointer-events-none"
             />
-            <div className="text-2xl">Tweeps</div>
+            <div className="text-2xl">
+              Tweep<span className="text-blue-500">Space</span>
+            </div>
           </div>
           <div className="flex gap-2 max-sm:fixed max-sm:w-full max-sm:justify-around max-sm:bottom-0 max-sm:right-0 max-sm:left-0 p-1 bg-background">
             <Tooltip content="Home">

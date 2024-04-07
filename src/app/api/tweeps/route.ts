@@ -18,6 +18,7 @@ const tweepSchema = z.object({
   parent_tweep: z.string().optional()
 });
 
+// get all posts
 export const GET = authenticate(async (req: MyRequest) => {
   await dbConnect();
   const tweeps = await Tweep.find({}).populate('author hashtags mentions');
@@ -30,6 +31,7 @@ export const GET = authenticate(async (req: MyRequest) => {
   );
 });
 
+// create post
 export const POST = authenticate(async (req: MyRequest) => {
   const formData = await req.json();
   const body = tweepSchema.safeParse({ ...formData, author: req.userId });

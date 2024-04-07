@@ -17,6 +17,8 @@ import { FiSend } from 'react-icons/fi';
 import { UserPopover } from './UserPopover';
 import { TweepType } from '@/types/model';
 import Moment from 'react-moment';
+import useAuth from '@/hooks/useAuth';
+import Link from 'next/link';
 
 const OptionButton = () => {
   return (
@@ -55,9 +57,12 @@ export const TweepCard = (props: TweepCardProps) => {
               delay={500}
               content={<UserPopover user={props.tweep.author} />}
             >
-              <span className="hover:underline underline-offset-2 cursor-pointer ">
+              <Link
+                href={`user/${props.tweep.author.username}`}
+                className="hover:underline underline-offset-2 cursor-pointer "
+              >
                 {props.tweep.author.username}
-              </span>
+              </Link>
             </Tooltip>
             <span className="text-default-300 ">
               <Moment fromNow>{props.tweep.created_at}</Moment>

@@ -27,12 +27,7 @@ export async function POST(request: NextRequest) {
           return NextResponse.json(
             {
               message: 'Login Success',
-              user: {
-                id: user._id,
-                username: user.username,
-                email: user.email,
-                accountType: user.account_type
-              },
+              user: user,
               token
             },
             { status: HttpStatusCode.Ok }

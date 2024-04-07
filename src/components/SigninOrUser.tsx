@@ -22,7 +22,6 @@ export const SignInOrUser = () => {
           <Avatar
             className="transition-transform"
             isBordered
-            name={user.username}
             size="sm"
             src={user.profile_picture}
           />
@@ -32,6 +31,8 @@ export const SignInOrUser = () => {
         <DropdownItem showDivider key="profile" className="px-3">
           <User
             name={user.username}
+            as={Link}
+            href={`/user/${user.username}`}
             description={user.email}
             avatarProps={{
               src: user.profile_picture
