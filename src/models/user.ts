@@ -11,9 +11,9 @@ interface UserDoc extends Document {
   profile_picture?: string;
   created_at: Date;
   account_type: 'public' | 'private';
-  followers?: mongoose.Types.ObjectId[]; // Followers array (includes both public and private followers)
-  follow_requests?: mongoose.Types.ObjectId[];
-  following?: mongoose.Types.ObjectId[];
+  followers?: string[]; // Followers array (includes both public and private followers)
+  follow_requests?: string[];
+  following?: string[];
 }
 
 // Define schema for Users collection

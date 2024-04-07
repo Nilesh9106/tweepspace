@@ -18,5 +18,5 @@ export default function Home() {
   useEffect(() => {
     getTweeps();
   }, []);
-  return <TweepList loading={loading} tweeps={tweeps} />;
+  return <TweepList setTweeps={setTweeps} loading={loading} tweeps={tweeps} />;
 }

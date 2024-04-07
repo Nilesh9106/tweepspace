@@ -20,9 +20,10 @@ const TweepSkeleton = () => {
 type TweepListProps = {
   loading: boolean;
   tweeps: TweepType[];
+  setTweeps: React.Dispatch<React.SetStateAction<TweepType[]>>;
 };
 
-const TweepList = ({ loading, tweeps }: TweepListProps) => {
+const TweepList = ({ loading, tweeps, setTweeps }: TweepListProps) => {
   return (
     <div className="flex flex-col justify-center items-center w-full gap-4">
       {loading ? (

@@ -41,7 +41,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const signIn = async (formData: loginForm) => {
     try {
       const { data } = await axios.post('/api/auth/login', formData);
-      setUser({ ...data.user });
+      setUser({
+        id: data.user._id,
+        accountType: data.user.account_type,
+        email: data.user.email,
+        username: data.user.username,
+        profile_picture: data.user.profile_picture
+      });
       toast.success('Logged in successfully');
       router.push('/');
     } catch (error) {
@@ -58,7 +64,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const signUp = async (formData: signUpForm) => {
     try {
       const { data } = await axios.post('/api/auth/signup', formData);
-      setUser({ ...data.user });
+      setUser({
+        id: data.user._id,
+        accountType: data.user.account_type,
+        email: data.user.email,
+        username: data.user.username,
+        profile_picture: data.user.profile_picture
+      });
       toast.success('Signed up successfully');
       router.push('/');
     } catch (error) {

@@ -17,6 +17,7 @@ import { FiSend } from 'react-icons/fi';
 import { UserPopover } from './UserPopover';
 import { TweepType } from '@/types/model';
 import Moment from 'react-moment';
+import useAuth from '@/hooks/useAuth';
 
 const OptionButton = () => {
   return (

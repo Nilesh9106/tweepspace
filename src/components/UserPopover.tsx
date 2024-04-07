@@ -1,6 +1,5 @@
 import { UserTypeWithIds } from '@/types/model';
-import { Avatar, Button } from '@nextui-org/react';
-import React from 'react';
+import { Avatar } from '@nextui-org/react';
 
 type UserPopoverProps = {
   user: UserTypeWithIds;
@@ -26,9 +25,6 @@ export const UserPopover = (props: UserPopoverProps) => {
       <div className="text-default-400 hover:text-default-300 cursor-pointer">
         {props.user.followers?.length ?? 0} Followers
       </div>
-      <Button fullWidth variant="bordered" disableRipple className="my-2" color="default">
-        Follow
-      </Button>
     </div>
   );
 };
