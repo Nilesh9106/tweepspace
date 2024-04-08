@@ -1,3 +1,4 @@
+import Hashtag from '@/models/hashtag';
 import Tweep from '@/models/tweep';
 import { MyRequest } from '@/types/requestTypes';
 import { authenticate } from '@/utils/middleware';
@@ -44,6 +45,19 @@ export const POST = authenticate(async (req: MyRequest) => {
   const data = body.data;
   await dbConnect();
   const tweep = await Tweep.create(data);
+  if (!tweep) {
+    return NextResponse.json(
+      { message: 'Failed to create Tweep' },
+      { status: HttpStatusCode.BadRequest }
+    );
+  }
+  body.data.hashtags.forEach(async (tag: string) => {
+    if (await Hashtag.exists({ hashtag: tag })) {
+      await Hashtag.findOneAndUpdate({ hashtag: tag }, { $addToSet: { tweeps: tweep._id } });
+    } else {
+      await Hashtag.create({ hashtag: tag, tweeps: [tweep._id] });
+    }
+  });
   return NextResponse.json(
     { message: 'Tweep Created Successfully', tweep },
     { status: HttpStatusCode.Created }

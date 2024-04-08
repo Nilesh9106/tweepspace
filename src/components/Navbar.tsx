@@ -1,14 +1,16 @@
 'use client';
-import { Button, Image, Tooltip } from '@nextui-org/react';
+import { Button, Image, Tooltip, useDisclosure } from '@nextui-org/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { PiHouse, PiHouseFill } from 'react-icons/pi';
 import { IoSearch } from 'react-icons/io5';
 import { RiEditCircleLine } from 'react-icons/ri';
 import { SignInOrUser } from './SigninOrUser';
 import Link from 'next/link';
+import CreateTweepModal from './CreateTweep';
 
 const Navbar = () => {
   const path = usePathname();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
   return (
     <>
@@ -20,8 +22,8 @@ const Navbar = () => {
               alt="TweepsSpace"
               className="w-10 h-10 pointer-events-none"
             />
-            <div className="text-2xl">
-              Tweep<span className="text-blue-500">Space</span>
+            <div className="text-2xl pointer-events-none">
+              Tweep<span className="text-blue-500 pointer-events-none">Space</span>
             </div>
           </div>
           <div className="flex gap-2 max-sm:fixed max-sm:w-full max-sm:justify-around max-sm:bottom-0 max-sm:right-0 max-sm:left-0 p-1 bg-background">
@@ -47,10 +49,12 @@ const Navbar = () => {
                 variant="light"
                 disableRipple
                 className="py-2 sm:w-20 max-sm:flex-1 box-content"
+                onClick={onOpen}
               >
                 <RiEditCircleLine size={25} className="font-bold text-default-400" />
               </Button>
             </Tooltip>
+            <CreateTweepModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
             <Tooltip content="Explore">
               <Button
                 isIconOnly
