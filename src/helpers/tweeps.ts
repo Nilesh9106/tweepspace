@@ -14,4 +14,12 @@ export class TweepHelper {
       replies: data.replies as TweepType[]
     };
   });
+  static createTweep = errorHandler(async (tweep: any) => {
+    const { data } = await axios.post('/api/tweeps', tweep);
+    return data.tweep as TweepType;
+  });
+  static getTweepsByHashtag = errorHandler(async (tag: string) => {
+    const { data } = await axios.get(`/api/tweeps/byHashtag/${tag}`);
+    return data.tweeps as TweepType[];
+  });
 }

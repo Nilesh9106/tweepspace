@@ -17,7 +17,6 @@ import { FiSend } from 'react-icons/fi';
 import { UserPopover } from './UserPopover';
 import { TweepType } from '@/types/model';
 import Moment from 'react-moment';
-import useAuth from '@/hooks/useAuth';
 import Link from 'next/link';
 
 const OptionButton = () => {
@@ -40,9 +39,29 @@ const OptionButton = () => {
   );
 };
 
+function parseText(text: string) {
+  const hashtagRegex = /\^\^\^@@@([^]+?)@@@\^\^\^/g;
+  const mentionRegex = /\^\^\^###([^]+?)###\^\^\^/g;
+
+  // Replace hashtags with clickable links
+  text = text.replace(
+    hashtagRegex,
+    '<a class="text-blue-500 hover:underline underline-offset-2" href="/hashtag/$1">#$1</a>'
+  );
+
+  // Replace mentions with clickable links
+  text = text.replace(
+    mentionRegex,
+    '<a class="text-green-500 hover:underline underline-offset-2" href="/user/$1">@$1</a>'
+  );
+
+  return text;
+}
+
 type TweepCardProps = {
   tweep: TweepType;
 };
+
 export const TweepCard = (props: TweepCardProps) => {
   return (
     <div className="flex  sm:gap-2">
@@ -72,7 +91,8 @@ export const TweepCard = (props: TweepCardProps) => {
             <OptionButton />
           </div>
         </div>
-        <p>{props.tweep.content}</p>
+        <p dangerouslySetInnerHTML={{ __html: parseText(props.tweep.content) }}></p>
+
         {props.tweep.attachments?.length ? (
           <div className="my-3">
             <Image radius="md" loading="lazy" src={props.tweep.attachments[0]} alt={'TweepSpace'} />
