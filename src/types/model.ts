@@ -2,8 +2,8 @@ export type TweepType = {
   _id: string;
   author: UserTypeWithIds;
   content: string;
-  mentions?: UserTypeWithIds[];
-  hashtags?: HashtagTypeWithIds[];
+  mentions?: string[];
+  hashtags?: string[];
   attachments?: string[];
   parent_tweep?: string;
   created_at: Date;

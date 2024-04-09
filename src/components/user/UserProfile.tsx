@@ -6,6 +6,7 @@ import FollowButton from '../common/FollowButton';
 import { UserTypeWithIds } from '@/types/model';
 import { UsersHelper } from '@/helpers/users';
 import { HashLoader } from 'react-spinners';
+import UserTweepsTab from './UserTweepsTab';
 
 const UserProfile = () => {
   const { username }: { username: string } = useParams();
@@ -16,9 +17,7 @@ const UserProfile = () => {
     // fetch user
     try {
       setLoading(true);
-      const data = await UsersHelper.getUserWithoutPopulate(username);
-      console.log(data.user);
-
+      const data = await UsersHelper.getUserProfile(username, 'user');
       setUser(data.user);
     } catch (error) {
       console.log(error);
@@ -60,7 +59,9 @@ const UserProfile = () => {
           <FollowButton isProfile userToFollow={user!} />
 
           {/* tabs */}
-          <div></div>
+          <div className="flex w-full flex-col">
+            <UserTweepsTab username={username} />
+          </div>
         </div>
       )}
     </>

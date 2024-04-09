@@ -13,12 +13,14 @@ export class UsersHelper {
     toast.success(response.data.message);
     return response.data;
   });
-  static getUserWithoutPopulate = errorHandler(async (username: string) => {
-    const response = await axios.get(`/api/users/${username}`);
-    return response.data;
-  });
   static searchUsers = errorHandler(async (query: string) => {
     const response = await axios.get(`/api/users?query=${query}`);
     return response.data;
   });
+  static getUserProfile = errorHandler(
+    async (username: string, field: 'followers' | 'following' | 'user' | 'tweeps' | 'retweeps') => {
+      const response = await axios.get(`/api/tweeps/user/${username}?field=${field}`);
+      return response.data;
+    }
+  );
 }

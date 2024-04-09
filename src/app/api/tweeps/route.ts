@@ -23,7 +23,7 @@ const tweepSchema = z.object({
 // get all posts
 export const GET = authenticate(async (req: MyRequest) => {
   await dbConnect();
-  const tweeps = await Tweep.find({}).populate('author mentions').sort({ created_at: -1 });
+  const tweeps = await Tweep.find({}).populate('author').sort({ created_at: -1 });
   if (!tweeps) {
     return NextResponse.json({ message: 'Tweeps Not Found' }, { status: HttpStatusCode.NotFound });
   }
