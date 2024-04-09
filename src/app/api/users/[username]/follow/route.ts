@@ -1,3 +1,4 @@
+import Notifications from '@/models/notification';
 import User from '@/models/user';
 import { MyRequest } from '@/types/requestTypes';
 import { authenticate } from '@/utils/middleware';
@@ -32,7 +33,11 @@ export const POST = authenticate(
     const loggedInUser = await User.findById(req.userId);
     loggedInUser?.following?.push(userToFollow._id);
     await loggedInUser?.save();
-
+    await Notifications.create({
+      recipient: userToFollow._id,
+      sender: req.userId,
+      type: 'follow'
+    });
     return NextResponse.json(
       { message: 'User followed successfully' },
       { status: HttpStatusCode.Ok }

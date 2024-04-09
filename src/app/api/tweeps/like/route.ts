@@ -18,6 +18,9 @@ export const POST = authenticate(async (req: MyRequest) => {
   const tweep = await Tweep.findByIdAndUpdate(formData.tweepId, {
     $addToSet: { likes: req.userId }
   });
+  if (!tweep) {
+    return NextResponse.json({ message: 'Tweep not found' }, { status: HttpStatusCode.NotFound });
+  }
   return NextResponse.json({ message: 'Tweep liked successfully' }, { status: HttpStatusCode.Ok });
 });
 
@@ -31,7 +34,10 @@ export const PUT = authenticate(async (req: MyRequest) => {
     );
   }
   await dbConnect();
-  await Tweep.findByIdAndUpdate(formData.tweepId, { $pull: { likes: req.userId } });
+  const tweep = await Tweep.findByIdAndUpdate(formData.tweepId, { $pull: { likes: req.userId } });
+  if (!tweep) {
+    return NextResponse.json({ message: 'Tweep not found' }, { status: HttpStatusCode.NotFound });
+  }
   return NextResponse.json(
     { message: 'Tweep unliked successfully' },
     { status: HttpStatusCode.Ok }

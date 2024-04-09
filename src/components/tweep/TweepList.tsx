@@ -43,6 +43,9 @@ const TweepList = ({ loading, tweeps, setTweeps }: TweepListProps) => {
                   newTweeps[index] = tweep;
                   setTweeps(newTweeps);
                 }}
+                onDelete={() => {
+                  setTweeps(tweeps.filter(t => t._id !== tweep._id));
+                }}
               />
               <Divider />
             </div>

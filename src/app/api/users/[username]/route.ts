@@ -24,20 +24,15 @@ export const GET = authenticate(
 
     try {
       await dbConnect();
-
-      // Fetch user
-      const user = await User.findOne({ username: username }).select('_id followers');
-
-      // Handle user not found
-      if (!user) {
+      let newUser = await User.findOne({ username: username })
+        .populate(fields.join(' '))
+        .select('-password');
+      if (!newUser) {
         return NextResponse.json(
           { message: 'User not found' },
           { status: HttpStatusCode.NotFound }
         );
       }
-
-      let newUser = await User.findById(user._id).populate(fields.join(' ')).select('-password');
-
       return NextResponse.json(
         { message: 'User fetched successfully', user: newUser },
         { status: HttpStatusCode.Ok }

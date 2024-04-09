@@ -19,13 +19,15 @@ export const POST = authenticate(async (req: MyRequest) => {
   const tweep = await Tweep.findByIdAndUpdate(formData.tweepId, {
     $addToSet: { retweeps: req.userId }
   });
-  if (tweep) {
+  if (tweep && req.userId != tweep.author.toString()) {
     await Notifications.create({
       recipient: tweep?.author,
       sender: req.userId,
       type: 'retweet',
       tweep: tweep?._id
     });
+  } else if (!tweep) {
+    return NextResponse.json({ message: 'Tweep not found' }, { status: HttpStatusCode.NotFound });
   }
   return NextResponse.json(
     { message: 'Tweep reTweeped successfully' },
@@ -52,6 +54,8 @@ export const PUT = authenticate(async (req: MyRequest) => {
       type: 'retweet',
       tweep: tweep?._id
     });
+  } else {
+    return NextResponse.json({ message: 'Tweep not found' }, { status: HttpStatusCode.NotFound });
   }
   return NextResponse.json(
     { message: 'Tweep unRetweeped successfully' },

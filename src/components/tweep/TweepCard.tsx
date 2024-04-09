@@ -1,19 +1,6 @@
 'use client';
-import {
-  Avatar,
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Image,
-  Tooltip
-} from '@nextui-org/react';
+import { Avatar, Image, Tooltip } from '@nextui-org/react';
 import React from 'react';
-import { BsThreeDots } from 'react-icons/bs';
-import { IoChatbubbleOutline, IoHeart, IoHeartOutline } from 'react-icons/io5';
-import { RxLoop } from 'react-icons/rx';
-import { FiSend } from 'react-icons/fi';
 import { UserPopover } from '../user/UserPopover';
 import { TweepType } from '@/types/model';
 import Moment from 'react-moment';
@@ -24,29 +11,12 @@ import TweepLikeButton from './TweepLikeButton';
 import ReTweepButton from './ReTweepButton';
 import CommentsButton from './CommentsButton';
 import ShareButton from './ShareButton';
-
-const OptionButton = () => {
-  return (
-    <Dropdown>
-      <DropdownTrigger>
-        <Button isIconOnly size="sm" variant="light" disableRipple radius="full" onPress={() => {}}>
-          <BsThreeDots size={20} />
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu variant="light" aria-label="Static Actions">
-        <DropdownItem key="new">View</DropdownItem>
-        <DropdownItem key="copy">Share</DropdownItem>
-        <DropdownItem key="delete" className="text-danger" color="danger">
-          Delete
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-  );
-};
+import OptionButton from './OptionButton';
 
 type TweepCardProps = {
   tweep: TweepType;
   onTweepChange: (tweep: TweepType) => void;
+  onDelete: () => void;
 };
 
 export const TweepCard = (props: TweepCardProps) => {
@@ -76,7 +46,7 @@ export const TweepCard = (props: TweepCardProps) => {
             </span>
           </div>
           <div>
-            <OptionButton />
+            <OptionButton tweep={props.tweep} onDelete={props.onDelete} />
           </div>
         </div>
         <TweepText text={props.tweep.content} />
