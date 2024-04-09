@@ -46,3 +46,13 @@ export type UserTypeWithObjects = {
   followers?: UserTypeWithIds[];
   following?: UserTypeWithIds[];
 };
+
+export type NotificationType = {
+  _id: string;
+  recipient: string;
+  sender: UserTypeWithIds;
+  type: 'mention' | 'comment' | 'retweep' | 'follow';
+  tweep?: string;
+  read: boolean;
+  createdAt: Date;
+};

@@ -23,7 +23,7 @@ export const POST = authenticate(async (req: MyRequest) => {
     await Notifications.create({
       recipient: tweep?.author,
       sender: req.userId,
-      type: 'retweet',
+      type: 'retweep',
       tweep: tweep?._id
     });
   } else if (!tweep) {
@@ -51,7 +51,7 @@ export const PUT = authenticate(async (req: MyRequest) => {
     await Notifications.findOneAndDelete({
       recipient: tweep?.author,
       sender: req.userId,
-      type: 'retweet',
+      type: 'retweep',
       tweep: tweep?._id
     });
   } else {

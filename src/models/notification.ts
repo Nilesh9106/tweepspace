@@ -4,7 +4,7 @@ import { Schema, Document, model, Types } from 'mongoose';
 interface NotificationDoc extends Document {
   recipient: Types.ObjectId;
   sender: Types.ObjectId;
-  type: 'mention' | 'comment' | 'retweet' | 'follow';
+  type: 'mention' | 'comment' | 'retweep' | 'follow';
   tweep?: Types.ObjectId;
   read: boolean;
   createdAt: Date;
@@ -15,7 +15,7 @@ const notificationSchema = new Schema<NotificationDoc>({
   sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   type: {
     type: String,
-    enum: ['mention', 'comment', 'retweet', 'follow'],
+    enum: ['mention', 'comment', 'retweep', 'follow'],
     required: true
   },
   tweep: { type: Schema.Types.ObjectId, ref: 'Tweep' },
