@@ -9,7 +9,11 @@ import { NextResponse } from 'next/server';
 export const GET = authenticate(async (req: MyRequest) => {
   await dbConnect();
   const user = await User.findById(req.userId);
-  const tweeps = await Tweep.find({ author: { $in: user?.following } })
+  const ids: string[] = req.userId ? [req.userId] : [];
+  if (user?.following) {
+    ids.push(...user.following);
+  }
+  const tweeps = await Tweep.find({ author: { $in: ids } })
     .populate('author hashtags mentions')
     .sort({ created_at: -1 });
   if (!tweeps) {

@@ -11,13 +11,19 @@ import {
 } from '@nextui-org/react';
 import React from 'react';
 import { BsThreeDots } from 'react-icons/bs';
-import { IoChatbubbleOutline, IoHeartOutline } from 'react-icons/io5';
+import { IoChatbubbleOutline, IoHeart, IoHeartOutline } from 'react-icons/io5';
 import { RxLoop } from 'react-icons/rx';
 import { FiSend } from 'react-icons/fi';
-import { UserPopover } from './UserPopover';
+import { UserPopover } from '../user/UserPopover';
 import { TweepType } from '@/types/model';
 import Moment from 'react-moment';
 import Link from 'next/link';
+import TweepText from './TweepText';
+import useAuth from '@/hooks/useAuth';
+import TweepLikeButton from './TweepLikeButton';
+import ReTweepButton from './ReTweepButton';
+import CommentsButton from './CommentsButton';
+import ShareButton from './ShareButton';
 
 const OptionButton = () => {
   return (
@@ -28,41 +34,23 @@ const OptionButton = () => {
         </Button>
       </DropdownTrigger>
       <DropdownMenu variant="light" aria-label="Static Actions">
-        <DropdownItem key="new">New file</DropdownItem>
-        <DropdownItem key="copy">Copy link</DropdownItem>
-        <DropdownItem key="edit">Edit file</DropdownItem>
+        <DropdownItem key="new">View</DropdownItem>
+        <DropdownItem key="copy">Share</DropdownItem>
         <DropdownItem key="delete" className="text-danger" color="danger">
-          Delete file
+          Delete
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );
 };
 
-function parseText(text: string) {
-  const hashtagRegex = /\^\^\^@@@([^]+?)@@@\^\^\^/g;
-  const mentionRegex = /\^\^\^###([^]+?)###\^\^\^/g;
-
-  // Replace hashtags with clickable links
-  text = text.replace(
-    hashtagRegex,
-    '<a class="text-blue-500 hover:underline underline-offset-2" href="/hashtag/$1">#$1</a>'
-  );
-
-  // Replace mentions with clickable links
-  text = text.replace(
-    mentionRegex,
-    '<a class="text-green-500 hover:underline underline-offset-2" href="/user/$1">@$1</a>'
-  );
-
-  return text;
-}
-
 type TweepCardProps = {
   tweep: TweepType;
+  onTweepChange: (tweep: TweepType) => void;
 };
 
 export const TweepCard = (props: TweepCardProps) => {
+  const { user } = useAuth();
   return (
     <div className="flex  sm:gap-2">
       <div className="w-11 flex flex-col  items-center">
@@ -91,59 +79,27 @@ export const TweepCard = (props: TweepCardProps) => {
             <OptionButton />
           </div>
         </div>
-        <p dangerouslySetInnerHTML={{ __html: parseText(props.tweep.content) }}></p>
-
+        <TweepText text={props.tweep.content} />
         {props.tweep.attachments?.length ? (
           <div className="my-3">
             <Image radius="md" loading="lazy" src={props.tweep.attachments[0]} alt={'TweepSpace'} />
           </div>
         ) : null}
         <div className="flex gap-2 my-3">
-          <Button
-            isIconOnly
-            size="sm"
-            variant="light"
-            disableRipple
-            radius="full"
-            onPress={() => {}}
-          >
-            <IoHeartOutline size={20} />
-          </Button>
-          <Button
-            isIconOnly
-            size="sm"
-            variant="light"
-            disableRipple
-            radius="full"
-            onPress={() => {}}
-          >
-            <IoChatbubbleOutline size={20} />
-          </Button>
-          <Button
-            isIconOnly
-            size="sm"
-            variant="light"
-            disableRipple
-            radius="full"
-            onPress={() => {}}
-          >
-            <RxLoop size={20} />
-          </Button>
-          <Button
-            isIconOnly
-            size="sm"
-            variant="light"
-            disableRipple
-            radius="full"
-            onPress={() => {}}
-          >
-            <FiSend size={20} />
-          </Button>
+          <TweepLikeButton tweep={props.tweep} onTweepChange={props.onTweepChange} />
+          <ReTweepButton tweep={props.tweep} onTweepChange={props.onTweepChange} />
+          <CommentsButton />
+          <ShareButton />
         </div>
 
         <div className="text-default-400 *:transition-all px-1">
-          <span className="cursor-pointer hover:text-default-300">2 Replies</span> •{' '}
-          <span className="cursor-pointer hover:text-default-300">14 Likes</span>
+          <span className="cursor-pointer hover:text-default-300">
+            {props.tweep.retweeps?.length ?? 0} ReTweeps
+          </span>{' '}
+          •{' '}
+          <span className="cursor-pointer hover:text-default-300">
+            {props.tweep.likes?.length ?? 0} Likes
+          </span>
         </div>
       </div>
     </div>

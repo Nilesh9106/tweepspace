@@ -2,7 +2,7 @@
 import { Avatar } from '@nextui-org/react';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import FollowButton from './FollowButton';
+import FollowButton from '../common/FollowButton';
 import { UserTypeWithIds } from '@/types/model';
 import { UsersHelper } from '@/helpers/users';
 import { HashLoader } from 'react-spinners';

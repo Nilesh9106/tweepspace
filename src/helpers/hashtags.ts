@@ -6,8 +6,4 @@ export class HashTagsHelper {
     const { data } = await axios.get('/api/hashtags');
     return data.hashtags;
   });
-  static getHashTag = errorHandler(async (tag: string) => {
-    const { data } = await axios.get(`/api/hashtags/${tag}`);
-    return data.hashtag;
-  });
 }

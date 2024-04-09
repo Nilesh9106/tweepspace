@@ -36,7 +36,14 @@ const TweepList = ({ loading, tweeps, setTweeps }: TweepListProps) => {
         tweeps.map((tweep, index) => {
           return (
             <div key={tweep._id} className="lg:w-[700px] md:w-[600px] sm:w-[500px] w-[94%] ">
-              <TweepCard tweep={tweep} />
+              <TweepCard
+                tweep={tweep}
+                onTweepChange={(tweep: TweepType) => {
+                  const newTweeps = [...tweeps];
+                  newTweeps[index] = tweep;
+                  setTweeps(newTweeps);
+                }}
+              />
               <Divider />
             </div>
           );

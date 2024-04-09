@@ -10,7 +10,7 @@ import {
   Select,
   SelectItem
 } from '@nextui-org/react';
-import TweepInput from '@/components/TweepInput';
+import TweepInput from '@/components/common/TweepInput';
 import useAuth from '@/hooks/useAuth';
 import { loginForm, signUpForm } from '@/types/auth';
 
