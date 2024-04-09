@@ -12,6 +12,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://tweepspace.vercel.app/'),
   title: 'Tweep Space - Where Conversations Flourish',
   description:
     'Tweepspace is a vibrant social media platform where users can connect, share thoughts, and engage in conversations with a diverse community of like-minded individuals. Join us to discover trending topics, share insights, and foster meaningful connections in a streamlined and engaging environment. Sign up now to be part of the conversation on Tweepspace!',
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
       'Tweepspace is a vibrant social media platform where users can connect, share thoughts, and engage in conversations with a diverse community of like-minded individuals. Join us to discover trending topics, share insights, and foster meaningful connections in a streamlined and engaging environment. Sign up now to be part of the conversation on Tweepspace!',
     url: 'https://tweepspace.vercel.app/',
     type: 'website',
-    images: 'https://tweepspace.vercel.app/cover.png',
+    images: '/cover.png',
     countryName: 'India'
   },
   twitter: {
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
       'Tweepspace is a vibrant social media platform where users can connect, share thoughts, and engage in conversations with a diverse community of like-minded individuals. Join us to discover trending topics, share insights, and foster meaningful connections in a streamlined and engaging environment. Sign up now to be part of the conversation on Tweepspace!',
     creator: 'Tweep Space',
     site: '@tweepspace',
-    images: 'https://tweepspace.vercel.app/cover.png'
+    images: '/cover.png'
   },
   category: 'Social Media',
   verification: {
