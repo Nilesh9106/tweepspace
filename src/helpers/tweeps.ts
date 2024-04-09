@@ -22,4 +22,31 @@ export class TweepHelper {
     const { data } = await axios.get(`/api/tweeps/byHashtag/${tag}`);
     return data.tweeps as TweepType[];
   });
+
+  static likeTweep = errorHandler(async (tweepId: string) => {
+    const { data } = await axios.post('/api/tweeps/like', {
+      tweepId: tweepId
+    });
+    return data;
+  });
+
+  static unLikeTweep = errorHandler(async (tweepId: string) => {
+    const { data } = await axios.put('/api/tweeps/like', {
+      tweepId: tweepId
+    });
+    return data;
+  });
+  static retweep = errorHandler(async (tweepId: string) => {
+    const { data } = await axios.post('/api/tweeps/retweep', {
+      tweepId: tweepId
+    });
+    return data;
+  });
+
+  static unReTweep = errorHandler(async (tweepId: string) => {
+    const { data } = await axios.put('/api/tweeps/retweep', {
+      tweepId: tweepId
+    });
+    return data;
+  });
 }

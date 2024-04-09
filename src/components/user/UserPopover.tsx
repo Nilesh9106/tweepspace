@@ -1,6 +1,6 @@
 import { UserTypeWithIds } from '@/types/model';
 import { Avatar } from '@nextui-org/react';
-import FollowButton from './FollowButton';
+import FollowButton from '../common/FollowButton';
 
 type UserPopoverProps = {
   user: UserTypeWithIds;

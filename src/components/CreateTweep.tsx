@@ -2,7 +2,7 @@ import { mentionStyleDark } from '@/constants/mentionStyle';
 import { HashTagsHelper } from '@/helpers/hashtags';
 import { TweepHelper } from '@/helpers/tweeps';
 import useAuth from '@/hooks/useAuth';
-import { HashtagTypeWithIds } from '@/types/model';
+import { HashtagTypeWithIds, UserTypeWithIds } from '@/types/model';
 import {
   Avatar,
   Button,
@@ -17,6 +17,8 @@ import {
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Mention, MentionsInput, SuggestionDataItem } from 'react-mentions';
+import MentionForm from './common/MentionForm';
+import { UsersHelper } from '@/helpers/users';
 
 type CreateTweepModalProps = {
   isOpen: boolean;
@@ -42,6 +44,7 @@ const CreateTweepModal = (props: CreateTweepModalProps) => {
     }[]
   >([]);
   const [hashtags, setHashtags] = useState<HashtagTypeWithIds[]>([]);
+  const [users, setUsers] = useState<UserTypeWithIds[]>([]);
   const [tweep, setTweep] = useState<TweepForm>({
     attachments: [],
     content: '',
@@ -50,10 +53,12 @@ const CreateTweepModal = (props: CreateTweepModalProps) => {
   });
   const [loading, setLoading] = useState(false);
 
-  const getHashTags = async () => {
+  const getData = async () => {
     const hashtags: HashtagTypeWithIds[] = await HashTagsHelper.getHashTags();
     setHashtags(hashtags);
     setHashtagItems(hashtags.map(tag => ({ id: tag.hashtag, display: tag.hashtag })));
+    const users = await UsersHelper.searchUsers('');
+    setUsers(users.users);
   };
   const handleSubmit = async () => {
     setLoading(true);
@@ -64,7 +69,7 @@ const CreateTweepModal = (props: CreateTweepModalProps) => {
     setLoading(false);
   };
   useEffect(() => {
-    getHashTags();
+    getData();
   }, []);
 
   return (
@@ -87,54 +92,30 @@ const CreateTweepModal = (props: CreateTweepModalProps) => {
                     <Avatar src={user?.profile_picture} size="md" alt={user?.username} />
                   </div>
                   <div className="flex-1 flex flex-col">
-                    <MentionsInput
+                    <MentionForm
                       value={tweep.content}
                       onChange={(e, newValue, newPTvalue, mentions) => {
+                        let filteredUsers: string[] = [];
+                        mentions
+                          .filter(m => m.childIndex == 1)
+                          .map(m => {
+                            const user = users.find(user => user.username === m.id);
+                            if (user) {
+                              filteredUsers.push(user._id);
+                            }
+                          });
                         setTweep(prev => ({
                           ...prev,
                           content: e.target.value,
-                          hashtags: mentions.map(m => m.id)
+                          hashtags: mentions.filter(m => m.childIndex == 0).map(m => m.id),
+                          mentions: filteredUsers
                         }));
                       }}
-                      rows={5}
-                      style={mentionStyleDark}
-                      placeholder="What's on your mind?"
-                      allowSuggestionsAboveCursor
-                    >
-                      <Mention
-                        trigger="#"
-                        displayTransform={id => `#${id}`}
-                        markup="^^^@@@__id__@@@^^^"
-                        data={(q, callback) => {
-                          if (q.length === 0) return callback([]);
-                          const tags = hashtagItems.filter(tag =>
-                            tag.id.toLowerCase()?.includes(q.toLowerCase())
-                          );
-                          if (tags.some(tag => tag.id === q)) return callback([...tags]);
-                          callback([{ id: q, display: q }, ...tags]);
-                        }}
-                        style={{
-                          backgroundColor: '#313131',
-                          padding: '2px 0px 2px 2px',
-                          borderRadius: '4px'
-                        }}
-                        appendSpaceOnAdd
-                        renderSuggestion={(item, search, display, index, focused) => {
-                          const count =
-                            hashtags.find(tag => tag.hashtag === item.id)?.tweeps.length ?? 0;
-                          return (
-                            <div
-                              className={`p-2 text-xs ${
-                                focused ? 'bg-neutral-700' : 'bg-neutral-800'
-                              } transition-all w-full`}
-                            >
-                              <div>#{item.id}</div>
-                              <div>{count} Tweeps</div>
-                            </div>
-                          );
-                        }}
-                      />
-                    </MentionsInput>
+                      hashtagItems={hashtagItems}
+                      hashtags={hashtags}
+                      userItems={users.map(user => ({ id: user.username, display: user.username }))}
+                      users={users}
+                    />
                   </div>
                 </div>
               </ModalBody>

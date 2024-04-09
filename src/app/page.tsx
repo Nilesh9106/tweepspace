@@ -1,5 +1,5 @@
 'use client';
-import TweepList from '@/components/TweepList';
+import TweepList from '@/components/tweep/TweepList';
 import { TweepHelper } from '@/helpers/tweeps';
 import { TweepType } from '@/types/model';
 import { useEffect, useState } from 'react';

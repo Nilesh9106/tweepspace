@@ -17,4 +17,8 @@ export class UsersHelper {
     const response = await axios.get(`/api/users/${username}`);
     return response.data;
   });
+  static searchUsers = errorHandler(async (query: string) => {
+    const response = await axios.get(`/api/users?query=${query}`);
+    return response.data;
+  });
 }

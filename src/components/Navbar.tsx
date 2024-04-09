@@ -16,7 +16,7 @@ const Navbar = () => {
     <>
       {path !== '/auth' ? (
         <nav className="flex z-50 sm:justify-around justify-between max-sm:p-4 items-center bg-background sticky top-0">
-          <div className="flex gap-2 items-center">
+          <Link href={'/'} className="flex gap-2 items-center">
             <Image
               src={'/tweeps.png'}
               alt="TweepsSpace"
@@ -25,7 +25,7 @@ const Navbar = () => {
             <div className="text-2xl pointer-events-none">
               Tweep<span className="text-blue-500 pointer-events-none">Space</span>
             </div>
-          </div>
+          </Link>
           <div className="flex gap-2 max-sm:fixed max-sm:w-full max-sm:justify-around max-sm:bottom-0 max-sm:right-0 max-sm:left-0 p-1 bg-background">
             <Tooltip content="Home">
               <Button

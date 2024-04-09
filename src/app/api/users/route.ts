@@ -8,14 +8,25 @@ import { NextResponse } from 'next/server';
 // search users
 export const GET = authenticate(async (req: MyRequest) => {
   const query = req.nextUrl.searchParams.get('query')?.trim();
-  if (!query) {
+  if (query === undefined) {
     return NextResponse.json(
       { message: 'query is required' },
       { status: HttpStatusCode.BadRequest }
     );
   }
   await dbConnect();
-  const users = await User.find({ username: { $regex: query, $options: 'i' } }).select('-password');
+  let users;
+  if (query === '') {
+    users = await User.find().select('-password');
+    if (!users) {
+      return NextResponse.json({ message: 'Users Not Found' }, { status: HttpStatusCode.NotFound });
+    }
+    return NextResponse.json(
+      { message: 'Users Fetched Successfully', users },
+      { status: HttpStatusCode.Ok }
+    );
+  }
+  users = await User.find({ username: { $regex: query, $options: 'i' } }).select('-password');
   if (!users) {
     return NextResponse.json({ message: 'Users Not Found' }, { status: HttpStatusCode.NotFound });
   }

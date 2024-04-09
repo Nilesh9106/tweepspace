@@ -1,4 +1,5 @@
 import Hashtag from '@/models/hashtag';
+import Notifications from '@/models/notification';
 import Tweep from '@/models/tweep';
 import { MyRequest } from '@/types/requestTypes';
 import { authenticate } from '@/utils/middleware';
@@ -22,7 +23,7 @@ const tweepSchema = z.object({
 // get all posts
 export const GET = authenticate(async (req: MyRequest) => {
   await dbConnect();
-  const tweeps = await Tweep.find({}).populate('author hashtags mentions');
+  const tweeps = await Tweep.find({}).populate('author mentions').sort({ created_at: -1 });
   if (!tweeps) {
     return NextResponse.json({ message: 'Tweeps Not Found' }, { status: HttpStatusCode.NotFound });
   }
@@ -51,6 +52,14 @@ export const POST = authenticate(async (req: MyRequest) => {
       { status: HttpStatusCode.BadRequest }
     );
   }
+  body.data.mentions.forEach(async mention => {
+    await Notifications.create({
+      recipient: mention,
+      sender: req.userId,
+      type: 'mention',
+      tweep: tweep._id
+    });
+  });
   body.data.hashtags.forEach(async (tag: string) => {
     if (await Hashtag.exists({ hashtag: tag })) {
       await Hashtag.findOneAndUpdate({ hashtag: tag }, { $addToSet: { tweeps: tweep._id } });
