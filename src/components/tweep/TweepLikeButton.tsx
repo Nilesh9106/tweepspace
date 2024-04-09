@@ -3,7 +3,7 @@ import useAuth from '@/hooks/useAuth';
 import { TweepType } from '@/types/model';
 import { Button } from '@nextui-org/react';
 import React, { useState } from 'react';
-import { IoHeart, IoHeartOutline } from 'react-icons/io5';
+import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 
 type TweepLikeButtonProps = {
   tweep: TweepType;
@@ -46,7 +46,7 @@ const TweepLikeButton = (props: TweepLikeButtonProps) => {
       color="danger"
       isLoading={loading}
     >
-      <IoHeart size={20} />
+      <FaHeart size={18} />
     </Button>
   ) : (
     <Button
@@ -60,7 +60,7 @@ const TweepLikeButton = (props: TweepLikeButtonProps) => {
       className="group"
       isLoading={loading}
     >
-      <IoHeartOutline size={20} className="dark:text-white text-black group-hover:text-red-500" />
+      <FaRegHeart size={18} className="dark:text-white text-black group-hover:text-red-500" />
     </Button>
   );
 };
