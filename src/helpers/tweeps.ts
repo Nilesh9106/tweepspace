@@ -18,6 +18,10 @@ export class TweepHelper {
     const { data } = await axios.post('/api/tweeps', tweep);
     return data.tweep as TweepType;
   });
+  static deleteTweep = errorHandler(async (id: string) => {
+    const { data } = await axios.delete(`/api/tweeps/${id}`);
+    return data;
+  });
   static getTweepsByHashtag = errorHandler(async (tag: string) => {
     const { data } = await axios.get(`/api/tweeps/byHashtag/${tag}`);
     return data.tweeps as TweepType[];

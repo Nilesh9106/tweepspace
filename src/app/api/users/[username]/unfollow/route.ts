@@ -1,3 +1,4 @@
+import Notifications from '@/models/notification';
 import User from '@/models/user';
 import { MyRequest } from '@/types/requestTypes';
 import { authenticate } from '@/utils/middleware';
@@ -50,7 +51,11 @@ export const POST = authenticate(
 
     userToUnfollow.followers?.splice(followerIndex, 1);
     await userToUnfollow.save();
-
+    await Notifications.deleteOne({
+      recipient: userToUnfollow._id,
+      sender: req.userId,
+      type: 'follow'
+    });
     return NextResponse.json(
       { message: 'User unfollowed successfully' },
       { status: HttpStatusCode.Ok }

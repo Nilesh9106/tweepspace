@@ -36,7 +36,7 @@ const MentionForm = (props: MentionFormProps) => {
         onChange={props.onChange}
         style={mentionStyleDark}
         placeholder="What's on your mind?"
-        forceSuggestionsAboveCursor
+        allowSuggestionsAboveCursor
       >
         <Mention
           trigger="#"
