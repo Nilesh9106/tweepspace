@@ -46,6 +46,7 @@ const UserTweeps = ({ username, field }: { username: string; field: 'tweeps' | '
             onDelete={() => {
               setTweeps(tweeps.filter(t => t._id !== tweep._id));
             }}
+            showParent
           />
           <Divider />
         </div>

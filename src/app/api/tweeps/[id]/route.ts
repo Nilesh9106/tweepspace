@@ -58,6 +58,8 @@ export const DELETE = authenticate(
     );
     // find all notifications that have this tweep id and delete them
     await Notifications.deleteMany({ tweep: tweep._id });
+    // find all tweeps that have this tweep as parent and delete them
+    await Tweep.deleteMany({ parent_tweep: tweep._id });
     return NextResponse.json(
       { message: 'Tweep Deleted Successfully' },
       { status: HttpStatusCode.Ok }

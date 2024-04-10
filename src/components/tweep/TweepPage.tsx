@@ -37,17 +37,18 @@ const TweepPage = ({ id }: { id: string }) => {
         onDelete={() => {
           router.push('/');
         }}
-        showLine={replies?.length ? true : false}
         tweep={{ ...tweep }}
         onTweepChange={setTweep}
         addReply={(tweep: TweepType) => {
           setReplies(prev => [tweep, ...(prev ?? [])]);
         }}
         inPage
+        showParent
       />
+      <Divider />
+      <h2 className="text-xl text-default-800 mb-2">Replies</h2>
       {!replies?.length ? (
         <>
-          <Divider />
           <div className="text-default-300 text-center">No replies yet</div>
         </>
       ) : null}

@@ -90,7 +90,7 @@ const CommentsButton = (props: CommentsButtonProps) => {
         <ModalContent>
           {onClose => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Create Tweep</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">Comment on Tweep</ModalHeader>
               <ModalBody>
                 <TweepPageCard
                   onTweepChange={props.onTweepChange}

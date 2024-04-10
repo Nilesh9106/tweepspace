@@ -20,9 +20,34 @@ type TweepPageCardProps = {
   inPage?: boolean;
   commentMode?: boolean;
   addReply?: (tweep: TweepType) => void;
+  showParent?: boolean;
 };
 
 const TweepPageCard = (props: TweepPageCardProps) => {
+  if (props.showParent && props.tweep.parent_tweep) {
+    return (
+      <div className="flex flex-col gap-[14px]">
+        <TweepCard
+          tweep={props.tweep.parent_tweep}
+          onTweepChange={t => {
+            const tweep = props.tweep;
+            tweep.parent_tweep = t;
+            props.onTweepChange(tweep);
+          }}
+          onDelete={() => {
+            props.onDelete();
+          }}
+          showLine
+        />
+        <TweepCard {...props} />
+      </div>
+    );
+  } else {
+    return <TweepCard {...props} />;
+  }
+};
+
+const TweepCard = (props: TweepPageCardProps) => {
   const router = useRouter();
   return (
     <div
@@ -79,7 +104,7 @@ const TweepPageCard = (props: TweepPageCardProps) => {
               addReply={props.addReply}
             />
           )}
-          <ShareButton />
+          <ShareButton tweep={props.tweep} />
         </div>
 
         <div className="text-default-400 *:transition-all px-1">

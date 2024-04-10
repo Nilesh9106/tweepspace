@@ -5,23 +5,10 @@ export type TweepType = {
   mentions?: string[];
   hashtags?: string[];
   attachments?: string[];
-  parent_tweep?: string;
-  created_at: Date;
-  likes?: string[];
-  retweeps?: string[];
-};
-
-export type TweepTypeWithParent = {
-  _id: string;
-  author: UserTypeWithIds;
-  content: string;
-  mentions?: string[];
-  hashtags?: string[];
-  attachments?: string[];
-  created_at: Date;
-  likes?: string[];
-  retweeps?: string[];
   parent_tweep?: TweepType;
+  created_at: Date;
+  likes?: string[];
+  retweeps?: string[];
 };
 
 export type HashtagTypeWithIds = {

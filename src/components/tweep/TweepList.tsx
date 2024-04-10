@@ -21,9 +21,10 @@ type TweepListProps = {
   loading: boolean;
   tweeps: TweepType[];
   setTweeps: React.Dispatch<React.SetStateAction<TweepType[]>>;
+  showParent?: boolean;
 };
 
-const TweepList = ({ loading, tweeps, setTweeps }: TweepListProps) => {
+const TweepList = ({ loading, tweeps, setTweeps, showParent }: TweepListProps) => {
   return (
     <div className="flex flex-col justify-center items-center w-full gap-4">
       {loading ? (
@@ -49,6 +50,7 @@ const TweepList = ({ loading, tweeps, setTweeps }: TweepListProps) => {
                 commentMode={false}
                 inPage={false}
                 showLine={false}
+                showParent={showParent}
               />
               <Divider />
             </div>

@@ -59,7 +59,14 @@ export const GET = authenticate(
         }
       );
     } else if (query === 'tweeps') {
-      const tweeps = await Tweep.find({ author: newUser._id }).populate('author');
+      const tweeps = await Tweep.find({ author: newUser._id })
+        .populate('author')
+        .populate({
+          path: 'parent_tweep',
+          populate: {
+            path: 'author'
+          }
+        });
       return NextResponse.json(
         {
           message: 'User tweeps fetched successfully',
@@ -71,7 +78,14 @@ export const GET = authenticate(
       );
     } else if (query === 'retweeps') {
       console.log(newUser._id);
-      const retweeps = await Tweep.find({ retweeps: newUser._id.toString() }).populate('author');
+      const retweeps = await Tweep.find({ retweeps: newUser._id.toString() })
+        .populate('author')
+        .populate({
+          path: 'parent_tweep',
+          populate: {
+            path: 'author'
+          }
+        });
       return NextResponse.json(
         {
           message: 'User retweeps fetched successfully',

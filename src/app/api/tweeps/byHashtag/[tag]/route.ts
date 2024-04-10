@@ -12,7 +12,14 @@ export const GET = authenticate(async (req: MyRequest, { params }: { params: { t
   // find tweep which has tag in hashtags array
   const tweeps = await Tweep.find({
     hashtags: tag
-  }).populate('author');
+  })
+    .populate('author')
+    .populate({
+      path: 'parent_tweep',
+      populate: {
+        path: 'author'
+      }
+    });
   return NextResponse.json(
     { message: 'Hashtag Fetched Successfully', tweeps },
     { status: HttpStatusCode.Ok }

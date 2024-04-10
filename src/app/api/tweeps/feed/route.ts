@@ -13,8 +13,14 @@ export const GET = authenticate(async (req: MyRequest) => {
   if (user?.following) {
     ids.push(...user.following);
   }
-  const tweeps = await Tweep.find({ author: { $in: ids }, parent_tweep: undefined })
+  const tweeps = await Tweep.find({ author: { $in: ids } })
     .populate('author')
+    .populate({
+      path: 'parent_tweep',
+      populate: {
+        path: 'author'
+      }
+    })
     .sort({ created_at: -1 });
   if (!tweeps) {
     return NextResponse.json({ message: 'Tweeps Not Found' }, { status: HttpStatusCode.NotFound });

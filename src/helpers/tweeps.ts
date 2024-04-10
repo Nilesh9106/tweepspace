@@ -13,23 +13,10 @@ export class TweepHelper {
   });
   static getTweepWithReplies = errorHandler(async (id: string) => {
     const { data } = await axios.get(`/api/tweeps/${id}`);
-    const tweep: TweepTypeWithParent = data.tweep;
-    if (tweep.parent_tweep) {
-      return {
-        tweep: {
-          ...tweep,
-          parent_tweep: tweep.parent_tweep?._id
-        } as TweepType,
-        replies: data.replies as TweepType[],
-        parent_tweep: tweep.parent_tweep
-      };
-    } else {
-      return {
-        tweep: tweep as TweepType,
-        replies: data.replies as TweepType[],
-        parent_tweep: undefined
-      };
-    }
+    return {
+      tweep: data.tweep as TweepType,
+      replies: data.replies as TweepType[]
+    };
   });
   static createTweep = errorHandler(async (tweep: any) => {
     const { data } = await axios.post('/api/tweeps', tweep);
