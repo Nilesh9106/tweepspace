@@ -13,7 +13,7 @@ export const GET = authenticate(async (req: MyRequest) => {
   if (user?.following) {
     ids.push(...user.following);
   }
-  const tweeps = await Tweep.find({ author: { $in: ids } })
+  const tweeps = await Tweep.find({ author: { $in: ids }, parent_tweep: undefined })
     .populate('author')
     .sort({ created_at: -1 });
   if (!tweeps) {

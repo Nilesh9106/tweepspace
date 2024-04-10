@@ -2,8 +2,8 @@ import { UsersHelper } from '@/helpers/users';
 import { TweepType } from '@/types/model';
 import { Divider } from '@nextui-org/react';
 import { useState, useEffect } from 'react';
-import { TweepCard } from '../tweep/TweepCard';
 import { TweepSkeleton } from './UserTweepsTab';
+import TweepPageCard from '../tweep/TweepPageCard';
 
 const UserTweeps = ({ username, field }: { username: string; field: 'tweeps' | 'retweeps' }) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -36,7 +36,7 @@ const UserTweeps = ({ username, field }: { username: string; field: 'tweeps' | '
     tweeps.map((tweep, index) => {
       return (
         <div key={tweep._id} className="">
-          <TweepCard
+          <TweepPageCard
             tweep={tweep}
             onTweepChange={(tweep: TweepType) => {
               const newTweeps = [...tweeps];

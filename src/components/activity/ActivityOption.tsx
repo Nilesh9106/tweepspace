@@ -1,6 +1,7 @@
 import { NotificationHelper } from '@/helpers/notification';
 import { NotificationType } from '@/types/model';
 import { Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem } from '@nextui-org/react';
+import { useRouter } from 'next-nprogress-bar';
 import React from 'react';
 import { BsThreeDots, BsThreeDotsVertical } from 'react-icons/bs';
 
@@ -11,6 +12,7 @@ type ActivityOptionProps = {
 };
 
 const ActivityOption = (props: ActivityOptionProps) => {
+  const router = useRouter();
   const items = [
     {
       key: 'mark',
@@ -24,17 +26,25 @@ const ActivityOption = (props: ActivityOptionProps) => {
   if (props.notification.read) {
     items.shift();
   }
+  if (props.notification.tweep) {
+    items.unshift({
+      key: 'view',
+      label: 'View'
+    });
+  }
   const handleClick = async (key: string) => {
     if (key === 'mark') {
       const res = await NotificationHelper.markAsRead(props.notification._id);
       if (res) {
         props.onMarkAsRead();
       }
-    } else {
+    } else if (key === 'delete') {
       const res = await NotificationHelper.deleteNotification(props.notification._id);
       if (res) {
         props.onDelete();
       }
+    } else {
+      router.push(`/tweep/${props.notification.tweep}`);
     }
   };
   return (

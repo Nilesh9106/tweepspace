@@ -9,7 +9,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const getTweeps = async () => {
     setLoading(true);
-    const data = await TweepHelper.getAllTweeps();
+    const data = await TweepHelper.getFeed();
     if (data) {
       setTweeps(data);
     }

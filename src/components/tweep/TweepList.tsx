@@ -1,7 +1,7 @@
 import { TweepType } from '@/types/model';
 import { Divider, Skeleton } from '@nextui-org/react';
 import React from 'react';
-import { TweepCard } from './TweepCard';
+import TweepPageCard from './TweepPageCard';
 
 const TweepSkeleton = () => {
   return (
@@ -36,7 +36,7 @@ const TweepList = ({ loading, tweeps, setTweeps }: TweepListProps) => {
         tweeps.map((tweep, index) => {
           return (
             <div key={tweep._id} className="lg:w-[700px] md:w-[600px] sm:w-[500px] w-[94%] ">
-              <TweepCard
+              <TweepPageCard
                 tweep={tweep}
                 onTweepChange={(tweep: TweepType) => {
                   const newTweeps = [...tweeps];
@@ -46,6 +46,9 @@ const TweepList = ({ loading, tweeps, setTweeps }: TweepListProps) => {
                 onDelete={() => {
                   setTweeps(tweeps.filter(t => t._id !== tweep._id));
                 }}
+                commentMode={false}
+                inPage={false}
+                showLine={false}
               />
               <Divider />
             </div>

@@ -1,40 +1,45 @@
-'use client';
-import { Avatar, Image, Tooltip } from '@nextui-org/react';
-import React from 'react';
-import { UserPopover } from '../user/UserPopover';
 import { TweepType } from '@/types/model';
-import Moment from 'react-moment';
+import { Avatar, Image, Tooltip } from '@nextui-org/react';
 import Link from 'next/link';
-import TweepText from './TweepText';
-import useAuth from '@/hooks/useAuth';
-import TweepLikeButton from './TweepLikeButton';
-import ReTweepButton from './ReTweepButton';
+import React from 'react';
+import Moment from 'react-moment';
+import { UserPopover } from '../user/UserPopover';
 import CommentsButton from './CommentsButton';
-import ShareButton from './ShareButton';
 import OptionButton from './OptionButton';
+import ReTweepButton from './ReTweepButton';
+import ShareButton from './ShareButton';
+import TweepLikeButton from './TweepLikeButton';
+import TweepText from './TweepText';
 import { useRouter } from 'next-nprogress-bar';
 
-type TweepCardProps = {
+type TweepPageCardProps = {
   tweep: TweepType;
   onTweepChange: (tweep: TweepType) => void;
   onDelete: () => void;
+  showLine?: boolean;
+  inPage?: boolean;
+  commentMode?: boolean;
+  addReply?: (tweep: TweepType) => void;
 };
 
-export const TweepCard = (props: TweepCardProps) => {
-  const { user } = useAuth();
+const TweepPageCard = (props: TweepPageCardProps) => {
   const router = useRouter();
   return (
     <div
+      className={`flex  sm:gap-2 ${!props.inPage ? 'cursor-pointer' : ''}`}
       onClick={() => {
+        if (props.inPage) return;
         router.push(`/tweep/${props.tweep._id}`);
       }}
-      className="flex  sm:gap-2 cursor-pointer"
     >
-      <div className="w-11 flex flex-col  items-center">
+      <div className="w-11 flex flex-col  items-center gap-2">
         <Avatar src={props.tweep.author.profile_picture} size="md" alt={props.tweep.author.name} />
+        {props.showLine ? (
+          <div className="w-0.5 rounded-lg bg-default-400 flex-1 -mb-2"></div>
+        ) : null}
       </div>
-      <div className="flex-1  px-3 pb-2 sm:text-[15px] text-sm">
-        <div className="flex justify-between ">
+      <div className="flex-1  px-3 pb-2 sm:text-[15px] text-sm ">
+        <div className="flex justify-between mb-1">
           <div className="flex gap-2">
             <Tooltip
               closeDelay={100}
@@ -66,7 +71,14 @@ export const TweepCard = (props: TweepCardProps) => {
         <div className="flex gap-2 my-3">
           <TweepLikeButton tweep={props.tweep} onTweepChange={props.onTweepChange} />
           <ReTweepButton tweep={props.tweep} onTweepChange={props.onTweepChange} />
-          <CommentsButton tweep={props.tweep} onTweepChange={props.onTweepChange} />
+          {props.commentMode ? null : (
+            <CommentsButton
+              inPage={props.inPage}
+              tweep={props.tweep}
+              onTweepChange={props.onTweepChange}
+              addReply={props.addReply}
+            />
+          )}
           <ShareButton />
         </div>
 
@@ -83,3 +95,5 @@ export const TweepCard = (props: TweepCardProps) => {
     </div>
   );
 };
+
+export default TweepPageCard;

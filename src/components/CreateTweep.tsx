@@ -26,7 +26,7 @@ type CreateTweepModalProps = {
   onOpenChange: () => void;
 };
 
-type TweepForm = {
+export type TweepForm = {
   content: string;
   hashtags: string[];
   mentions: string[];
@@ -54,10 +54,14 @@ const CreateTweepModal = (props: CreateTweepModalProps) => {
   const [loading, setLoading] = useState(false);
 
   const getData = async () => {
-    const hashtags: HashtagTypeWithIds[] = await HashTagsHelper.getHashTags();
+    const [hashtags, users] = await Promise.all([
+      HashTagsHelper.getHashTags(),
+      UsersHelper.searchUsers('')
+    ]);
     setHashtags(hashtags);
-    setHashtagItems(hashtags.map(tag => ({ id: tag.hashtag, display: tag.hashtag })));
-    const users = await UsersHelper.searchUsers('');
+    setHashtagItems(
+      hashtags.map((tag: HashtagTypeWithIds) => ({ id: tag.hashtag, display: tag.hashtag }))
+    );
     setUsers(users.users);
   };
   const handleSubmit = async () => {
@@ -87,37 +91,30 @@ const CreateTweepModal = (props: CreateTweepModalProps) => {
             <>
               <ModalHeader className="flex flex-col gap-1">Create Tweep</ModalHeader>
               <ModalBody>
-                <div className="w-full flex gap-2">
-                  <div>
-                    <Avatar src={user?.profile_picture} size="md" alt={user?.username} />
-                  </div>
-                  <div className="flex-1 flex flex-col">
-                    <MentionForm
-                      value={tweep.content}
-                      onChange={(e, newValue, newPTvalue, mentions) => {
-                        let filteredUsers: string[] = [];
-                        mentions
-                          .filter(m => m.childIndex == 1)
-                          .map(m => {
-                            const user = users.find(user => user.username === m.id);
-                            if (user) {
-                              filteredUsers.push(user._id);
-                            }
-                          });
-                        setTweep(prev => ({
-                          ...prev,
-                          content: e.target.value,
-                          hashtags: mentions.filter(m => m.childIndex == 0).map(m => m.id),
-                          mentions: filteredUsers
-                        }));
-                      }}
-                      hashtagItems={hashtagItems}
-                      hashtags={hashtags}
-                      userItems={users.map(user => ({ id: user.username, display: user.username }))}
-                      users={users}
-                    />
-                  </div>
-                </div>
+                <MentionForm
+                  value={tweep.content}
+                  onChange={(e, newValue, newPTvalue, mentions) => {
+                    let filteredUsers: string[] = [];
+                    mentions
+                      .filter(m => m.childIndex == 1)
+                      .map(m => {
+                        const user = users.find(user => user.username === m.id);
+                        if (user) {
+                          filteredUsers.push(user._id);
+                        }
+                      });
+                    setTweep(prev => ({
+                      ...prev,
+                      content: e.target.value,
+                      hashtags: mentions.filter(m => m.childIndex == 0).map(m => m.id),
+                      mentions: filteredUsers
+                    }));
+                  }}
+                  hashtagItems={hashtagItems}
+                  hashtags={hashtags}
+                  userItems={users.map(user => ({ id: user.username, display: user.username }))}
+                  users={users}
+                />
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>

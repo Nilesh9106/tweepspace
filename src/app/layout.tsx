@@ -3,7 +3,6 @@ import { Poppins } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 import Navbar from '@/components/Navbar';
-import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from 'react-hot-toast';
 
 const poppins = Poppins({
@@ -67,7 +66,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body className={`${poppins.className} max-sm:pb-20`}>
-        <NextTopLoader color="#B032FF" />
         <Providers>
           <Navbar />
           {children}

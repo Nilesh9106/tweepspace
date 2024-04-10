@@ -1,4 +1,4 @@
-import { TweepType } from '@/types/model';
+import { TweepType, TweepTypeWithParent } from '@/types/model';
 import { errorHandler } from '@/utils/handlers';
 import axios from 'axios';
 
@@ -7,12 +7,29 @@ export class TweepHelper {
     const { data } = await axios.get('/api/tweeps');
     return data.tweeps as TweepType[];
   });
+  static getFeed = errorHandler(async () => {
+    const { data } = await axios.get('/api/tweeps/feed');
+    return data.tweeps as TweepType[];
+  });
   static getTweepWithReplies = errorHandler(async (id: string) => {
     const { data } = await axios.get(`/api/tweeps/${id}`);
-    return {
-      tweep: data.tweep as TweepType,
-      replies: data.replies as TweepType[]
-    };
+    const tweep: TweepTypeWithParent = data.tweep;
+    if (tweep.parent_tweep) {
+      return {
+        tweep: {
+          ...tweep,
+          parent_tweep: tweep.parent_tweep?._id
+        } as TweepType,
+        replies: data.replies as TweepType[],
+        parent_tweep: tweep.parent_tweep
+      };
+    } else {
+      return {
+        tweep: tweep as TweepType,
+        replies: data.replies as TweepType[],
+        parent_tweep: undefined
+      };
+    }
   });
   static createTweep = errorHandler(async (tweep: any) => {
     const { data } = await axios.post('/api/tweeps', tweep);

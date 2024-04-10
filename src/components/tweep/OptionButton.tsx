@@ -2,6 +2,7 @@ import { TweepHelper } from '@/helpers/tweeps';
 import useAuth from '@/hooks/useAuth';
 import { TweepType } from '@/types/model';
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
+import { useRouter } from 'next-nprogress-bar';
 import toast from 'react-hot-toast';
 import { BsThreeDots } from 'react-icons/bs';
 
@@ -12,15 +13,12 @@ type OptionButtonProps = {
 
 const OptionButton = (props: OptionButtonProps) => {
   const { user } = useAuth();
+  const router = useRouter();
 
   const items = [
     {
       key: 'view',
       label: 'View'
-    },
-    {
-      key: 'share',
-      label: 'Share'
     }
   ];
   if (user?.id == props.tweep.author._id) {
@@ -53,10 +51,17 @@ const OptionButton = (props: OptionButtonProps) => {
         loading: 'Deleting...',
         success: 'Deleted successfully',
         error: e => {
-          return null;
+          return "oops! couldn't delete the tweep";
         }
       }
     );
+  };
+  const handleClick = (key: string) => {
+    if (key === 'delete') {
+      handleDelete();
+    } else if (key === 'view') {
+      router.push(`/tweep/${props.tweep._id}`);
+    }
   };
   return (
     <Dropdown>
@@ -71,7 +76,7 @@ const OptionButton = (props: OptionButtonProps) => {
             key={item.key}
             color={item.key === 'delete' ? 'danger' : 'default'}
             className={item.key === 'delete' ? 'text-danger' : ''}
-            onClick={item.key === 'delete' ? handleDelete : () => {}}
+            onClick={() => handleClick(item.key)}
           >
             {item.label}
           </DropdownItem>

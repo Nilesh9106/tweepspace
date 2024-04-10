@@ -45,20 +45,43 @@ export const POST = authenticate(async (req: MyRequest) => {
   }
   const data = body.data;
   await dbConnect();
-  const tweep = await Tweep.create(data);
+  let t = await Tweep.create(data);
+  if (!t) {
+    return NextResponse.json(
+      { message: 'Failed to create Tweep' },
+      { status: HttpStatusCode.BadRequest }
+    );
+  }
+  const tweep = await Tweep.findById(t._id).populate('author');
   if (!tweep) {
     return NextResponse.json(
       { message: 'Failed to create Tweep' },
       { status: HttpStatusCode.BadRequest }
     );
   }
+
+  if (tweep.parent_tweep) {
+    const parent_tweep = await Tweep.findById(tweep.parent_tweep);
+    if (parent_tweep) {
+      if (parent_tweep.author.toString() !== req.userId) {
+        await Notifications.create({
+          recipient: parent_tweep?.author,
+          sender: req.userId,
+          type: 'comment',
+          tweep: tweep._id
+        });
+      }
+    }
+  }
   body.data.mentions.forEach(async mention => {
-    await Notifications.create({
-      recipient: mention,
-      sender: req.userId,
-      type: 'mention',
-      tweep: tweep._id
-    });
+    if (mention !== req.userId) {
+      await Notifications.create({
+        recipient: mention,
+        sender: req.userId,
+        type: 'mention',
+        tweep: tweep._id
+      });
+    }
   });
   body.data.hashtags.forEach(async (tag: string) => {
     if (await Hashtag.exists({ hashtag: tag })) {
