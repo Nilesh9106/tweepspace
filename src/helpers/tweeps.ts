@@ -1,4 +1,4 @@
-import { TweepType, TweepTypeWithParent } from '@/types/model';
+import { TweepType } from '@/types/model';
 import { errorHandler } from '@/utils/handlers';
 import axios from 'axios';
 
