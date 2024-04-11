@@ -1,5 +1,6 @@
 'use client';
 import ActivityCard from '@/components/activity/ActivityCard';
+import Container from '@/components/Container';
 import { NotificationHelper } from '@/helpers/notification';
 import { NotificationType } from '@/types/model';
 import React, { useEffect, useState } from 'react';
@@ -25,7 +26,7 @@ const Page = () => {
           <HashLoader color="#0070f3" loading={loading} size={50} />
         </div>
       ) : (
-        <div className="lg:w-[600px] md:w-[500px] sm:w-[450px] max-sm:w-[94%] flex flex-col gap-5 my-5 mx-auto">
+        <Container>
           {notifications.map((notification, index) => (
             <ActivityCard
               key={notification._id}
@@ -42,7 +43,7 @@ const Page = () => {
               }}
             />
           ))}
-        </div>
+        </Container>
       )}
     </>
   );

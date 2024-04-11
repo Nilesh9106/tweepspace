@@ -2,6 +2,7 @@ import { TweepType } from '@/types/model';
 import { Divider, Skeleton } from '@nextui-org/react';
 import React from 'react';
 import TweepPageCard from './TweepPageCard';
+import Container from '../Container';
 
 const TweepSkeleton = () => {
   return (
@@ -26,38 +27,32 @@ type TweepListProps = {
 
 const TweepList = ({ loading, tweeps, setTweeps, showParent }: TweepListProps) => {
   return (
-    <div className="flex flex-col justify-center items-center w-full gap-4">
-      {loading ? (
-        <div className="lg:w-[700px] md:w-[600px] sm:w-[500px] max-sm:w-[94%] flex flex-col gap-10 my-5">
-          {Array.from({ length: 10 }).map((_, ind) => (
-            <TweepSkeleton key={ind} />
-          ))}
-        </div>
-      ) : (
-        tweeps.map((tweep, index) => {
-          return (
-            <div key={tweep._id} className="lg:w-[700px] md:w-[600px] sm:w-[500px] w-[94%] ">
-              <TweepPageCard
-                tweep={tweep}
-                onTweepChange={(tweep: TweepType) => {
-                  const newTweeps = [...tweeps];
-                  newTweeps[index] = tweep;
-                  setTweeps(newTweeps);
-                }}
-                onDelete={() => {
-                  setTweeps(tweeps.filter(t => t._id !== tweep._id));
-                }}
-                commentMode={false}
-                inPage={false}
-                showLine={false}
-                showParent={showParent}
-              />
-              <Divider />
-            </div>
-          );
-        })
-      )}
-    </div>
+    <Container>
+      {loading
+        ? Array.from({ length: 10 }).map((_, ind) => <TweepSkeleton key={ind} />)
+        : tweeps.map((tweep, index) => {
+            return (
+              <div key={tweep._id} className="flex flex-col gap-2">
+                <TweepPageCard
+                  tweep={tweep}
+                  onTweepChange={(tweep: TweepType) => {
+                    const newTweeps = [...tweeps];
+                    newTweeps[index] = tweep;
+                    setTweeps(newTweeps);
+                  }}
+                  onDelete={() => {
+                    setTweeps(tweeps.filter(t => t._id !== tweep._id));
+                  }}
+                  commentMode={false}
+                  inPage={false}
+                  showLine={false}
+                  showParent={showParent}
+                />
+                <Divider />
+              </div>
+            );
+          })}
+    </Container>
   );
 };
 

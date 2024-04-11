@@ -7,6 +7,7 @@ import { UserTypeWithIds } from '@/types/model';
 import { UsersHelper } from '@/helpers/users';
 import { HashLoader } from 'react-spinners';
 import UserTweepsTab from './UserTweepsTab';
+import Container from '../Container';
 
 const UserProfile = () => {
   const { username }: { username: string } = useParams();
@@ -36,7 +37,7 @@ const UserProfile = () => {
           <HashLoader color="#0070f3" loading={loading} size={50} />
         </div>
       ) : (
-        <div className="lg:w-[600px] md:w-[500px] sm:w-[450px] max-sm:w-[94%] flex flex-col gap-5 my-5 mx-auto">
+        <Container>
           <div className="flex justify-between ">
             <div className="flex flex-col gap-3">
               <h2 className="text-xl font-bold">{user.name ?? user.username}</h2>
@@ -62,7 +63,7 @@ const UserProfile = () => {
           <div className="flex w-full flex-col">
             <UserTweepsTab username={username} />
           </div>
-        </div>
+        </Container>
       )}
     </>
   );

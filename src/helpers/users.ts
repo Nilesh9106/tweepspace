@@ -23,4 +23,8 @@ export class UsersHelper {
       return response.data;
     }
   );
+  static updateProfile = errorHandler(async (data: any) => {
+    const response = await axios.put(`/api/users`, data);
+    return response.data;
+  });
 }

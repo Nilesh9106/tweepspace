@@ -3,6 +3,7 @@ import useAuth from '@/hooks/useAuth';
 import { UserTypeWithIds } from '@/types/model';
 import { checkFollowStatusWithIds } from '@/utils/getFollowStatus';
 import { Button } from '@nextui-org/react';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 type FollowButtonProps = {
@@ -73,7 +74,15 @@ const FollowButton = (props: FollowButtonProps) => {
       );
     default:
       return props.isProfile ? (
-        <Button fullWidth variant="bordered" disableRipple className="my-2" color="default">
+        <Button
+          as={Link}
+          href="/editprofile"
+          fullWidth
+          variant="bordered"
+          disableRipple
+          className="my-2"
+          color="default"
+        >
           Edit Profile
         </Button>
       ) : null;

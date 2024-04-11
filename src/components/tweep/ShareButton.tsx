@@ -52,6 +52,7 @@ const ShareButton = (props: TweepReTweepButtonProps) => {
               disableRipple
               radius="full"
               color="secondary"
+              onPress={() => setIsOpen(true)}
             >
               <FiSend
                 size={18}
@@ -63,7 +64,7 @@ const ShareButton = (props: TweepReTweepButtonProps) => {
             <div className="p-1 flex flex-col gap-4">
               <div className="text-center text-lg">Share Tweep</div>
               <Divider />
-              <div className="flex gap-3 justify-center">
+              <div className="flex gap-3 justify-center max-sm:max-w-80 flex-wrap">
                 <TwitterShareButton
                   url={url}
                   title={`Checkout this tweep by ${props.tweep.author.username}\n`}
@@ -105,14 +106,6 @@ const ShareButton = (props: TweepReTweepButtonProps) => {
                 >
                   <TelegramIcon size={40} round />
                 </TelegramShareButton>
-                <FacebookShareButton
-                  url={url}
-                  quote={`Checkout this tweep by ${props.tweep.author.username}\n`}
-                  hashtag={'#tweepspace'}
-                  blankTarget
-                >
-                  <FacebookIcon size={40} round />
-                </FacebookShareButton>
               </div>
               <Divider />
               <Snippet
@@ -126,7 +119,7 @@ const ShareButton = (props: TweepReTweepButtonProps) => {
                 }}
               >
                 <div
-                  className=" px-3 py-2 text-[13px] max-w-80 truncate"
+                  className=" px-3 py-2 text-[13px] sm:max-w-80 max-w-64 truncate"
                   onCopy={e => setIsOpen(false)}
                 >
                   {url}

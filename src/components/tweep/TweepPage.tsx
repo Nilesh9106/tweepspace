@@ -6,6 +6,7 @@ import { HashLoader } from 'react-spinners';
 import TweepPageCard from './TweepPageCard';
 import { Divider } from '@nextui-org/react';
 import { useRouter } from 'next-nprogress-bar';
+import Container from '../Container';
 
 const TweepPage = ({ id }: { id: string }) => {
   const [loading, setLoading] = useState(false);
@@ -32,7 +33,7 @@ const TweepPage = ({ id }: { id: string }) => {
       <HashLoader color="#0070f3" loading={loading} size={50} />
     </div>
   ) : (
-    <div className="lg:w-[600px] md:w-[500px] sm:w-[450px] max-sm:w-[94%] flex flex-col gap-5 my-5 mx-auto">
+    <Container>
       <TweepPageCard
         onDelete={() => {
           router.push('/');
@@ -69,7 +70,7 @@ const TweepPage = ({ id }: { id: string }) => {
           />
         );
       })}
-    </div>
+    </Container>
   );
 };
 
