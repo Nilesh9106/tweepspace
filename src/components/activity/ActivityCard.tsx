@@ -8,6 +8,7 @@ import ActivityOption from './ActivityOption';
 import { CgComment, CgProfile } from 'react-icons/cg';
 import { GoMention } from 'react-icons/go';
 import { FaRetweet } from 'react-icons/fa6';
+import { webRoutes } from '@/constants/routes';
 
 type ActivityCardProps = {
   notification: NotificationType;
@@ -73,7 +74,7 @@ const ActivityCard = (props: ActivityCardProps) => {
                   content={<UserPopover user={props.notification.sender} />}
                 >
                   <Link
-                    href={`user/${props.notification.sender.username}`}
+                    href={webRoutes.user(props.notification.sender.username)}
                     className="hover:underline underline-offset-2 cursor-pointer "
                   >
                     {props.notification.sender.username}

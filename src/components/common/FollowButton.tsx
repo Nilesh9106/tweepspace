@@ -1,3 +1,4 @@
+import { webRoutes } from '@/constants/routes';
 import { UsersHelper } from '@/helpers/users';
 import useAuth from '@/hooks/useAuth';
 import { UserTypeWithIds } from '@/types/model';
@@ -76,7 +77,7 @@ const FollowButton = (props: FollowButtonProps) => {
       return props.isProfile ? (
         <Button
           as={Link}
-          href="/editprofile"
+          href={webRoutes.editProfile}
           fullWidth
           variant="bordered"
           disableRipple

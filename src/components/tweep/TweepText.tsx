@@ -1,3 +1,4 @@
+import { webRoutes } from '@/constants/routes';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -14,15 +15,20 @@ const TweepText: React.FC<TweepTextProps> = ({ text }) => {
     text = text.replace(
       hashtagRegex,
       (match, tag) =>
-        `<a class="text-blue-500 hover:underline clickable-tag cursor-pointer" href="/hashtag/${tag}">#${tag}</a>`
+        `<a class="text-blue-500 hover:underline clickable-tag cursor-pointer" href="${webRoutes.tweepWithHashtag(
+          tag
+        )}">#${tag}</a>`
     );
 
     // Replace mentions with clickable links
     text = text.replace(
       mentionRegex,
       (match, username) =>
-        `<a class="text-green-500 hover:underline clickable-tag" href="/user/${username}">@${username}</a>`
+        `<a class="text-green-500 hover:underline clickable-tag" href="${webRoutes.user(
+          username
+        )}">@${username}</a>`
     );
+    text = text.replace(/(?:\r\n|\r|\n)/g, '<br>');
 
     return text;
   };
@@ -31,7 +37,6 @@ const TweepText: React.FC<TweepTextProps> = ({ text }) => {
       const target = e.target as HTMLElement;
       if (target.classList.contains('clickable-tag')) {
         e.preventDefault();
-        // console.log(target.getAttribute('href'));
         router.push(target.getAttribute('href')!);
       }
     };
@@ -44,7 +49,6 @@ const TweepText: React.FC<TweepTextProps> = ({ text }) => {
   }, []);
 
   const parsedText = parseText(text);
-
   return <p dangerouslySetInnerHTML={{ __html: parsedText }} />;
 };
 

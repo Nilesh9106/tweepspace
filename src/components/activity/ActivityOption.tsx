@@ -1,9 +1,11 @@
+import { webRoutes } from '@/constants/routes';
 import { NotificationHelper } from '@/helpers/notification';
 import { NotificationType } from '@/types/model';
 import { Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem } from '@nextui-org/react';
 import { useRouter } from 'next-nprogress-bar';
 import React from 'react';
-import { BsThreeDots, BsThreeDotsVertical } from 'react-icons/bs';
+import toast from 'react-hot-toast';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 type ActivityOptionProps = {
   notification: NotificationType;
@@ -36,6 +38,7 @@ const ActivityOption = (props: ActivityOptionProps) => {
     if (key === 'mark') {
       const res = await NotificationHelper.markAsRead(props.notification._id);
       if (res) {
+        toast.success('Notification marked as read');
         props.onMarkAsRead();
       }
     } else if (key === 'delete') {
@@ -43,8 +46,9 @@ const ActivityOption = (props: ActivityOptionProps) => {
       if (res) {
         props.onDelete();
       }
-    } else {
-      router.push(`/tweep/${props.notification.tweep}`);
+    } else if (props.notification.tweep) {
+      router.push(webRoutes.tweep(props.notification.tweep));
+      const res = await NotificationHelper.markAsRead(props.notification._id);
     }
   };
   return (

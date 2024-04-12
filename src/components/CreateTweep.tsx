@@ -1,22 +1,16 @@
-import { mentionStyleDark } from '@/constants/mentionStyle';
 import { HashTagsHelper } from '@/helpers/hashtags';
 import { TweepHelper } from '@/helpers/tweeps';
-import useAuth from '@/hooks/useAuth';
 import { HashtagTypeWithIds, UserTypeWithIds } from '@/types/model';
 import {
-  Avatar,
   Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
-  ModalHeader,
-  useDisclosure,
-  User
+  ModalHeader
 } from '@nextui-org/react';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Mention, MentionsInput, SuggestionDataItem } from 'react-mentions';
 import MentionForm from './common/MentionForm';
 import { UsersHelper } from '@/helpers/users';
 
@@ -36,7 +30,6 @@ export type TweepForm = {
 
 const CreateTweepModal = (props: CreateTweepModalProps) => {
   const { isOpen, onOpen, onOpenChange } = props;
-  const { user } = useAuth();
   const [hashtagItems, setHashtagItems] = useState<
     {
       id: string;

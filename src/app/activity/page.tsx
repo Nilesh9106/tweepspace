@@ -27,6 +27,7 @@ const Page = () => {
         </div>
       ) : (
         <Container>
+          <h1 className="text-2xl font-bold py-2 px-1">Notifications</h1>
           {notifications.map((notification, index) => (
             <ActivityCard
               key={notification._id}

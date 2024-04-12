@@ -14,6 +14,7 @@ export const parceText = (text: string) => {
     (match, username) =>
       `<a class="text-green-500 hover:underline clickable-tag" href="https://tweepspace.vercel.app/user/${username}">@${username}</a>`
   );
+  text = text.replace(/(?:\r\n|\r|\n)/g, '<br>');
 
   return text;
 };

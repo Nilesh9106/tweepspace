@@ -1,4 +1,5 @@
 'use client';
+import { webRoutes } from '@/constants/routes';
 import { AuthUser, loginForm, signUpForm } from '@/types/auth';
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 import { usePathname, useRouter } from 'next/navigation';
@@ -36,7 +37,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       if (isAxiosError(error)) {
         if (error.status === HttpStatusCode.Unauthorized) {
           signOut();
-          router.push('/auth');
+          router.push(webRoutes.auth.login);
         }
         console.log(error.response?.data);
       } else {
@@ -57,7 +58,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         followers: data.user.followers
       });
       toast.success('Logged in successfully');
-      router.push('/');
+      router.push(webRoutes.home);
     } catch (error) {
       if (isAxiosError(error)) {
         console.log(error.response?.data);
@@ -81,7 +82,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         followers: data.user.followers
       });
       toast.success('Signed up successfully');
-      router.push('/');
+      router.push(webRoutes.home);
     } catch (error) {
       if (isAxiosError(error)) {
         console.log(error.response?.data);
@@ -98,7 +99,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       const { data } = await axios.get('/api/auth/logout');
       setUser(null);
       toast.success('Logged out successfully');
-      router.push('/auth');
+      router.push(webRoutes.auth.login);
       console.log(data);
     } catch (error) {
       if (isAxiosError(error)) {

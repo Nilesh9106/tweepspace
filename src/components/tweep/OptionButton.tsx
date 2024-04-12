@@ -1,3 +1,4 @@
+import { webRoutes } from '@/constants/routes';
 import { TweepHelper } from '@/helpers/tweeps';
 import useAuth from '@/hooks/useAuth';
 import { TweepType } from '@/types/model';
@@ -60,7 +61,7 @@ const OptionButton = (props: OptionButtonProps) => {
     if (key === 'delete') {
       handleDelete();
     } else if (key === 'view') {
-      router.push(`/tweep/${props.tweep._id}`);
+      router.push(webRoutes.tweep(props.tweep._id));
     }
   };
   return (

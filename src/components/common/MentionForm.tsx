@@ -1,7 +1,7 @@
 import { mentionStyleDark } from '@/constants/mentionStyle';
 import useAuth from '@/hooks/useAuth';
 import { HashtagTypeWithIds, UserTypeWithIds } from '@/types/model';
-import { Avatar } from '@nextui-org/react';
+import { Avatar, User } from '@nextui-org/react';
 import React from 'react';
 import { Mention, MentionItem, MentionsInput } from 'react-mentions';
 
@@ -106,12 +106,18 @@ const MentionForm = (props: MentionFormProps) => {
                 const user = props.users.find(user => user.username === item.id);
                 return (
                   <div
-                    className={`p-2 text-xs ${
+                    className={`${
                       focused ? 'bg-neutral-700' : 'bg-neutral-800'
-                    } transition-all w-full`}
+                    } transition-all w-full flex  items-center p-2`}
                   >
-                    <div>@{item.id}</div>
-                    <div>{user?.email}</div>
+                    <User
+                      name={user?.username}
+                      description={user?.name ?? undefined}
+                      avatarProps={{
+                        src: user?.profile_picture,
+                        size: 'sm'
+                      }}
+                    />
                   </div>
                 );
               }}

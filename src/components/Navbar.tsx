@@ -8,6 +8,7 @@ import { SignInOrUser } from './SigninOrUser';
 import Link from 'next/link';
 import CreateTweepModal from './CreateTweep';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
+import { webRoutes } from '@/constants/routes';
 
 const Navbar = () => {
   const path = usePathname();
@@ -15,9 +16,9 @@ const Navbar = () => {
   const router = useRouter();
   return (
     <>
-      {path !== '/auth' ? (
+      {path !== webRoutes.auth.login ? (
         <nav className="flex z-50 sm:justify-around justify-between max-sm:p-4 items-center bg-background sticky top-0">
-          <Link href={'/'} className="flex gap-2 items-center">
+          <Link href={webRoutes.home} className="flex gap-2 items-center">
             <Image
               src={'/tweeps.png'}
               alt="TweepsSpace"
@@ -35,9 +36,9 @@ const Navbar = () => {
                 disableRipple
                 className="py-2 sm:w-20 max-sm:flex-1 box-content"
                 as={Link}
-                href="/"
+                href={webRoutes.home}
               >
-                {path === '/' ? (
+                {path === webRoutes.home ? (
                   <PiHouseFill size={25} className="font-bold " />
                 ) : (
                   <PiHouse size={25} className={`font-bold text-default-400`} />
@@ -52,9 +53,9 @@ const Navbar = () => {
                 disableRipple
                 className="py-2 sm:w-20 max-sm:flex-1 box-content"
                 as={Link}
-                href="/explore"
+                href={webRoutes.explore}
               >
-                {path === '/explore' ? (
+                {path === webRoutes.explore ? (
                   <IoSearch size={25} className={`font-bold`} />
                 ) : (
                   <IoSearch size={25} className="font-bold text-default-400" />
@@ -80,9 +81,9 @@ const Navbar = () => {
                 disableRipple
                 className="py-2 sm:w-20 max-sm:flex-1 box-content"
                 as={Link}
-                href="/activity"
+                href={webRoutes.activity}
               >
-                {path === '/activity' ? (
+                {path === webRoutes.activity ? (
                   <FaHeart size={25} className={`font-bold`} />
                 ) : (
                   <FaRegHeart size={25} className="font-bold text-default-400" />

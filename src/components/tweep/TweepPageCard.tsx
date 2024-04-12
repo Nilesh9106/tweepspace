@@ -11,6 +11,7 @@ import ShareButton from './ShareButton';
 import TweepLikeButton from './TweepLikeButton';
 import TweepText from './TweepText';
 import { useRouter } from 'next-nprogress-bar';
+import { webRoutes } from '@/constants/routes';
 
 type TweepPageCardProps = {
   tweep: TweepType;
@@ -54,7 +55,7 @@ const TweepCard = (props: TweepPageCardProps) => {
       className={`flex  sm:gap-2 ${!props.inPage ? 'cursor-pointer' : ''}`}
       onClick={() => {
         if (props.inPage) return;
-        router.push(`/tweep/${props.tweep._id}`);
+        router.push(webRoutes.tweep(props.tweep._id));
       }}
     >
       <div className="w-11 flex flex-col  items-center gap-2">
@@ -73,7 +74,7 @@ const TweepCard = (props: TweepPageCardProps) => {
             >
               <Link
                 onClick={e => e.stopPropagation()}
-                href={`user/${props.tweep.author.username}`}
+                href={webRoutes.user(props.tweep.author.username)}
                 className="hover:underline underline-offset-2 cursor-pointer "
               >
                 {props.tweep.author.username}

@@ -7,6 +7,7 @@ import TweepPageCard from './TweepPageCard';
 import { Divider } from '@nextui-org/react';
 import { useRouter } from 'next-nprogress-bar';
 import Container from '../Container';
+import { webRoutes } from '@/constants/routes';
 
 const TweepPage = ({ id }: { id: string }) => {
   const [loading, setLoading] = useState(false);
@@ -36,7 +37,7 @@ const TweepPage = ({ id }: { id: string }) => {
     <Container>
       <TweepPageCard
         onDelete={() => {
-          router.push('/');
+          router.push(webRoutes.home);
         }}
         tweep={{ ...tweep }}
         onTweepChange={setTweep}

@@ -16,6 +16,7 @@ import { useRouter } from 'next-nprogress-bar';
 import { TweepForm } from '../CreateTweep';
 import { TweepHelper } from '@/helpers/tweeps';
 import toast from 'react-hot-toast';
+import { webRoutes } from '@/constants/routes';
 
 type CommentsButtonProps = {
   tweep: TweepType;
@@ -46,7 +47,7 @@ const CommentsButton = (props: CommentsButtonProps) => {
           props.addReply(res);
         }
       } else {
-        router.push(`/tweep/${props.tweep._id}`);
+        router.push(webRoutes.tweep(props.tweep._id));
       }
     }
     setLoading(false);
@@ -96,7 +97,7 @@ const CommentsButton = (props: CommentsButtonProps) => {
                   onTweepChange={props.onTweepChange}
                   tweep={props.tweep}
                   onDelete={() => {
-                    router.push('/');
+                    router.push(webRoutes.home);
                   }}
                   showLine={true}
                   commentMode={true}

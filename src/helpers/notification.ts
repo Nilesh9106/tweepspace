@@ -9,7 +9,6 @@ export class NotificationHelper {
   });
   static markAsRead = errorHandler(async (id: string) => {
     const { data } = await axios.put(`/api/notifications/${id}`);
-    toast.success('Notification marked as read');
     return data;
   });
   static deleteNotification = errorHandler(async (id: string) => {

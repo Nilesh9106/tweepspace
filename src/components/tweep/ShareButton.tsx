@@ -11,8 +11,6 @@ import {
 import {
   EmailIcon,
   EmailShareButton,
-  FacebookIcon,
-  FacebookShareButton,
   LinkedinIcon,
   LinkedinShareButton,
   RedditIcon,
@@ -33,7 +31,6 @@ type TweepReTweepButtonProps = {
 
 const ShareButton = (props: TweepReTweepButtonProps) => {
   const url = `https://tweepspace.vercel.app/tweep/${props.tweep._id}`;
-  const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <>
@@ -43,7 +40,7 @@ const ShareButton = (props: TweepReTweepButtonProps) => {
           e.stopPropagation();
         }}
       >
-        <Popover isOpen={isOpen} onOpenChange={open => setIsOpen(open)} backdrop="blur" showArrow>
+        <Popover backdrop="blur" showArrow>
           <PopoverTrigger>
             <Button
               isIconOnly
@@ -52,7 +49,6 @@ const ShareButton = (props: TweepReTweepButtonProps) => {
               disableRipple
               radius="full"
               color="secondary"
-              onPress={() => setIsOpen(true)}
             >
               <FiSend
                 size={18}
@@ -108,22 +104,8 @@ const ShareButton = (props: TweepReTweepButtonProps) => {
                 </TelegramShareButton>
               </div>
               <Divider />
-              <Snippet
-                variant="flat"
-                hideSymbol
-                radius="sm"
-                onCopy={e => {
-                  setTimeout(() => {
-                    setIsOpen(false);
-                  }, 600);
-                }}
-              >
-                <div
-                  className=" px-3 py-2 text-[13px] sm:max-w-80 max-w-64 truncate"
-                  onCopy={e => setIsOpen(false)}
-                >
-                  {url}
-                </div>
+              <Snippet variant="flat" hideSymbol radius="sm">
+                <div className=" px-3 py-2 text-[13px] sm:max-w-80 max-w-64 truncate">{url}</div>
               </Snippet>
             </div>
           </PopoverContent>

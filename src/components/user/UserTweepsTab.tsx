@@ -9,8 +9,8 @@ export const TweepSkeleton = () => {
         <Skeleton className="flex rounded-full w-12 h-12" />
       </div>
       <div className="w-full flex flex-col gap-2">
-        <Skeleton className="h-5 w-2/5 rounded-lg" />
-        <Skeleton className="h-5 w-4/5 rounded-lg" />
+        <Skeleton className="h-5 w-3/5 rounded-lg" />
+        <Skeleton className="h-5 w-full rounded-lg" />
       </div>
     </div>
   );

@@ -11,8 +11,8 @@ const TweepSkeleton = () => {
         <Skeleton className="flex rounded-full w-12 h-12" />
       </div>
       <div className="w-full flex flex-col gap-2">
-        <Skeleton className="h-5 w-2/5 rounded-lg" />
-        <Skeleton className="h-5 w-4/5 rounded-lg" />
+        <Skeleton className="h-5 w-3/5 rounded-lg" />
+        <Skeleton className="h-5 w-full rounded-lg" />
       </div>
     </div>
   );
@@ -28,9 +28,11 @@ type TweepListProps = {
 const TweepList = ({ loading, tweeps, setTweeps, showParent }: TweepListProps) => {
   return (
     <Container>
-      {loading
-        ? Array.from({ length: 10 }).map((_, ind) => <TweepSkeleton key={ind} />)
-        : tweeps.map((tweep, index) => {
+      {loading ? (
+        Array.from({ length: 10 }).map((_, ind) => <TweepSkeleton key={ind} />)
+      ) : (
+        <>
+          {tweeps.map((tweep, index) => {
             return (
               <div key={tweep._id} className="flex flex-col gap-2">
                 <TweepPageCard
@@ -52,6 +54,9 @@ const TweepList = ({ loading, tweeps, setTweeps, showParent }: TweepListProps) =
               </div>
             );
           })}
+          {tweeps.length === 0 && <p className="text-center text-gray-500">No tweeps found</p>}
+        </>
+      )}
     </Container>
   );
 };
