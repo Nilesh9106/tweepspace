@@ -20,15 +20,15 @@ const TweepSkeleton = () => {
 
 type TweepListProps = {
   loading: boolean;
-  tweeps: TweepType[];
-  setTweeps: React.Dispatch<React.SetStateAction<TweepType[]>>;
+  tweeps: TweepType[] | undefined;
+  setTweeps: React.Dispatch<React.SetStateAction<TweepType[] | undefined>>;
   showParent?: boolean;
 };
 
 const TweepList = ({ loading, tweeps, setTweeps, showParent }: TweepListProps) => {
   return (
     <Container>
-      {loading ? (
+      {loading || !tweeps ? (
         Array.from({ length: 10 }).map((_, ind) => <TweepSkeleton key={ind} />)
       ) : (
         <>
