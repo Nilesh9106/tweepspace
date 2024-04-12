@@ -13,6 +13,9 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import MentionForm from './common/MentionForm';
 import { UsersHelper } from '@/helpers/users';
+import { FaImage } from 'react-icons/fa6';
+import { useRouter } from 'next-nprogress-bar';
+import { webRoutes } from '@/constants/routes';
 
 type CreateTweepModalProps = {
   isOpen: boolean;
@@ -27,8 +30,15 @@ export type TweepForm = {
   attachments: string[];
   parent_tweep?: string;
 };
+const createTweepIV = {
+  attachments: [],
+  content: '',
+  hashtags: [],
+  mentions: []
+};
 
 const CreateTweepModal = (props: CreateTweepModalProps) => {
+  const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = props;
   const [hashtagItems, setHashtagItems] = useState<
     {
@@ -38,12 +48,7 @@ const CreateTweepModal = (props: CreateTweepModalProps) => {
   >([]);
   const [hashtags, setHashtags] = useState<HashtagTypeWithIds[]>([]);
   const [users, setUsers] = useState<UserTypeWithIds[]>([]);
-  const [tweep, setTweep] = useState<TweepForm>({
-    attachments: [],
-    content: '',
-    hashtags: [],
-    mentions: []
-  });
+  const [tweep, setTweep] = useState<TweepForm>(createTweepIV);
   const [loading, setLoading] = useState(false);
 
   const getData = async () => {
@@ -61,7 +66,9 @@ const CreateTweepModal = (props: CreateTweepModalProps) => {
     setLoading(true);
     const response = await TweepHelper.createTweep(tweep);
     if (response) {
+      setTweep(createTweepIV);
       toast.success('Tweep created successfully');
+      router.push(webRoutes.tweep(response._id));
     }
     setLoading(false);
   };
@@ -84,30 +91,36 @@ const CreateTweepModal = (props: CreateTweepModalProps) => {
             <>
               <ModalHeader className="flex flex-col gap-1">Create Tweep</ModalHeader>
               <ModalBody>
-                <MentionForm
-                  value={tweep.content}
-                  onChange={(e, newValue, newPTvalue, mentions) => {
-                    let filteredUsers: string[] = [];
-                    mentions
-                      .filter(m => m.childIndex == 1)
-                      .map(m => {
-                        const user = users.find(user => user.username === m.id);
-                        if (user) {
-                          filteredUsers.push(user._id);
-                        }
-                      });
-                    setTweep(prev => ({
-                      ...prev,
-                      content: e.target.value,
-                      hashtags: mentions.filter(m => m.childIndex == 0).map(m => m.id),
-                      mentions: filteredUsers
-                    }));
-                  }}
-                  hashtagItems={hashtagItems}
-                  hashtags={hashtags}
-                  userItems={users.map(user => ({ id: user.username, display: user.username }))}
-                  users={users}
-                />
+                <div>
+                  <MentionForm
+                    images={tweep.attachments}
+                    setImages={images => {
+                      setTweep(prev => ({ ...prev, attachments: images }));
+                    }}
+                    value={tweep.content}
+                    onChange={(e, newValue, newPTvalue, mentions) => {
+                      let filteredUsers: string[] = [];
+                      mentions
+                        .filter(m => m.childIndex == 1)
+                        .map(m => {
+                          const user = users.find(user => user.username === m.id);
+                          if (user) {
+                            filteredUsers.push(user._id);
+                          }
+                        });
+                      setTweep(prev => ({
+                        ...prev,
+                        content: e.target.value,
+                        hashtags: mentions.filter(m => m.childIndex == 0).map(m => m.id),
+                        mentions: filteredUsers
+                      }));
+                    }}
+                    hashtagItems={hashtagItems}
+                    hashtags={hashtags}
+                    userItems={users.map(user => ({ id: user.username, display: user.username }))}
+                    users={users}
+                  />
+                </div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>

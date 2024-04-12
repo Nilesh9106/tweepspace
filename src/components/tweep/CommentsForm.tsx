@@ -29,6 +29,10 @@ const CommentsForm = (props: CommentsFormProps) => {
 
   return (
     <MentionForm
+      images={props.form.attachments}
+      setImages={(images: string[]) => {
+        props.setForm(prev => ({ ...prev, attachments: images }));
+      }}
       value={props.form.content}
       onChange={(e, newValue, newPTvalue, mentions) => {
         let filteredUsers: string[] = [];

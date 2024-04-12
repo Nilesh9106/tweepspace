@@ -4,7 +4,9 @@ import Tweep from '@/models/tweep';
 import { MyRequest } from '@/types/requestTypes';
 import { authenticate } from '@/utils/middleware';
 import { dbConnect } from '@/utils/mongodb';
+import { upload } from '@/utils/upload';
 import { HttpStatusCode } from 'axios';
+import { UploadApiResponse } from 'cloudinary';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -45,6 +47,8 @@ export const POST = authenticate(async (req: MyRequest) => {
   }
   const data = body.data;
   await dbConnect();
+  let attachments = data.attachments;
+  data.attachments = [];
   let t = await Tweep.create(data);
   if (!t) {
     return NextResponse.json(
@@ -52,6 +56,16 @@ export const POST = authenticate(async (req: MyRequest) => {
       { status: HttpStatusCode.BadRequest }
     );
   }
+  let newAttachments = await Promise.all(
+    attachments.map((attachment: string, index) => {
+      if (!attachment.startsWith('data:image')) return attachment;
+      return upload(attachment, 'tweep', `${t._id as string}_${index}`);
+    })
+  );
+  t.attachments = newAttachments.map(attachment => {
+    return (attachment as UploadApiResponse).url ?? attachment;
+  });
+  t.save();
   const tweep = await Tweep.findById(t._id).populate('author');
   if (!tweep) {
     return NextResponse.json(

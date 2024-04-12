@@ -4,6 +4,7 @@ import Tweep from '@/models/tweep';
 import { MyRequest } from '@/types/requestTypes';
 import { authenticate } from '@/utils/middleware';
 import { dbConnect } from '@/utils/mongodb';
+import { deleteImage } from '@/utils/upload';
 import { HttpStatusCode } from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -52,6 +53,13 @@ export const DELETE = authenticate(
       );
     }
     await tweep.deleteOne();
+    if (tweep.attachments) {
+      await Promise.all(
+        tweep.attachments.map(image => {
+          return deleteImage(image);
+        })
+      );
+    }
     await Hashtag.updateMany(
       { hashtag: { $in: tweep.hashtags } },
       { $pull: { tweeps: tweep._id } }

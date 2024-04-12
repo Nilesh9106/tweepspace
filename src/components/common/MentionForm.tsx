@@ -1,8 +1,12 @@
-import { mentionStyleDark } from '@/constants/mentionStyle';
+import { getMentionStyleDark } from '@/constants/mentionStyle';
 import useAuth from '@/hooks/useAuth';
 import { HashtagTypeWithIds, UserTypeWithIds } from '@/types/model';
-import { Avatar, User } from '@nextui-org/react';
-import React from 'react';
+import { toBase64 } from '@/utils/parceText';
+import { Avatar, Button, Divider, Image, User } from '@nextui-org/react';
+import { useTheme } from 'next-themes';
+import React, { useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import { FaImage } from 'react-icons/fa6';
 import { Mention, MentionItem, MentionsInput } from 'react-mentions';
 
 type MentionFormProps = {
@@ -17,6 +21,8 @@ type MentionFormProps = {
     newPTvalue: string,
     mentions: MentionItem[]
   ) => void;
+  images: string[];
+  setImages: (images: string[]) => void;
   hashtagItems: {
     id: string;
     display: string;
@@ -31,13 +37,15 @@ type MentionFormProps = {
 
 const MentionForm = (props: MentionFormProps) => {
   const { user } = useAuth();
+  const { theme } = useTheme();
+  const fileRef = useRef<HTMLInputElement>(null);
   return (
     <>
       <div className="flex  sm:gap-2 ">
         <div className="w-11 flex flex-col  items-center gap-2">
           <Avatar src={user?.profile_picture} size="md" alt={user?.username} />
         </div>
-        <div className="flex-1  px-3 pb-2 sm:text-[15px] text-sm ">
+        <div className="flex-1  px-3 pb-2 sm:text-[15px] text-sm flex flex-col gap-1 ">
           <div className="flex justify-start mb-2">
             <div className="flex gap-2 ">
               <div className="hover:underline underline-offset-2 cursor-pointer ">
@@ -48,7 +56,7 @@ const MentionForm = (props: MentionFormProps) => {
           <MentionsInput
             value={props.value}
             onChange={props.onChange}
-            style={mentionStyleDark}
+            style={getMentionStyleDark(theme ?? 'dark')}
             placeholder="What's on your mind?"
             allowSuggestionsAboveCursor
           >
@@ -65,7 +73,7 @@ const MentionForm = (props: MentionFormProps) => {
                 callback([{ id: q, display: q }, ...tags]);
               }}
               style={{
-                backgroundColor: '#313131',
+                backgroundColor: theme === 'dark' ? '#313131' : '#eee',
                 padding: '2px 0px 2px 2px',
                 borderRadius: '4px'
               }}
@@ -76,7 +84,9 @@ const MentionForm = (props: MentionFormProps) => {
                 return (
                   <div
                     className={`p-2 text-xs ${
-                      focused ? 'bg-neutral-700' : 'bg-neutral-800'
+                      focused
+                        ? 'dark:bg-neutral-700 bg-neutral-300'
+                        : 'dark:bg-neutral-800 bg-neutral-200'
                     } transition-all w-full`}
                   >
                     <div>#{item.id}</div>
@@ -97,7 +107,7 @@ const MentionForm = (props: MentionFormProps) => {
                 );
               }}
               style={{
-                backgroundColor: '#313131',
+                backgroundColor: theme === 'dark' ? '#313131' : '#eee',
                 padding: '2px 0px 2px 2px',
                 borderRadius: '4px'
               }}
@@ -107,7 +117,9 @@ const MentionForm = (props: MentionFormProps) => {
                 return (
                   <div
                     className={`${
-                      focused ? 'bg-neutral-700' : 'bg-neutral-800'
+                      focused
+                        ? 'dark:bg-neutral-700 bg-neutral-300'
+                        : 'dark:bg-neutral-800 bg-neutral-200'
                     } transition-all w-full flex  items-center p-2`}
                   >
                     <User
@@ -123,6 +135,41 @@ const MentionForm = (props: MentionFormProps) => {
               }}
             />
           </MentionsInput>
+          <Button
+            isIconOnly
+            size="sm"
+            radius="full"
+            variant="light"
+            onPress={() => fileRef.current?.click()}
+          >
+            <FaImage size={18} className="text-default-700" />
+          </Button>
+          <input
+            type="file"
+            onChange={async e => {
+              if (e.target.files && e.target.files.length > 0) {
+                const file = e.target.files[0];
+                if (file.size > 10000000) {
+                  toast.error('Image size should be less than 10MB');
+                  return;
+                }
+                try {
+                  const base64 = await toBase64(file);
+                  props.setImages([base64]);
+                } catch (error) {
+                  console.log(error);
+                }
+              }
+            }}
+            ref={fileRef}
+            hidden
+            accept="image/*"
+          />
+          {props.images.length > 0 && (
+            <div className="flex justify-center">
+              <Image src={props.images[0]} alt="image" width={'100%'} />
+            </div>
+          )}
         </div>
       </div>
     </>

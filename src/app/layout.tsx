@@ -15,12 +15,13 @@ export const metadata: Metadata = {
   title: 'Tweep Space - Where Conversations Flourish',
   description:
     'Tweepspace is a vibrant social media platform where users can connect, share thoughts, and engage in conversations with a diverse community of like-minded individuals. Join us to discover trending topics, share insights, and foster meaningful connections in a streamlined and engaging environment. Sign up now to be part of the conversation on Tweepspace!',
-  applicationName: 'Tweep Space',
+  applicationName: 'Tweepspace',
   referrer: 'origin-when-cross-origin',
   keywords: [
-    'social media platform',
     'tweeps',
+    'tweepspace',
     'tweep space',
+    'social media platform',
     'connections',
     'conversations',
     'engagement',
@@ -34,6 +35,7 @@ export const metadata: Metadata = {
     index: true,
     follow: true
   },
+  manifest: '/site.webmanifest',
   openGraph: {
     title: 'Tweepspace - Where Conversations Flourish',
     description:

@@ -12,9 +12,11 @@ export const upload = async (base64: string, folder: 'profile' | 'tweep', id: st
     let transformation: TransformationOptions | undefined = undefined;
     if (folder === 'profile') {
       transformation = [{ width: 500, height: 500, crop: 'scale' }];
+    } else {
+      transformation = [{ width: 500, crop: 'scale' }];
     }
     let uploaded = await cloudinary.uploader.upload(base64, {
-      public_id: `${id}_${folder}`,
+      public_id: id,
       folder: folder,
       overwrite: true,
       transformation: transformation
@@ -28,8 +30,7 @@ export const upload = async (base64: string, folder: 'profile' | 'tweep', id: st
 export const deleteImage = async (imageUrl: string) => {
   try {
     let temp = imageUrl.split('/');
-    let public_id = temp[temp.length - 2] + temp[temp.length - 1].split('.')[0];
-
+    let public_id = temp[temp.length - 2] + '/' + temp[temp.length - 1].split('.')[0];
     let deleted = await cloudinary.uploader.destroy(public_id);
     return deleted;
   } catch (err) {
