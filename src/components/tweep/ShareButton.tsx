@@ -1,5 +1,5 @@
 import { TweepType } from '@/types/model';
-import { parceText } from '@/utils/parceText';
+import { parseText } from '@/utils/parseText';
 import {
   Button,
   Divider,
@@ -90,7 +90,7 @@ const ShareButton = (props: TweepReTweepButtonProps) => {
                 <EmailShareButton
                   url={url}
                   subject={`Checkout this tweep by ${props.tweep.author.username}\n`}
-                  body={`${parceText(props.tweep.content)}\n\n${url}`}
+                  body={`${parseText(props.tweep.content)}\n\n${url}`}
                   blankTarget
                 >
                   <EmailIcon size={40} round />

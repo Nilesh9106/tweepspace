@@ -1,7 +1,7 @@
 import { getMentionStyleDark } from '@/constants/mentionStyle';
 import useAuth from '@/hooks/useAuth';
 import { HashtagTypeWithIds, UserTypeWithIds } from '@/types/model';
-import { toBase64 } from '@/utils/parceText';
+import { toBase64 } from '@/utils/parseText';
 import { Avatar, Button, Divider, Image, User } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
 import React, { useRef, useState } from 'react';

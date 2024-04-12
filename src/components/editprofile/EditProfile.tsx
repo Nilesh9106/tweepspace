@@ -9,7 +9,7 @@ import { Avatar, Badge, Button, Textarea } from '@nextui-org/react';
 import TweepInput from '../common/TweepInput';
 import { BiMinus } from 'react-icons/bi';
 import toast from 'react-hot-toast';
-import { toBase64 } from '@/utils/parceText';
+import { toBase64 } from '@/utils/parseText';
 
 const EditProfile = () => {
   const { user } = useAuth();

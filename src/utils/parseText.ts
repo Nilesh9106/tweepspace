@@ -1,7 +1,7 @@
 const hashtagRegex = /\^\^\^@@@([^]+?)@@@\^\^\^/g;
 const mentionRegex = /\^\^\^###([^]+?)###\^\^\^/g;
 
-export const parceText = (text: string) => {
+export const parseText = (text: string) => {
   text = text.replace(
     hashtagRegex,
     (match, tag) =>
@@ -16,6 +16,15 @@ export const parceText = (text: string) => {
   );
   text = text.replace(/(?:\r\n|\r|\n)/g, '<br>');
 
+  return text;
+};
+
+export const parseTextWithoutHtml = (text: string) => {
+  text = text.replace(hashtagRegex, (match, tag) => `#${tag}`);
+
+  // Replace mentions with clickable links
+  text = text.replace(mentionRegex, (match, username) => `@${username}`);
+  text = text.replace(/(?:\r\n|\r|\n)/g, ' ');
   return text;
 };
 
