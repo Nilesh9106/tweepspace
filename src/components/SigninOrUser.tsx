@@ -55,17 +55,6 @@ export const SignInOrUser = () => {
         <DropdownItem showDivider key="settings" className="px-3">
           Settings
         </DropdownItem>
-        <DropdownItem showDivider key="theme" className="px-3" closeOnSelect={false}>
-          <Popover placement="left">
-            <PopoverTrigger>Theme</PopoverTrigger>
-            <PopoverContent>
-              <div className="px-1 py-2">
-                <div className="text-small font-bold">Popover Content</div>
-                <div className="text-tiny">This is the popover content</div>
-              </div>
-            </PopoverContent>
-          </Popover>
-        </DropdownItem>
         <DropdownItem onClick={signOut} key="logout" color="danger" className="px-3">
           Log Out
         </DropdownItem>

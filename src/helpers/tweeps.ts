@@ -1,4 +1,4 @@
-import { TweepType } from '@/types/model';
+import { TweepType, UserTypeWithIds } from '@/types/model';
 import { errorHandler } from '@/utils/handlers';
 import axios from 'axios';
 
@@ -56,5 +56,13 @@ export class TweepHelper {
       tweepId: tweepId
     });
     return data;
+  });
+  static getLikes = errorHandler(async (tweepId: string) => {
+    const { data } = await axios.get(`/api/tweeps/${tweepId}/getLikes`);
+    return data.likes as UserTypeWithIds[];
+  });
+  static getRetweeps = errorHandler(async (tweepId: string) => {
+    const { data } = await axios.get(`/api/tweeps/${tweepId}/getRetweeps`);
+    return data.retweeps as UserTypeWithIds[];
   });
 }

@@ -12,6 +12,8 @@ import TweepLikeButton from './TweepLikeButton';
 import TweepText from './TweepText';
 import { useRouter } from 'next-nprogress-bar';
 import { webRoutes } from '@/constants/routes';
+import RetweepList from './RetweepList';
+import LikedByList from './LikedByList';
 
 type TweepPageCardProps = {
   tweep: TweepType;
@@ -108,14 +110,10 @@ const TweepCard = (props: TweepPageCardProps) => {
           <ShareButton tweep={props.tweep} />
         </div>
 
-        <div className="text-default-400 *:transition-all px-1">
-          <span className="cursor-pointer hover:text-default-300">
-            {props.tweep.retweeps?.length ?? 0} ReTweeps
-          </span>{' '}
-          •{' '}
-          <span className="cursor-pointer hover:text-default-300">
-            {props.tweep.likes?.length ?? 0} Likes
-          </span>
+        <div className="flex gap-2 *:transition-all px-1">
+          <RetweepList tweep={props.tweep} />
+          •
+          <LikedByList tweep={props.tweep} />
         </div>
       </div>
     </div>

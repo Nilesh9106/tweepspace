@@ -1,5 +1,5 @@
 'use client';
-import { Avatar } from '@nextui-org/react';
+import { Avatar, Button } from '@nextui-org/react';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import FollowButton from '../common/FollowButton';
@@ -8,6 +8,8 @@ import { UsersHelper } from '@/helpers/users';
 import { HashLoader } from 'react-spinners';
 import UserTweepsTab from './UserTweepsTab';
 import Container from '../Container';
+import FollowerButton from './FollowerButton';
+import FollowingButton from './FollowingButton';
 
 const UserProfile = () => {
   const { username }: { username: string } = useParams();
@@ -47,14 +49,8 @@ const UserProfile = () => {
           </div>
           <div className="flex flex-col gap-4">
             <p>{user.bio}</p>
-            <div className="text-default-400 *:transition-all px-1">
-              <span className="cursor-pointer hover:text-default-300">
-                {user.followers?.length} Followers
-              </span>{' '}
-              •{' '}
-              <span className="cursor-pointer hover:text-default-300">
-                {user.following?.length} Following
-              </span>
+            <div className="flex gap-2 *:transition-all px-1">
+              <FollowerButton user={user} /> • <FollowingButton user={user} />
             </div>
           </div>
           <FollowButton isProfile userToFollow={user!} />
