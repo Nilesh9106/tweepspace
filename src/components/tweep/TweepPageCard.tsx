@@ -14,6 +14,7 @@ import { useRouter } from 'next-nprogress-bar';
 import { webRoutes } from '@/constants/routes';
 import RetweepList from './RetweepList';
 import LikedByList from './LikedByList';
+import ImageViewer from '../common/ImageViewer';
 
 type TweepPageCardProps = {
   tweep: TweepType;
@@ -72,6 +73,7 @@ const TweepCard = (props: TweepPageCardProps) => {
             <Tooltip
               closeDelay={100}
               delay={500}
+              onClick={e => e.stopPropagation()}
               content={<UserPopover user={props.tweep.author} />}
             >
               <Link
@@ -91,9 +93,9 @@ const TweepCard = (props: TweepPageCardProps) => {
           </div>
         </div>
         <TweepText text={props.tweep.content} />
-        {props.tweep.attachments?.length ? (
-          <div className="my-3">
-            <Image radius="md" loading="lazy" src={props.tweep.attachments[0]} alt={'TweepSpace'} />
+        {props.tweep.attachments && props.tweep.attachments.length > 0 ? (
+          <div className="sm:-ml-16 -ml-14 flex">
+            <ImageViewer shift images={props.tweep.attachments} />
           </div>
         ) : null}
         <div className="flex gap-2 my-3">

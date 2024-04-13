@@ -6,8 +6,9 @@ import { Avatar, Button, Divider, Image, User } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
 import React, { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { FaImage } from 'react-icons/fa6';
+import { FaImage, FaTrash } from 'react-icons/fa6';
 import { Mention, MentionItem, MentionsInput } from 'react-mentions';
+import ImageViewer from './ImageViewer';
 
 type MentionFormProps = {
   value: string;
@@ -155,7 +156,7 @@ const MentionForm = (props: MentionFormProps) => {
                 }
                 try {
                   const base64 = await toBase64(file);
-                  props.setImages([base64]);
+                  props.setImages([...props.images, base64]);
                 } catch (error) {
                   console.log(error);
                 }
@@ -166,8 +167,34 @@ const MentionForm = (props: MentionFormProps) => {
             accept="image/*"
           />
           {props.images.length > 0 && (
-            <div className="flex justify-center">
-              <Image src={props.images[0]} alt="image" width={'100%'} />
+            <div className="flex min-w-full gap-3 overflow-x-scroll my-3 scrollbar-hide">
+              {props.images.map((image, index) => {
+                return (
+                  <div className="min-w-fit relative" key={index}>
+                    <Image
+                      radius="md"
+                      className="max-h-80 "
+                      loading="lazy"
+                      src={image}
+                      alt={'TweepSpace'}
+                    />
+                    <Button
+                      color="danger"
+                      variant="light"
+                      radius="full"
+                      isIconOnly
+                      onPress={() => {
+                        const newImages = [...props.images];
+                        newImages.splice(index, 1);
+                        props.setImages(newImages);
+                      }}
+                      className="absolute top-2 right-2 z-50"
+                    >
+                      <FaTrash size={18} />
+                    </Button>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

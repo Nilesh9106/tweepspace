@@ -1,5 +1,5 @@
 'use client';
-import { webRoutes } from '@/constants/routes';
+import { apiRoutes, webRoutes } from '@/constants/routes';
 import { AuthUser, loginForm, signUpForm } from '@/types/auth';
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 import { usePathname, useRouter } from 'next/navigation';
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         return;
       }
       console.log('checking token...');
-      const { data } = await axios.get('/api/auth');
+      const { data } = await axios.get(apiRoutes.auth.checkToken);
       console.log('token checked');
       setUser({
         id: data.user._id,
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const signIn = async (formData: loginForm) => {
     try {
-      const { data } = await axios.post('/api/auth/login', formData);
+      const { data } = await axios.post(apiRoutes.auth.login, formData);
       setUser({
         id: data.user._id,
         email: data.user.email,
@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
   const signUp = async (formData: signUpForm) => {
     try {
-      const { data } = await axios.post('/api/auth/signup', formData);
+      const { data } = await axios.post(apiRoutes.auth.signUp, formData);
       setUser({
         id: data.user._id,
         email: data.user.email,
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
   const signOut = async () => {
     try {
-      const { data } = await axios.get('/api/auth/logout');
+      const { data } = await axios.get(apiRoutes.auth.logout);
       setUser(null);
       toast.success('Logged out successfully');
       router.push(webRoutes.auth.login);

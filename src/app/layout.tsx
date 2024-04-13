@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
+import 'react-photo-view/dist/react-photo-view.css';
 import { Providers } from './providers';
 import Navbar from '@/components/Navbar';
 import { Toaster } from 'react-hot-toast';

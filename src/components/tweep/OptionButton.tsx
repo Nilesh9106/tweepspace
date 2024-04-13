@@ -71,7 +71,12 @@ const OptionButton = (props: OptionButtonProps) => {
           <BsThreeDots size={20} />
         </Button>
       </DropdownTrigger>
-      <DropdownMenu variant="light" aria-label="Static Actions" items={items}>
+      <DropdownMenu
+        variant="light"
+        aria-label="Static Actions"
+        items={items}
+        onClick={e => e.stopPropagation()}
+      >
         {item => (
           <DropdownItem
             key={item.key}

@@ -13,7 +13,7 @@ export const upload = async (base64: string, folder: 'profile' | 'tweep', id: st
     if (folder === 'profile') {
       transformation = [{ width: 500, height: 500, crop: 'scale' }];
     } else {
-      transformation = [{ width: 500, crop: 'scale' }];
+      transformation = [{ width: 1000, crop: 'scale' }];
     }
     let uploaded = await cloudinary.uploader.upload(base64, {
       public_id: id,
