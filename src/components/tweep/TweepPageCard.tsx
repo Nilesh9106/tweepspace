@@ -84,7 +84,7 @@ const TweepCard = (props: TweepPageCardProps) => {
                 {props.tweep.author.username}
               </Link>
             </Tooltip>
-            <span className="text-default-300 ">
+            <span className="text-default-400 ">
               <Moment fromNow>{props.tweep.created_at}</Moment>
             </span>
           </div>
