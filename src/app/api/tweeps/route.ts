@@ -51,7 +51,10 @@ export const POST = authenticate(async (req: MyRequest) => {
   await dbConnect();
   let attachments = data.attachments;
   data.attachments = [];
-  let t = await Tweep.create(data);
+  let t = await Tweep.create({
+    ...data,
+    created_at: new Date()
+  });
   if (!t) {
     return NextResponse.json(
       { message: 'Failed to create Tweep' },
