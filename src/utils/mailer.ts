@@ -177,7 +177,7 @@ export const sendMentionMail = (
           <div class="content">
           <h1>Mention Notification</h1>
           <p>Hello ${toName},</p>
-          <p>You have been mentioned in a tweet on Tweepspace by <a href="${Config.SITEURL}/user/${fromName}">${fromName}</a>.</p>
+          <p>You have been mentioned in a tweep on Tweepspace by <a href="${Config.SITEURL}/user/${fromName}">${fromName}</a>.</p>
           <p>Check it out and join the conversation!</p>
           <p><a href=${Config.SITEURL}/tweep/${tweetId} class="button">View Tweep</a></p>
           <p>Best regards,</p>

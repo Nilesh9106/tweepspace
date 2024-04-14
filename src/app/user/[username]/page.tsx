@@ -10,7 +10,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { username } = params;
   await dbConnect();
-  const user = await User.findOne({ username: username });
+  const user = await User.findOne({ username: username.toLowerCase() });
   if (!user) {
     notFound();
   }

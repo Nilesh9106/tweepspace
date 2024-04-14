@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tweepspace
 
-## Getting Started
+### Project Description
 
-First, run the development server:
+Tweepspace is a vibrant social media platform where users can connect, share thoughts, and engage in conversations. With features like user authentication, tweep posting with mentions and hashtags, hashtag search, and interaction options like likes, retweets, comments, and shares, Tweepspace provides a dynamic online community for discovering trending topics and connecting with like-minded individuals.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- Node.js and npm installed on your local machine.
+- MongoDB instance set up and accessible.
+- Basic knowledge of JavaScript, React, and Node.js.
+
+### Technologies Used
+
+- Next.js
+- MongoDB Atlas
+- mongoose
+- Tailwind CSS
+- cloudinary
+- nodemailer
+
+### Installation
+
+1. Clone the repository:
+
+```sh
+git clone https://github.com/Nilesh9106/tweepspace.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Navigate to the project directory:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+cd tweepspace
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. Install the dependencies:
 
-## Learn More
+```sh
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Create a `.env.local` file in the root directory and add the environment variables as mentioned in the config.ts file in `src` directory.
+5. Start the development server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sh
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+6. Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-## Deploy on Vercel
+### Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **User Authentication**: Secure user authentication system with email verification for seamless sign-up and login.
+- **Posting Tweeps**: Users can post concise messages, thoughts, and updates with functionality for mentioning users and using hashtags.
+- **Hashtag Search**: Explore tweeps by hashtags and discover trending topics.
+- **Interactions**: Engage with tweeps by liking, retweeting, commenting, and sharing.
+- **User Management**: Search for users and follow/unfollow them to stay updated on their posts.
+- **Notifications**: Receive notifications for actions such as follows, mentions, comments, and retweets.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Usage
+
+1. Sign up or log in to your account.
+2. Post tweeps to share your thoughts and updates, and utilize mentions and hashtags for enhanced visibility.
+3. Explore tweeps by hashtags to discover trending topics and engage with relevant content.
+4. Interact with tweeps by liking, retweeting, commenting, and sharing.
+5. Search for users and follow/unfollow them to stay updated on their posts and activities.
+6. Receive notifications for actions such as follows, mentions, comments, and retweets to stay informed and engaged.
+
+### Contact Information
+
+For inquiries or support, please contact:
+
+- [Email](mailto:nileshdarji28200@gmail.com)
+- [Twitter](https://twitter.com/thenileshdarji)
+- [github](https://github.com/Nilesh9106)
