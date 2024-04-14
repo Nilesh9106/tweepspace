@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     if (body.success) {
       const { username, password } = body.data;
       await dbConnect();
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ username: username.toLowerCase() });
       if (user) {
         if (!user.isVerified) {
           return NextResponse.json(

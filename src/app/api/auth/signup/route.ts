@@ -20,13 +20,13 @@ export async function POST(request: NextRequest) {
       const { email, username, password } = body.data;
       await dbConnect();
 
-      if (await User.findOne({ username })) {
+      if (await User.findOne({ username: username.toLowerCase() })) {
         return NextResponse.json(
           { message: 'username already exists' },
           { status: HttpStatusCode.BadRequest }
         );
       }
-      if (await User.findOne({ email })) {
+      if (await User.findOne({ email: email.toLowerCase() })) {
         return NextResponse.json(
           { message: 'email already exists' },
           { status: HttpStatusCode.BadRequest }
@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
       const emailToken = generateRandomToken(30);
       console.log(emailToken);
       const newUser = await User.create({
-        username,
-        email,
+        username: username.toLowerCase(),
+        email: email.toLowerCase(),
         password: password,
         emailToken: emailToken
       });
