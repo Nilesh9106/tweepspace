@@ -25,6 +25,7 @@ type TweepPageCardProps = {
   commentMode?: boolean;
   addReply?: (tweep: TweepType) => void;
   showParent?: boolean;
+  imageDisabled?: boolean;
 };
 
 const TweepPageCard = (props: TweepPageCardProps) => {
@@ -94,8 +95,13 @@ const TweepCard = (props: TweepPageCardProps) => {
         </div>
         <TweepText text={props.tweep.content} />
         {props.tweep.attachments && props.tweep.attachments.length > 0 ? (
-          <div className="sm:-ml-16 -ml-14 flex">
-            <ImageViewer shift images={props.tweep.attachments} />
+          <div
+            className="sm:-ml-16 -ml-14 flex"
+            onClick={e => {
+              e.stopPropagation();
+            }}
+          >
+            <ImageViewer disabled={props.imageDisabled} shift images={props.tweep.attachments} />
           </div>
         ) : null}
         <div className="flex gap-2 my-3">

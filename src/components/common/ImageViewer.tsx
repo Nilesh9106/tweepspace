@@ -5,6 +5,7 @@ import { PhotoProvider, PhotoView } from 'react-photo-view';
 type Props = {
   images: string[];
   shift?: boolean;
+  disabled?: boolean;
 };
 
 const ImageViewer = (props: Props) => {
@@ -23,7 +24,9 @@ const ImageViewer = (props: Props) => {
               <img
                 src={image}
                 alt="Tweepspace"
-                className="sm:max-h-64 max-h-48 min-w-fit max-w-full rounded-xl"
+                className={`sm:max-h-64 max-h-48 min-w-fit max-w-full rounded-xl ${
+                  props.disabled ? 'pointer-events-none' : ''
+                }`}
               ></img>
             </PhotoView>
           ))}

@@ -7,7 +7,7 @@ import {
   ModalHeader,
   useDisclosure
 } from '@nextui-org/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoChatbubbleOutline } from 'react-icons/io5';
 import TweepPageCard from './TweepPageCard';
 import { TweepType } from '@/types/model';
@@ -17,6 +17,7 @@ import { TweepForm } from '../CreateTweep';
 import { TweepHelper } from '@/helpers/tweeps';
 import toast from 'react-hot-toast';
 import { webRoutes } from '@/constants/routes';
+import { HashLoader } from 'react-spinners';
 
 type CommentsButtonProps = {
   tweep: TweepType;
@@ -25,9 +26,52 @@ type CommentsButtonProps = {
   addReply?: (tweep: TweepType) => void;
 };
 
+type Props = {
+  parentTweep: TweepType;
+  onTweepChange: (tweep: TweepType) => void;
+  tweep: TweepForm;
+  setTweep: React.Dispatch<React.SetStateAction<TweepForm>>;
+};
+
+const CommentsComponent = ({ onTweepChange, tweep, setTweep, parentTweep }: Props) => {
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
+
+  return (
+    <>
+      {loading ? (
+        <div className="w-full py-32 flex justify-center items-center">
+          <HashLoader color="#0070f3" loading={loading} size={50} />
+        </div>
+      ) : (
+        <>
+          <TweepPageCard
+            onTweepChange={onTweepChange}
+            tweep={parentTweep}
+            onDelete={() => {
+              router.push(webRoutes.home);
+            }}
+            showLine={true}
+            commentMode={true}
+            inPage={true}
+            imageDisabled={true}
+          />
+          <CommentsForm form={tweep} setForm={setTweep} tweep={parentTweep} />
+        </>
+      )}
+    </>
+  );
+};
+
 const CommentsButton = (props: CommentsButtonProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
   const [tweep, setTweep] = useState<TweepForm>({
     attachments: [],
@@ -38,7 +82,7 @@ const CommentsButton = (props: CommentsButtonProps) => {
   });
 
   const handleSubmit = async () => {
-    setLoading(true);
+    setSubmitting(true);
     const res = await TweepHelper.createTweep(tweep);
     if (res) {
       toast.success('Commented on Tweep successfully');
@@ -50,13 +94,14 @@ const CommentsButton = (props: CommentsButtonProps) => {
         router.push(webRoutes.tweep(props.tweep._id));
       }
     }
-    setLoading(false);
+    setSubmitting(false);
   };
+
   return (
     <div
       onClick={e => {
+        console.log('comment clicked');
         e.stopPropagation();
-        e.preventDefault();
       }}
     >
       <Button
@@ -93,25 +138,22 @@ const CommentsButton = (props: CommentsButtonProps) => {
             <>
               <ModalHeader className="flex flex-col gap-1">Comment on Tweep</ModalHeader>
               <ModalBody>
-                <TweepPageCard
-                  onTweepChange={props.onTweepChange}
-                  tweep={props.tweep}
-                  onDelete={() => {
-                    router.push(webRoutes.home);
-                  }}
-                  showLine={true}
-                  commentMode={true}
-                  inPage={true}
-                />
-                <CommentsForm form={tweep} setForm={setTweep} tweep={props.tweep} />
+                {isOpen ? (
+                  <CommentsComponent
+                    onTweepChange={props.onTweepChange}
+                    parentTweep={props.tweep}
+                    setTweep={setTweep}
+                    tweep={tweep}
+                  />
+                ) : null}
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
                 <Button
-                  isLoading={loading}
-                  disabled={loading}
+                  isLoading={submitting}
+                  disabled={submitting}
                   color="primary"
                   onPress={() => {
                     handleSubmit().then(() => {
