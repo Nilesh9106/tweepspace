@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       await dbConnect();
       const user = await User.findOne({ username });
       if (user) {
-        if (user.emailToken !== null) {
+        if (!user.isVerified) {
           return NextResponse.json(
             { message: 'Please verify your email to login' },
             { status: HttpStatusCode.Unauthorized }

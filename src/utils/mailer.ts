@@ -83,3 +83,220 @@ export const sendVerificationMail = (to: string, token: string) => {
   </html>`;
   return sendMail(to, subject, text, html);
 };
+
+export const sendFollowMail = (toMail: string, fromName: string, toName: string) => {
+  const subject = `${fromName} started following you on Tweepspace`;
+  const text = `${fromName} started following you on Tweepspace`;
+  const html = `<html>
+  <head>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f0f0f0;
+          }
+          .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #ffffff;
+              padding: 20px;
+          }
+          .content {
+              font-size: 16px;
+              line-height: 1.5;
+              color: #333333;
+          }
+          .button {
+              display: inline-block;
+              background-color: #007bff;
+              color: white;
+              border-radius: 10px;
+              padding: 10px 20px;
+              text-decoration: none;
+              width: 120px;
+              text-align: center;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <div class="content">
+              <h1>New Follower Notification</h1>
+              <p>Hello ${toName},</p>
+              <p>You have a new follower on Tweepspace. <a href="${Config.SITEURL}/user/${fromName}">${fromName}</a> is now following you.</p>
+              <p>Stay connected and keep tweeting!</p>
+              <p>Best regards,</p>
+              <p>Tweepspace Team</p>
+          </div>
+      </div>
+  </body>
+</html>
+`;
+  return sendMail(toMail, subject, text, html);
+};
+
+export const sendMentionMail = (
+  toMail: string,
+  fromName: string,
+  toName: string,
+  tweetId: string
+) => {
+  const subject = `${fromName} mentioned you in a tweet on Tweepspace`;
+  const text = `${fromName} mentioned you in a tweet on Tweepspace`;
+  const html = `<html>
+  <head>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f0f0f0;
+          }
+          .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #ffffff;
+              padding: 20px;
+          }
+          .content {
+              font-size: 16px;
+              line-height: 1.5;
+              color: #333333;
+          }
+          .button {
+              display: inline-block;
+              background-color: #007bff;
+              color: white;
+              border-radius: 10px;
+              padding: 10px 20px;
+              text-decoration: none;
+              width: 120px;
+              text-align: center;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <div class="content">
+          <h1>Mention Notification</h1>
+          <p>Hello ${toName},</p>
+          <p>You have been mentioned in a tweet on Tweepspace by <a href="${Config.SITEURL}/user/${fromName}">${fromName}</a>.</p>
+          <p>Check it out and join the conversation!</p>
+          <p><a href=${Config.SITEURL}/tweep/${tweetId} class="button">View Tweep</a></p>
+          <p>Best regards,</p>
+          <p>Tweepspace Team</p>
+          </div>
+      </div>
+  </body>
+</html>
+`;
+  return sendMail(toMail, subject, text, html);
+};
+
+export const sendCommentMail = (
+  toMail: string,
+  fromName: string,
+  toName: string,
+  tweetId: string
+) => {
+  const subject = `${fromName} Commented on your tweet on Tweepspace`;
+  const text = `${fromName} Commented on your tweet on Tweepspace`;
+  const html = `<html>
+  <head>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f0f0f0;
+          }
+          .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #ffffff;
+              padding: 20px;
+          }
+          .content {
+              font-size: 16px;
+              line-height: 1.5;
+              color: #333333;
+          }
+          .button {
+              display: inline-block;
+              background-color: #007bff;
+              color: white;
+              border-radius: 10px;
+              padding: 10px 20px;
+              text-decoration: none;
+              width: 120px;
+              text-align: center;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <div class="content">
+          <h1>New Comment Notification</h1>
+          <p>Hello ${toName},</p>
+          <p>Someone commented on your Tweep on Tweepspace.</p>
+          <p>Check it out and join the conversation!</p>
+          <p><a href=${Config.SITEURL}/tweep/${tweetId} class="button">View Comment</a></p>
+          <p>Best regards,</p>
+          <p>Tweepspace Team</p>
+          </div>
+      </div>
+  </body>
+</html>
+`;
+  return sendMail(toMail, subject, text, html);
+};
+export const sendRetweepMail = (
+  toMail: string,
+  fromName: string,
+  toName: string,
+  tweetId: string
+) => {
+  const subject = `${fromName} Retweeped your tweet on Tweepspace`;
+  const text = `${fromName} Retweeped your tweet on Tweepspace`;
+  const html = `<html>
+  <head>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f0f0f0;
+          }
+          .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #ffffff;
+              padding: 20px;
+          }
+          .content {
+              font-size: 16px;
+              line-height: 1.5;
+              color: #333333;
+          }
+          .button {
+              display: inline-block;
+              background-color: #007bff;
+              color: white;
+              border-radius: 10px;
+              padding: 10px 20px;
+              text-decoration: none;
+              width: 120px;
+              text-align: center;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <div class="content">
+          <h1>New Retweep Notification</h1>
+          <p>Hello ${toName},</p>
+          <p>Someone retweeped on your Tweep on Tweepspace.</p>
+          <p>Check it out and join the conversation!</p>
+          <p><a href=${Config.SITEURL}/tweep/${tweetId} class="button">View Comment</a></p>
+          <p>Best regards,</p>
+          <p>Tweepspace Team</p>
+          </div>
+      </div>
+  </body>
+</html>
+`;
+  return sendMail(toMail, subject, text, html);
+};

@@ -9,7 +9,8 @@ export const webRoutes = {
   tweep: (id: string) => `/tweep/${id}`,
   user: (username: string) => `/user/${username}`,
   tweepWithHashtag: (hashtag: string) => `/hashtag/${hashtag}`,
-  activity: '/activity'
+  activity: '/activity',
+  settings: '/settings'
 };
 
 export const apiRoutes = {

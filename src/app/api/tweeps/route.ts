@@ -1,7 +1,9 @@
 import Hashtag from '@/models/hashtag';
 import Notifications from '@/models/notification';
 import Tweep from '@/models/tweep';
+import User from '@/models/user';
 import { MyRequest } from '@/types/requestTypes';
+import { sendCommentMail, sendMentionMail } from '@/utils/mailer';
 import { authenticate } from '@/utils/middleware';
 import { dbConnect } from '@/utils/mongodb';
 import { upload } from '@/utils/upload';
@@ -78,6 +80,15 @@ export const POST = authenticate(async (req: MyRequest) => {
     const parent_tweep = await Tweep.findById(tweep.parent_tweep);
     if (parent_tweep) {
       if (parent_tweep.author.toString() !== req.userId) {
+        const parent_tweep_author = await User.findById(parent_tweep.author);
+        if (parent_tweep_author?.commentNotificationPermission) {
+          await sendCommentMail(
+            parent_tweep_author.email,
+            (tweep.author as any).username,
+            parent_tweep_author.username,
+            tweep._id as string
+          );
+        }
         await Notifications.create({
           recipient: parent_tweep?.author,
           sender: req.userId,
@@ -87,8 +98,9 @@ export const POST = authenticate(async (req: MyRequest) => {
       }
     }
   }
-  body.data.mentions.forEach(async mention => {
-    if (mention !== req.userId) {
+  const mentionedUsers = await User.find({ _id: { $in: body.data.mentions } });
+  mentionedUsers.forEach(async mention => {
+    if (mention._id != req.userId) {
       await Notifications.create({
         recipient: mention,
         sender: req.userId,
@@ -97,6 +109,23 @@ export const POST = authenticate(async (req: MyRequest) => {
       });
     }
   });
+  await Promise.all(
+    mentionedUsers.map(mention => {
+      if (
+        mention._id != req.userId &&
+        mention.mentionNotificationPermission &&
+        mention._id != tweep.parent_tweep
+      ) {
+        return sendMentionMail(
+          mention.email,
+          (tweep.author as any).username,
+          mention.username,
+          tweep._id as string
+        );
+      }
+    })
+  );
+
   body.data.hashtags.forEach(async (tag: string) => {
     if (await Hashtag.exists({ hashtag: tag })) {
       await Hashtag.findOneAndUpdate({ hashtag: tag }, { $addToSet: { tweeps: tweep._id } });

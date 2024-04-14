@@ -52,7 +52,13 @@ export const SignInOrUser = () => {
         >
           Edit Profile
         </DropdownItem>
-        <DropdownItem showDivider key="settings" className="px-3">
+        <DropdownItem
+          showDivider
+          key="settings"
+          className="px-3"
+          as={Link}
+          href={webRoutes.settings}
+        >
           Settings
         </DropdownItem>
         <DropdownItem onClick={signOut} key="logout" color="danger" className="px-3">

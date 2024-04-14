@@ -33,6 +33,11 @@ export type UserTypeWithIds = {
   created_at: Date;
   followers?: string[];
   following?: string[];
+  isVerified: boolean;
+  followNotificationPermission: boolean;
+  mentionNotificationPermission: boolean;
+  commentNotificationPermission: boolean;
+  retweepNotificationPermission: boolean;
 };
 
 export type UserTypeWithObjects = {

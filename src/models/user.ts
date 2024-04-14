@@ -12,13 +12,18 @@ interface UserDoc extends Document {
   created_at: Date;
   followers?: string[]; // Followers array (includes both public and private followers)
   following?: string[];
-  emailToken: string | null;
+  emailToken: string;
+  isVerified: boolean;
+  followNotificationPermission: boolean;
+  mentionNotificationPermission: boolean;
+  commentNotificationPermission: boolean;
+  retweepNotificationPermission: boolean;
 }
 
 // Define schema for Users collection
 const userSchema = new Schema<UserDoc>({
   username: { type: String, unique: true, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   name: { type: String, trim: true },
   bio: { type: String, trim: true },
@@ -26,7 +31,12 @@ const userSchema = new Schema<UserDoc>({
   created_at: { type: Date, default: Date.now },
   followers: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Single followers array
   following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  emailToken: { type: String, trim: true }
+  emailToken: { type: String, trim: true },
+  isVerified: { type: Boolean, default: false },
+  followNotificationPermission: { type: Boolean, default: true },
+  mentionNotificationPermission: { type: Boolean, default: true },
+  commentNotificationPermission: { type: Boolean, default: false },
+  retweepNotificationPermission: { type: Boolean, default: false }
 });
 
 userSchema.pre('save', async function (next) {

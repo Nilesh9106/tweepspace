@@ -7,7 +7,7 @@ export async function GET(req: NextRequest, { params }: { params: { token: strin
   await dbConnect();
   const user = await User.findOne({ emailToken: token });
   if (user) {
-    user.emailToken = null;
+    user.isVerified = true;
     await user.save();
     return new Response('Email verified', { status: 200 });
   } else {

@@ -44,7 +44,11 @@ const profileSchema = z.object({
   username: z.string(),
   name: z.string().optional(),
   bio: z.string().optional(),
-  profile_picture: z.string().optional()
+  profile_picture: z.string().optional(),
+  followNotificationPermission: z.boolean().optional(),
+  mentionNotificationPermission: z.boolean().optional(),
+  commentNotificationPermission: z.boolean().optional(),
+  retweepNotificationPermission: z.boolean().optional()
 });
 
 // Update profile
@@ -84,6 +88,19 @@ export const PUT = authenticate(async (req: MyRequest) => {
   user.name = data.data.name;
   user.bio = data.data.bio;
   user.profile_picture = profile_picture;
+  if (data.data.followNotificationPermission !== undefined) {
+    user.followNotificationPermission = data.data.followNotificationPermission;
+  }
+  if (data.data.mentionNotificationPermission !== undefined) {
+    user.mentionNotificationPermission = data.data.mentionNotificationPermission;
+  }
+  if (data.data.commentNotificationPermission !== undefined) {
+    user.commentNotificationPermission = data.data.commentNotificationPermission;
+  }
+  if (data.data.retweepNotificationPermission !== undefined) {
+    user.retweepNotificationPermission = data.data.retweepNotificationPermission;
+  }
+
   const newUser = await user.save();
   return NextResponse.json(
     { message: 'Profile Updated Successfully', user: newUser },
