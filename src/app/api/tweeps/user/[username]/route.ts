@@ -11,7 +11,7 @@ export const GET = authenticate(
     const { username } = params;
     const query = req.nextUrl.searchParams.get('field') || '';
     await dbConnect();
-    const newUser = await User.findOne({ username: username }).select('-password');
+    const newUser = await User.findOne({ username: username }).select('-password -emailToken');
     if (!newUser) {
       return NextResponse.json(
         { message: 'User not found' },

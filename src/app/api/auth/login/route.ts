@@ -20,6 +20,12 @@ export async function POST(request: NextRequest) {
       await dbConnect();
       const user = await User.findOne({ username });
       if (user) {
+        if (user.emailToken !== null) {
+          return NextResponse.json(
+            { message: 'Please verify your email to login' },
+            { status: HttpStatusCode.Unauthorized }
+          );
+        }
         if (await bcrypt.compare(password, user.password)) {
           const payload = { userId: user._id };
           const token = await createToken(payload);

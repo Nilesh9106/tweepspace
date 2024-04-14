@@ -2,7 +2,8 @@
 import { apiRoutes, webRoutes } from '@/constants/routes';
 import { AuthUser, loginForm, signUpForm } from '@/types/auth';
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
+import { usePathname } from 'next/navigation';
 import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -70,19 +71,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       }
     }
   };
-  const signUp = async (formData: signUpForm) => {
+  const signUp = async (formData: signUpForm): Promise<boolean> => {
     try {
       const { data } = await axios.post(apiRoutes.auth.signUp, formData);
-      setUser({
-        id: data.user._id,
-        email: data.user.email,
-        username: data.user.username,
-        profile_picture: data.user.profile_picture,
-        following: data.user.following,
-        followers: data.user.followers
-      });
-      toast.success('Signed up successfully');
-      router.push(webRoutes.home);
+      toast.success(data.message);
+      return true;
     } catch (error) {
       if (isAxiosError(error)) {
         console.log(error.response?.data);
@@ -93,6 +86,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         console.log((error as Error).message);
       }
     }
+    return false;
   };
   const signOut = async () => {
     try {
@@ -129,7 +123,7 @@ const useAuth = () => {
   return useContext(AuthContext) as {
     user: AuthUser | null;
     signIn: (formData: loginForm) => Promise<void>;
-    signUp: (formData: signUpForm) => Promise<void>;
+    signUp: (formData: signUpForm) => Promise<boolean>;
     signOut: () => Promise<void>;
     setUser: React.Dispatch<React.SetStateAction<AuthUser | null>>;
   };

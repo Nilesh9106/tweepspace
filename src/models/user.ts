@@ -12,6 +12,7 @@ interface UserDoc extends Document {
   created_at: Date;
   followers?: string[]; // Followers array (includes both public and private followers)
   following?: string[];
+  emailToken: string | null;
 }
 
 // Define schema for Users collection
@@ -24,7 +25,8 @@ const userSchema = new Schema<UserDoc>({
   profile_picture: { type: String },
   created_at: { type: Date, default: Date.now },
   followers: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Single followers array
-  following: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+  following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  emailToken: { type: String, trim: true }
 });
 
 userSchema.pre('save', async function (next) {

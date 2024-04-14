@@ -26,7 +26,7 @@ export const GET = authenticate(
       await dbConnect();
       let newUser = await User.findOne({ username: username })
         .populate(fields.join(' '))
-        .select('-password');
+        .select('-password -emailToken');
       if (!newUser) {
         return NextResponse.json(
           { message: 'User not found' },

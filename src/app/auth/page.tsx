@@ -67,7 +67,7 @@ const Login = () => {
   );
 };
 
-const SignUp = () => {
+const SignUp = ({ setSelected }: { setSelected: React.Dispatch<React.SetStateAction<string>> }) => {
   const [formData, setFormData] = useState<signUpForm>({
     username: '',
     email: '',
@@ -77,7 +77,8 @@ const SignUp = () => {
   const { signUp } = useAuth();
   const handleSubmit = async () => {
     setLoading(true);
-    await signUp(formData);
+    const success = await signUp(formData);
+    if (success) setSelected('login');
     setLoading(false);
   };
   return (
@@ -150,7 +151,7 @@ export default function Page() {
               <Login />
             </Tab>
             <Tab key="sign-up" title="Sign up">
-              <SignUp />
+              <SignUp setSelected={setSelected} />
             </Tab>
           </Tabs>
         </CardBody>

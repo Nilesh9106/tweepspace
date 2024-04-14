@@ -18,7 +18,7 @@ export const GET = authenticate(async (req: MyRequest) => {
   await dbConnect();
   let users;
   if (query === '') {
-    users = await User.find().select('-password');
+    users = await User.find().select('-password -emailToken');
     if (!users) {
       return NextResponse.json({ message: 'Users Not Found' }, { status: HttpStatusCode.NotFound });
     }
@@ -27,7 +27,9 @@ export const GET = authenticate(async (req: MyRequest) => {
       { status: HttpStatusCode.Ok }
     );
   }
-  users = await User.find({ username: { $regex: query, $options: 'i' } }).select('-password');
+  users = await User.find({ username: { $regex: query, $options: 'i' } }).select(
+    '-password -emailToken'
+  );
   if (!users) {
     return NextResponse.json({ message: 'Users Not Found' }, { status: HttpStatusCode.NotFound });
   }
