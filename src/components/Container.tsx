@@ -6,7 +6,7 @@ const Container = (
   return (
     <div
       {...props}
-      className={`lg:w-[600px] md:w-[500px] sm:w-[450px] max-sm:w-[94%] my-5 mx-auto flex flex-col gap-5 ${props.className}`}
+      className={`lg:w-[600px] md:w-[500px] sm:w-[450px] max-sm:w-[94%] mx-auto flex flex-col gap-5 ${props.className}`}
     >
       {props.children}
     </div>

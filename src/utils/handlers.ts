@@ -10,7 +10,9 @@ export const errorHandler = <T extends any[], R>(
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data);
-        if (error.response?.data?.message) {
+        if (error.response?.data?.errors && error.response?.data?.errors[0].message) {
+          toast.error(error.response?.data?.errors[0].message);
+        } else if (error.response?.data?.message) {
           toast.error(error.response?.data?.message);
         }
       } else {

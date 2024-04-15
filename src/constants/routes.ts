@@ -49,7 +49,8 @@ export const apiRoutes = {
   notifications: {
     getNotifications: '/api/notifications',
     PUTmarkAsRead: (id: string) => `/api/notifications/${id}`,
-    deleteNotification: (id: string) => `/api/notifications/${id}`
+    deleteNotification: (id: string) => `/api/notifications/${id}`,
+    markAllAsRead: '/api/notifications/markAllAsRead'
   },
   getAllHashtags: '/api/hashtags'
 };

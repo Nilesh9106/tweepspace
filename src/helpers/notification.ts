@@ -17,4 +17,8 @@ export class NotificationHelper {
     toast.success('Notification deleted');
     return data;
   });
+  static markAllAsRead = errorHandler(async () => {
+    const { data } = await axios.put(apiRoutes.notifications.markAllAsRead);
+    return data;
+  });
 }

@@ -20,7 +20,7 @@ const UserProfile = () => {
     // fetch user
     try {
       setLoading(true);
-      const data = await UsersHelper.getUserProfile(username, 'user');
+      const data = await UsersHelper.getUserProfile(username.toLowerCase(), 'user');
       setUser(data.user);
     } catch (error) {
       console.log(error);

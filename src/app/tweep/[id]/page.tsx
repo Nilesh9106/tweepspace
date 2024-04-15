@@ -1,4 +1,5 @@
 import TweepPage from '@/components/tweep/TweepPage';
+import { Config } from '@/config';
 import Tweep from '@/models/tweep';
 import { dbConnect } from '@/utils/mongodb';
 import { Metadata, ResolvingMetadata } from 'next';
@@ -24,7 +25,8 @@ export async function generateMetadata(
       ...prev.openGraph,
       title: `${tweep?.author.username} - Tweepspace`,
       description: tweep?.content ?? prev.openGraph?.description,
-      url: `https://tweepspace.vercel.app/tweep/${id}`
+      url: `https://tweepspace.vercel.app/tweep/${id}`,
+      images: `${Config.SITEURL}/api/og/${id}`
     },
     twitter: {
       title: `${tweep?.author.username} - Tweepspace`,
@@ -34,7 +36,7 @@ export async function generateMetadata(
         prev.description ??
         prev.openGraph?.description,
       card: 'summary_large_image',
-      images: prev.twitter?.images,
+      images: `${Config.SITEURL}/api/og/${id}`,
       site: '@tweepspace',
       creator: '@tweepspace'
     }
