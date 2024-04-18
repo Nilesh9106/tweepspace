@@ -13,6 +13,7 @@ import {
 import TweepInput from '@/components/common/TweepInput';
 import useAuth from '@/hooks/useAuth';
 import { loginForm, signUpForm } from '@/types/auth';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [formData, setFormData] = useState<loginForm>({
@@ -23,7 +24,10 @@ const Login = () => {
   const { signIn } = useAuth();
   const handleSubmit = async () => {
     setLoading(true);
-    await signIn(formData);
+    await signIn({
+      password: formData.password,
+      username: formData.username.trim()
+    });
     setLoading(false);
   };
   return (
@@ -76,8 +80,17 @@ const SignUp = ({ setSelected }: { setSelected: React.Dispatch<React.SetStateAct
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
   const handleSubmit = async () => {
+    // if username contain spaces then dont submit
+    if (formData.username.trim().includes(' ')) {
+      toast.error('Username should not contain blank spaces');
+      return;
+    }
     setLoading(true);
-    const success = await signUp(formData);
+    const success = await signUp({
+      email: formData.email.trim(),
+      username: formData.username.trim(),
+      password: formData.password
+    });
     if (success) setSelected('login');
     setLoading(false);
   };
