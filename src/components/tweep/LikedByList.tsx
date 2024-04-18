@@ -14,6 +14,8 @@ import UserList from '../common/UserList';
 import { HashLoader } from 'react-spinners';
 import { UsersHelper } from '@/helpers/users';
 import { TweepHelper } from '@/helpers/tweeps';
+import useAuth from '@/hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const LikedBy = (props: { tweep: TweepType }) => {
   const [users, setUsers] = useState<UserTypeWithIds[]>();
@@ -55,6 +57,7 @@ type Props = {
 
 const LikedByList = (props: Props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { user } = useAuth();
 
   return (
     <div
@@ -64,7 +67,13 @@ const LikedByList = (props: Props) => {
       }}
     >
       <div
-        onClick={() => onOpen()}
+        onClick={() => {
+          if (user) {
+            onOpen();
+          } else {
+            toast.error('You need to login to view likes');
+          }
+        }}
         className="cursor-pointer text-default-500 hover:text-default-400"
       >
         {props.tweep.likes?.length ?? 0} Likes

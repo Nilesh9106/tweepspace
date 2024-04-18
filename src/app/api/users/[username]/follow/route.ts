@@ -34,11 +34,13 @@ export const POST = authenticate(
     const loggedInUser = await User.findById(req.userId);
     loggedInUser?.following?.push(userToFollow._id);
     await loggedInUser?.save();
-    await sendFollowMail(
-      userToFollow.email,
-      loggedInUser?.username ?? 'Someone',
-      userToFollow.username
-    );
+    if (userToFollow.followNotificationPermission) {
+      await sendFollowMail(
+        userToFollow.email,
+        loggedInUser?.username ?? 'Someone',
+        userToFollow.username
+      );
+    }
     await Notifications.create({
       recipient: userToFollow._id,
       sender: req.userId,

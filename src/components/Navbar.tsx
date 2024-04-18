@@ -10,11 +10,14 @@ import CreateTweepModal from './CreateTweep';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { webRoutes } from '@/constants/routes';
 import Logo from './Logo';
+import useAuth from '@/hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const Navbar = () => {
   const path = usePathname();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
+  const { user } = useAuth();
   return (
     <>
       {path !== webRoutes.auth.login ? (
@@ -60,7 +63,13 @@ const Navbar = () => {
                 variant="light"
                 disableRipple
                 className="py-2 sm:w-20 max-sm:flex-1 box-content"
-                onClick={onOpen}
+                onClick={() => {
+                  if (user) {
+                    onOpen();
+                  } else {
+                    toast.error('You need to login to Create tweep');
+                  }
+                }}
               >
                 <RiEditCircleLine size={25} className="font-bold text-default-400" />
               </Button>

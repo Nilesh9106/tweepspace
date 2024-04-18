@@ -42,7 +42,9 @@ const FollowButton = (props: FollowButtonProps) => {
 
     setLoading(false);
   };
-
+  if (!user) {
+    return null;
+  }
   switch (status) {
     case 'Following':
       return (

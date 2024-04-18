@@ -9,11 +9,13 @@ import {
   useDisclosure,
   user
 } from '@nextui-org/react';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import UserList from '../common/UserList';
 import { HashLoader } from 'react-spinners';
 import { UsersHelper } from '@/helpers/users';
 import { TweepHelper } from '@/helpers/tweeps';
+import useAuth from '@/hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const Retweeps = (props: { tweep: TweepType }) => {
   const [users, setUsers] = useState<UserTypeWithIds[]>();
@@ -55,7 +57,7 @@ type Props = {
 
 const RetweepList = (props: Props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+  const { user } = useAuth();
   return (
     <div
       onClick={e => {
@@ -64,7 +66,13 @@ const RetweepList = (props: Props) => {
       }}
     >
       <div
-        onClick={() => onOpen()}
+        onClick={() => {
+          if (user) {
+            onOpen();
+          } else {
+            toast.error('You need to login to see Retweeps');
+          }
+        }}
         className="cursor-pointer text-default-500 hover:text-default-400"
       >
         {props.tweep.retweeps?.length ?? 0} Retweeps

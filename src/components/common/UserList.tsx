@@ -15,7 +15,11 @@ const UserList = (props: Props) => {
       {props.users.map(user => {
         return (
           <div key={user._id} className="flex gap-3">
-            <Avatar src={user.profile_picture} className="w-12 h-12" alt={user.username} />
+            <Avatar
+              src={user.profile_picture}
+              className="w-12 h-12 object-center"
+              alt={user.username}
+            />
             <div className="flex flex-col gap-1">
               <Tooltip closeDelay={100} delay={500} content={<UserPopover user={user} />}>
                 <Link

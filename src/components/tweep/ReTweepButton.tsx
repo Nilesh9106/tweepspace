@@ -3,6 +3,7 @@ import useAuth from '@/hooks/useAuth';
 import { TweepType } from '@/types/model';
 import { Button } from '@nextui-org/react';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { RxLoop } from 'react-icons/rx';
 
 type TweepReTweepButtonProps = {
@@ -14,6 +15,10 @@ const ReTweepButton = (props: TweepReTweepButtonProps) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const handleReTweep = async (op: 'retweep' | 'unRetweep') => {
+    if (!user) {
+      toast.error('You need to login to retweep');
+      return;
+    }
     if (op == 'retweep') {
       setLoading(true);
       const res = await TweepHelper.retweep(props.tweep._id);
@@ -35,33 +40,42 @@ const ReTweepButton = (props: TweepReTweepButtonProps) => {
     }
   };
 
-  return props.tweep.retweeps?.includes(user?.id ?? '') ? (
-    <Button
-      isIconOnly
-      size="sm"
-      variant="light"
-      disableRipple
-      radius="full"
-      onPress={() => handleReTweep('unRetweep')}
-      color="success"
-      isLoading={loading}
+  return (
+    <div
+      onClick={e => {
+        e.stopPropagation();
+        e.preventDefault();
+      }}
     >
-      <RxLoop size={20} />
-    </Button>
-  ) : (
-    <Button
-      isIconOnly
-      size="sm"
-      variant="light"
-      disableRipple
-      radius="full"
-      onPress={() => handleReTweep('retweep')}
-      color="success"
-      className="group"
-      isLoading={loading}
-    >
-      <RxLoop size={20} className="dark:text-white text-black group-hover:text-green-500" />
-    </Button>
+      {user && props.tweep.retweeps?.includes(user?.id ?? '') ? (
+        <Button
+          isIconOnly
+          size="sm"
+          variant="light"
+          disableRipple
+          radius="full"
+          onPress={() => handleReTweep('unRetweep')}
+          color="success"
+          isLoading={loading}
+        >
+          <RxLoop size={20} />
+        </Button>
+      ) : (
+        <Button
+          isIconOnly
+          size="sm"
+          variant="light"
+          disableRipple
+          radius="full"
+          onPress={() => handleReTweep('retweep')}
+          color="success"
+          className="group"
+          isLoading={loading}
+        >
+          <RxLoop size={20} className="dark:text-white text-black group-hover:text-green-500" />
+        </Button>
+      )}
+    </div>
   );
 };
 

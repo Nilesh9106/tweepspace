@@ -74,12 +74,3 @@ export const DELETE = authenticate(
     );
   }
 );
-
-export const PATCH = async (req: NextRequest, { params }: { params: { id: string } }) => {
-  await dbConnect();
-  const tweep = await Tweep.findById(params.id).populate('author');
-  if (!tweep) {
-    return NextResponse.json({ message: 'Tweep Not Found' }, { status: HttpStatusCode.NotFound });
-  }
-  return NextResponse.json({ tweep: tweep }, { status: HttpStatusCode.Ok });
-};

@@ -4,10 +4,10 @@ import { authenticate } from '@/utils/middleware';
 import { dbConnect } from '@/utils/mongodb';
 import { upload } from '@/utils/upload';
 import { HttpStatusCode } from 'axios';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 // search users
-export const GET = authenticate(async (req: MyRequest) => {
+export const GET = async (req: NextRequest) => {
   const query = req.nextUrl.searchParams.get('query')?.trim();
   if (query === undefined) {
     return NextResponse.json(
@@ -37,7 +37,7 @@ export const GET = authenticate(async (req: MyRequest) => {
     { message: 'Users Fetched Successfully', users },
     { status: HttpStatusCode.Ok }
   );
-});
+};
 
 const profileSchema = z.object({
   _id: z.string(),

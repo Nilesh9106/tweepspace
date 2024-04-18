@@ -18,6 +18,7 @@ import { TweepHelper } from '@/helpers/tweeps';
 import toast from 'react-hot-toast';
 import { webRoutes } from '@/constants/routes';
 import { HashLoader } from 'react-spinners';
+import useAuth from '@/hooks/useAuth';
 
 type CommentsButtonProps = {
   tweep: TweepType;
@@ -73,6 +74,7 @@ const CommentsButton = (props: CommentsButtonProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
+  const { user } = useAuth();
   const [tweep, setTweep] = useState<TweepForm>({
     attachments: [],
     content: '',
@@ -82,6 +84,10 @@ const CommentsButton = (props: CommentsButtonProps) => {
   });
 
   const handleSubmit = async () => {
+    if (!user) {
+      toast.error('You need to login to comment');
+      return;
+    }
     setSubmitting(true);
     const res = await TweepHelper.createTweep(tweep);
     if (res) {
@@ -111,7 +117,11 @@ const CommentsButton = (props: CommentsButtonProps) => {
         disableRipple
         radius="full"
         onPress={() => {
-          onOpen();
+          if (user) {
+            onOpen();
+          } else {
+            toast.error('You need to login to comment');
+          }
         }}
         onClick={e => {
           e.stopPropagation();
