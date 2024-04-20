@@ -36,10 +36,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        if (error.status === HttpStatusCode.Unauthorized) {
-          signOut();
-          router.push(webRoutes.auth.login);
-        }
+        signOut();
+        router.push(webRoutes.auth.login);
         console.log(error.response?.data);
       } else {
         console.log((error as Error).message);
