@@ -9,7 +9,7 @@ import { dbConnect } from '@/utils/mongodb';
 import { upload } from '@/utils/upload';
 import { HttpStatusCode } from 'axios';
 import { UploadApiResponse } from 'cloudinary';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const tweepSchema = z.object({
@@ -25,7 +25,7 @@ const tweepSchema = z.object({
 });
 
 // get all posts
-export const GET = authenticate(async (req: MyRequest) => {
+export const GET = async (req: NextRequest) => {
   await dbConnect();
   let perPage = 10,
     page = Math.max(0, parseInt(req.nextUrl.searchParams.get('page') ?? '0'));
@@ -46,7 +46,7 @@ export const GET = authenticate(async (req: MyRequest) => {
     },
     { status: HttpStatusCode.Ok }
   );
-});
+};
 
 // create post
 export const POST = authenticate(async (req: MyRequest) => {

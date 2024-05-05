@@ -4,7 +4,11 @@ import { cookies } from 'next/headers';
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
-  if (url.pathname.startsWith('/tweep') || url.pathname.startsWith('/user')) {
+  if (
+    url.pathname == '/' ||
+    url.pathname.startsWith('/tweep') ||
+    url.pathname.startsWith('/user')
+  ) {
     return NextResponse.next();
   }
   const isAuthRoute = url.pathname.startsWith('/auth');

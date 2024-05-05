@@ -11,6 +11,7 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [checked, setChecked] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -23,9 +24,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       if (user) {
         return;
       }
+      if (checked) {
+        return;
+      }
       console.log('checking token...');
       const { data } = await axios.get(apiRoutes.auth.checkToken);
       console.log('token checked');
+      setChecked(true);
       setUser({
         id: data.user._id,
         email: data.user.email,
@@ -35,12 +40,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         followers: data.user.followers
       });
     } catch (error) {
+      setChecked(true);
       if (isAxiosError(error)) {
+        if (pathname == '/' || pathname.startsWith('/tweep') || pathname.startsWith('/user')) {
+          return;
+        }
         signOut();
         router.push(webRoutes.auth.login);
-        console.log(error.response?.data);
-      } else {
-        console.log((error as Error).message);
       }
     }
   };
@@ -48,6 +54,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const signIn = async (formData: loginForm) => {
     try {
       const { data } = await axios.post(apiRoutes.auth.login, formData);
+      setChecked(true);
       setUser({
         id: data.user._id,
         email: data.user.email,
@@ -60,12 +67,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       router.push(webRoutes.home);
     } catch (error) {
       if (isAxiosError(error)) {
-        console.log(error.response?.data);
         toast.error(
           error.response?.data.message || error.response?.data.error || 'An error occurred'
         );
-      } else {
-        console.log((error as Error).message);
       }
     }
   };
@@ -76,12 +80,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       return true;
     } catch (error) {
       if (isAxiosError(error)) {
-        console.log(error.response?.data);
         toast.error(
           error.response?.data.message || error.response?.data.error || 'An error occurred'
         );
       } else {
-        console.log((error as Error).message);
+        // console.log((error as Error).message);
       }
     }
     return false;
@@ -95,24 +98,24 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       console.log(data);
     } catch (error) {
       if (isAxiosError(error)) {
-        console.log(error.response?.data);
         toast.error(
           error.response?.data.message || error.response?.data.error || 'An error occurred'
         );
       } else {
-        console.log((error as Error).message);
+        // console.log((error as Error).message);
       }
     }
   };
   const memoedValue = useMemo(
     () => ({
       user,
+      checked,
       signIn,
       signOut,
       signUp,
       setUser
     }),
-    [user]
+    [user, checked]
   );
   return <AuthContext.Provider value={memoedValue}>{children}</AuthContext.Provider>;
 };
@@ -120,6 +123,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 const useAuth = () => {
   return useContext(AuthContext) as {
     user: AuthUser | null;
+    checked: boolean;
     signIn: (formData: loginForm) => Promise<void>;
     signUp: (formData: signUpForm) => Promise<boolean>;
     signOut: () => Promise<void>;

@@ -80,9 +80,12 @@ const SignUp = ({ setSelected }: { setSelected: React.Dispatch<React.SetStateAct
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
   const handleSubmit = async () => {
-    // if username contain spaces then dont submit
     if (formData.username.trim().includes(' ')) {
       toast.error('Username should not contain blank spaces');
+      return;
+    }
+    if (formData.email.trim().includes(' ')) {
+      toast.error('Email should not contain blank spaces');
       return;
     }
     setLoading(true);

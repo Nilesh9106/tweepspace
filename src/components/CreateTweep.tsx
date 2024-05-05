@@ -35,6 +35,10 @@ const CreateTweepModal = (props: CreateTweepModalProps) => {
       toast.error('You need to login to Create tweep');
       return;
     }
+    if (tweep.content.trim().length === 0) {
+      toast.error('Tweep content can not be empty');
+      return;
+    }
     setLoading(true);
     const response = await TweepHelper.createTweep(tweep);
     if (response) {

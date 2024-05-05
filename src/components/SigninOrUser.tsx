@@ -66,5 +66,9 @@ export const SignInOrUser = () => {
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
-  ) : null;
+  ) : (
+    <Button href={webRoutes.auth.login} as={Link}>
+      Sign In
+    </Button>
+  );
 };

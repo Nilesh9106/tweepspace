@@ -88,6 +88,10 @@ const CommentsButton = (props: CommentsButtonProps) => {
       toast.error('You need to login to comment');
       return;
     }
+    if (tweep.content.trim().length === 0) {
+      toast.error('Tweep content can not be empty');
+      return;
+    }
     setSubmitting(true);
     const res = await TweepHelper.createTweep(tweep);
     if (res) {
