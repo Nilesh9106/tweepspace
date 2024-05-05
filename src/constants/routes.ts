@@ -21,6 +21,7 @@ export const apiRoutes = {
     logout: '/api/auth/logout'
   },
   users: {
+    deleteUser: (username: string) => `/api/users/${username}`,
     searchUser: (query: string) => `/api/users?query=${query}`,
     updateProfile: '/api/users',
     getUserWithPopulate: (username: string) => `/api/users/${username}`,
@@ -29,13 +30,13 @@ export const apiRoutes = {
   },
   tweeps: {
     createTweep: '/api/tweeps',
-    getAllTweeps: '/api/tweeps',
+    getAllTweeps: (page: number) => `/api/tweeps?page=${page}`,
     getTweepsByHashtag: (tag: string) => `/api/tweeps/byHashtag/${tag}`,
     getTweepWithReplies: (id: string) => `/api/tweeps/${id}`,
     deleteTweep: (id: string) => `/api/tweeps/${id}`,
     getLikesOfTweep: (id: string) => `/api/tweeps/${id}/getLikes`,
     getRetweepsOfTweep: (id: string) => `/api/tweeps/${id}/getRetweeps`,
-    getFeed: '/api/tweeps/feed',
+    getFeed: (page: number) => `/api/tweeps/feed?page=${page}`,
     likeTweepPOST: '/api/tweeps/like',
     unlikeTweepPUT: '/api/tweeps/like',
     retweepPOST: '/api/tweeps/retweep',

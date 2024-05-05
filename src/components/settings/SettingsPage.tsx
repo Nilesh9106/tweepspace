@@ -14,7 +14,7 @@ const SettingsPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [initialUser, setInitialUser] = useState<UserTypeWithIds>();
   const [newUser, setNewUser] = useState<UserTypeWithIds>();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const saveChanges = async () => {
     setSubmitting(true);
@@ -122,6 +122,31 @@ const SettingsPage = () => {
               Save Changes
             </Button>
           ) : null}
+          {/* create danger section for deleting account */}
+          {/* <div className="p-5 dark:bg-red-600/5 bg-red-600/5 rounded-lg flex flex-col gap-4">
+            <h3 className="text-xl font-semibold mb-5 text-red-500">Danger Zone</h3>
+            <Divider />
+            <Button
+              variant="flat"
+              color="danger"
+              onPress={async () => {
+                if (confirm('Are you sure you want to delete your account?')) {
+                  if (user) {
+                    const res = await toast.promise(UsersHelper.deleteUser(user.username), {
+                      loading: 'Deleting account...',
+                      success: 'Account deleted successfully',
+                      error: 'Error deleting account'
+                    });
+                    if (res) {
+                      signOut();
+                    }
+                  }
+                }
+              }}
+            >
+              Delete Account
+            </Button>
+          </div> */}
         </>
       )}
     </Container>

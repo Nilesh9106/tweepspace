@@ -2,6 +2,7 @@ import { TweepType } from '@/types/model';
 import { Divider, Skeleton } from '@nextui-org/react';
 import React from 'react';
 import TweepPageCard from './TweepPageCard';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Container from '../Container';
 
 const TweepSkeleton = () => {
@@ -20,41 +21,92 @@ const TweepSkeleton = () => {
 
 type TweepListProps = {
   loading: boolean;
+  key?: string;
   tweeps: TweepType[] | undefined;
   setTweeps: React.Dispatch<React.SetStateAction<TweepType[] | undefined>>;
   showParent?: boolean;
+  useInfiniteScroll?: boolean;
+  fetchData?: () => Promise<void>;
+  hasMore?: boolean;
 };
 
-const TweepList = ({ loading, tweeps, setTweeps, showParent }: TweepListProps) => {
+const TweepList = ({
+  loading,
+  tweeps,
+  setTweeps,
+  showParent,
+  fetchData,
+  hasMore,
+  useInfiniteScroll,
+  key
+}: TweepListProps) => {
   return (
     <Container>
       {loading || !tweeps ? (
         Array.from({ length: 10 }).map((_, ind) => <TweepSkeleton key={ind} />)
       ) : (
         <>
-          {tweeps.map((tweep, index) => {
-            return (
-              <div key={tweep._id} className="flex flex-col gap-2">
-                <TweepPageCard
-                  tweep={tweep}
-                  onTweepChange={(tweep: TweepType) => {
-                    const newTweeps = [...tweeps];
-                    newTweeps[index] = tweep;
-                    setTweeps(newTweeps);
-                  }}
-                  onDelete={() => {
-                    setTweeps(tweeps.filter(t => t._id !== tweep._id));
-                  }}
-                  commentMode={false}
-                  inPage={false}
-                  showLine={false}
-                  showParent={showParent}
-                />
-                <Divider />
-              </div>
-            );
-          })}
-          {tweeps.length === 0 && <p className="text-center text-gray-500">No tweeps found</p>}
+          {fetchData && useInfiniteScroll ? (
+            <InfiniteScroll
+              dataLength={tweeps.length} //This is important field to render the next data
+              next={fetchData}
+              hasMore={hasMore ?? false}
+              loader={<p className="text-center py-3">Loading...</p>}
+              endMessage={<p className="text-center pb-5">Yay! You have seen it all</p>}
+              className="flex flex-col gap-5"
+            >
+              {tweeps.map((tweep, index) => {
+                return (
+                  <div key={tweep._id + (key ?? '')} className="flex flex-col gap-2">
+                    <TweepPageCard
+                      tweep={tweep}
+                      onTweepChange={(tweep: TweepType) => {
+                        const newTweeps = [...tweeps];
+                        newTweeps[index] = tweep;
+                        setTweeps(newTweeps);
+                      }}
+                      onDelete={() => {
+                        setTweeps(tweeps.filter(t => t._id !== tweep._id));
+                      }}
+                      commentMode={false}
+                      inPage={false}
+                      showLine={false}
+                      showParent={showParent}
+                    />
+                    <Divider />
+                  </div>
+                );
+              })}
+            </InfiniteScroll>
+          ) : (
+            <>
+              {tweeps.map((tweep, index) => {
+                return (
+                  <div key={tweep._id} className="flex flex-col gap-2">
+                    <TweepPageCard
+                      tweep={tweep}
+                      onTweepChange={(tweep: TweepType) => {
+                        const newTweeps = [...tweeps];
+                        newTweeps[index] = tweep;
+                        setTweeps(newTweeps);
+                      }}
+                      onDelete={() => {
+                        setTweeps(tweeps.filter(t => t._id !== tweep._id));
+                      }}
+                      commentMode={false}
+                      inPage={false}
+                      showLine={false}
+                      showParent={showParent}
+                    />
+                    <Divider />
+                  </div>
+                );
+              })}
+              {tweeps.length === 0 && (
+                <div className="text-center text-lg text-gray-500">No Tweeps Found</div>
+              )}
+            </>
+          )}
         </>
       )}
     </Container>

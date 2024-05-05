@@ -27,12 +27,23 @@ const tweepSchema = z.object({
 // get all posts
 export const GET = authenticate(async (req: MyRequest) => {
   await dbConnect();
-  const tweeps = await Tweep.find({}).populate('author').sort({ created_at: -1 });
+  let perPage = 10,
+    page = Math.max(0, parseInt(req.nextUrl.searchParams.get('page') ?? '0'));
+  const tweeps = await Tweep.find({})
+    .sort({ created_at: -1 })
+    .limit(perPage)
+    .skip(perPage * page)
+    .populate('author');
   if (!tweeps) {
     return NextResponse.json({ message: 'Tweeps Not Found' }, { status: HttpStatusCode.NotFound });
   }
   return NextResponse.json(
-    { message: 'Tweeps Fetched Successfully', tweeps },
+    {
+      message: 'Tweeps Fetched Successfully',
+      tweeps,
+      page: page + 1,
+      hasMore: tweeps.length === perPage
+    },
     { status: HttpStatusCode.Ok }
   );
 });

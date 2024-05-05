@@ -18,6 +18,15 @@ export async function generateMetadata(
   return {
     title: `${username} - Tweepspace`,
     description: user?.bio ?? prev.description,
+    keywords: [
+      username,
+      user.name ?? '',
+      user.bio ?? '',
+      'tweepspace',
+      'tweeps',
+      'social media',
+      'profile'
+    ],
     openGraph: {
       ...prev.openGraph,
       title: `${username} - Tweepspace`,

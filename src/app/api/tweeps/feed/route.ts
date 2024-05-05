@@ -13,6 +13,8 @@ export const GET = authenticate(async (req: MyRequest) => {
   if (user?.following) {
     ids.push(...user.following);
   }
+  let perPage = 10,
+    page = Math.max(0, parseInt(req.nextUrl.searchParams.get('page') ?? '0'));
   const tweeps = await Tweep.find({ author: { $in: ids } })
     .populate('author')
     .populate({
@@ -21,12 +23,19 @@ export const GET = authenticate(async (req: MyRequest) => {
         path: 'author'
       }
     })
-    .sort({ created_at: -1 });
+    .sort({ created_at: -1 })
+    .limit(perPage)
+    .skip(perPage * page);
   if (!tweeps) {
     return NextResponse.json({ message: 'Tweeps Not Found' }, { status: HttpStatusCode.NotFound });
   }
   return NextResponse.json(
-    { message: 'Tweeps Fetched Successfully', tweeps },
+    {
+      message: 'Tweeps Fetched Successfully',
+      tweeps,
+      page: page + 1,
+      hasMore: tweeps.length === perPage
+    },
     { status: HttpStatusCode.Ok }
   );
 });

@@ -46,4 +46,8 @@ export class UsersHelper {
     const response = await axios.put(apiRoutes.users.updateProfile, data);
     return response.data;
   });
+  static deleteUser = errorHandler(async (username: string) => {
+    const response = await axios.delete(apiRoutes.users.deleteUser(username.toLowerCase()));
+    return response.data;
+  });
 }

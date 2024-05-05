@@ -4,13 +4,21 @@ import { errorHandler } from '@/utils/handlers';
 import axios from 'axios';
 
 export class TweepHelper {
-  static getAllTweeps = errorHandler(async () => {
-    const { data } = await axios.get(apiRoutes.tweeps.getAllTweeps);
-    return data.tweeps as TweepType[];
+  static getAllTweeps = errorHandler(async (page?: number) => {
+    const { data } = await axios.get(apiRoutes.tweeps.getAllTweeps(page ?? 0));
+    return {
+      tweeps: data.tweeps as TweepType[],
+      hasMore: data.hasMore as boolean,
+      page: data.page as number
+    };
   });
-  static getFeed = errorHandler(async () => {
-    const { data } = await axios.get(apiRoutes.tweeps.getFeed);
-    return data.tweeps as TweepType[];
+  static getFeed = errorHandler(async (page?: number) => {
+    const { data } = await axios.get(apiRoutes.tweeps.getFeed(page ?? 0));
+    return {
+      tweeps: data.tweeps as TweepType[],
+      hasMore: data.hasMore as boolean,
+      page: data.page as number
+    };
   });
   static getTweepWithReplies = errorHandler(async (id: string) => {
     const { data } = await axios.get(apiRoutes.tweeps.getTweepWithReplies(id));
