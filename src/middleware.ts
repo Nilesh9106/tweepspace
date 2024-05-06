@@ -36,15 +36,18 @@ export async function middleware(request: NextRequest) {
         const payload = await verifyToken(authToken.value!);
         if (!payload) {
           request.cookies.delete('token');
+          console.log('Invalid token without payload');
           return NextResponse.redirect(new URL('/auth', request.url));
         }
         return NextResponse.next();
       } catch (error) {
         console.log(error);
         request.cookies.delete('token');
+        console.log('Invalid token');
         return NextResponse.redirect(new URL('/auth', request.url));
       }
     } else {
+      console.log('no token');
       return NextResponse.redirect(new URL('/auth', request.url));
     }
   }

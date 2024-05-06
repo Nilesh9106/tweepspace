@@ -5,7 +5,6 @@ const connection: { connected?: number } = {};
 
 export const dbConnect = async () => {
   if (connection.connected) {
-    console.log('Already connected to MongoDB');
     return;
   }
   const db = await mongoose.connect(Config.MONGODB_URI);

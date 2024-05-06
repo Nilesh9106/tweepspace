@@ -43,10 +43,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       setChecked(true);
       if (isAxiosError(error)) {
         if (pathname == '/' || pathname.startsWith('/tweep') || pathname.startsWith('/user')) {
+          console.log('error', error);
           return;
         }
         signOut();
         router.push(webRoutes.auth.login);
+      } else {
+        console.log(error);
       }
     }
   };
@@ -95,7 +98,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       setUser(null);
       toast.success('Logged out successfully');
       router.push(webRoutes.auth.login);
-      console.log(data);
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(
