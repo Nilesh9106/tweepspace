@@ -66,7 +66,7 @@ export const GET = async (req: NextRequest, { params }: { params: { username: st
           path: 'author'
         }
       })
-      .sort({ createdAt: -1 });
+      .sort({ created_at: -1 });
     return NextResponse.json(
       {
         message: 'User tweeps fetched successfully',
@@ -86,7 +86,7 @@ export const GET = async (req: NextRequest, { params }: { params: { username: st
           path: 'author'
         }
       })
-      .sort({ createdAt: -1 });
+      .sort({ created_at: -1 });
     return NextResponse.json(
       {
         message: 'User retweeps fetched successfully',
